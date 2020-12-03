@@ -151,7 +151,11 @@ function ExploreIngredients({ pageType }) {
       </div>
 
       <div className="paging-container">
-        <button type="button" onClick={ handlePageDown }>
+        <button
+          type="button"
+          onClick={ handlePageDown }
+          disabled={ paging === 1 }
+        >
           <FiChevronLeft />
         </button>
 
@@ -175,7 +179,11 @@ function ExploreIngredients({ pageType }) {
           </label>
         ))}
 
-        <button type="button" onClick={ handlePageUp }>
+        <button
+          type="button"
+          onClick={ handlePageUp }
+          disabled={ paging === numberOfPages }
+        >
           <FiChevronRight />
         </button>
       </div>

@@ -14,7 +14,7 @@ const getID = {
   cocktails: 'idDrink',
 };
 
-const initialSearchValues = {
+export const initialSearchValues = {
   meals: {
     option: 'name',
     value: '',

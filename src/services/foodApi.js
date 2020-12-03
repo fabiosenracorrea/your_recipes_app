@@ -45,10 +45,7 @@ export async function fetchFoodsCategories(token) {
   const data = await fetch(urlToFetch);
   const { meals } = await data.json();
 
-  const CATEGORY_LIMIT = 5;
-  const categories = meals
-    .filter((_, index) => index < CATEGORY_LIMIT)
-    .map((category) => category.strCategory);
+  const categories = meals.map((category) => category.strCategory);
 
   return categories;
 }

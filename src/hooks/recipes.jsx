@@ -63,13 +63,9 @@ function RecipeProvider({ children }) {
   }, [userToken]);
 
   const updateRecipes = useCallback((type, newRecipes) => {
-    const RECIPES_LIMIT = 12;
-
-    const recipesToShow = newRecipes.filter((_, index) => index < RECIPES_LIMIT);
-
     setCurrentRecipes((oldRecipes) => ({
       ...oldRecipes,
-      [type]: recipesToShow,
+      [type]: newRecipes,
     }));
   }, []);
 
@@ -80,13 +76,9 @@ function RecipeProvider({ children }) {
 
     const recipesByCategory = await fetchCategories(category, userToken);
 
-    const RECIPES_LIMIT = 12;
-
-    const recipesToShow = recipesByCategory.filter((_, index) => index < RECIPES_LIMIT);
-
     setCurrentFilteredRecipes((oldRecipes) => ({
       ...oldRecipes,
-      [type]: recipesToShow,
+      [type]: recipesByCategory,
     }));
 
     setLoadingByCategory(false);

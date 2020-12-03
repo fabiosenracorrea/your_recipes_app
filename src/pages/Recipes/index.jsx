@@ -3,8 +3,9 @@ import React, {
 } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-import { useSearch } from '../../hooks/search';
+import { useSearch, initialSearchValues } from '../../hooks/search';
 import { useRecipes } from '../../hooks/recipes';
 
 import Header from '../../components/Header';
@@ -16,6 +17,10 @@ import './styles.css';
 
 function Recipes({ pageType }) {
   const [filterSelected, setFilterSelected] = useState('All');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [paging, setPaging] = useState(1);
+  const [filterPage, setFilterPage] = useState(1);
 
   const { infoSearched, appSearch, loadingRecipes } = useSearch();
 
@@ -40,16 +45,20 @@ function Recipes({ pageType }) {
     const noFilterCategory = 'All';
 
     if (category === filterSelected || category === noFilterCategory) {
-      const recipesToSearch = infoSearched[pageType];
+      const recipesToSearch = initialSearchValues[pageType];
 
       appSearch(pageType, recipesToSearch);
 
       setFilterSelected(noFilterCategory);
+      setCurrentPage(1);
+      setPaging(1);
       return;
     }
 
     updateFilteredRecipes(pageType, category);
     setFilterSelected(category);
+    setCurrentPage(1);
+    setPaging(1);
   }, [updateFilteredRecipes, pageType, infoSearched, appSearch, filterSelected]);
 
   const loadedRecipes = useMemo(() => {
@@ -68,6 +77,135 @@ function Recipes({ pageType }) {
     return desiredFilters;
   }, [currentFilters, pageType]);
 
+  const filterPages = useMemo(() => {
+    const totalFilters = currentRecipeFilters.length;
+    const filtersPerPage = 6;
+
+    const pages = Math.ceil(totalFilters / filtersPerPage);
+
+    return pages;
+  }, [currentRecipeFilters]);
+
+  const handleFilterDown = useCallback(() => {
+    const MINIMUM_PAGING = 1;
+
+    const possibleNewPaging = filterPage - 1;
+
+    if (possibleNewPaging >= MINIMUM_PAGING) {
+      setFilterPage(possibleNewPaging);
+    }
+  }, [filterPage]);
+
+  const handleFilterUp = useCallback(() => {
+    const MAX_PAGING = filterPages;
+
+    const possibleNewPaging = filterPage + 1;
+
+    if (possibleNewPaging <= MAX_PAGING) {
+      setFilterPage(possibleNewPaging);
+    }
+  }, [filterPages, filterPage]);
+
+  const filtersShown = useMemo(() => {
+    const filtersToShow = currentRecipeFilters.filter((_, index) => {
+      const filtersPerPage = 6;
+
+      const MIN_INDEX = filterPage * filtersPerPage - filtersPerPage;
+      const MAX_INDEX = filterPage * filtersPerPage;
+
+      const filtersInPage = (index >= MIN_INDEX && index < MAX_INDEX);
+
+      return filtersInPage;
+    });
+
+    return filtersToShow;
+  }, [filterPage, currentRecipeFilters]);
+
+  const numberOfPages = useMemo(() => {
+    const totalRecipes = loadedRecipes.length;
+    const recipesPerPage = 12;
+
+    const pages = Math.ceil(totalRecipes / recipesPerPage);
+
+    return pages;
+  }, [loadedRecipes]);
+
+  const pageGenerator = useMemo(() => {
+    const maxNumberOfPagesShown = 6;
+
+    const generator = (
+      Array
+        .from(
+          { length: numberOfPages },
+          (_, index) => index + 1,
+        )
+        .filter((page) => {
+          const lastPageToShow = paging + maxNumberOfPagesShown;
+
+          let pageInDesiredRange;
+          let pageIsWithinLimit;
+
+          if (lastPageToShow <= numberOfPages) {
+            pageInDesiredRange = (page >= paging);
+            pageIsWithinLimit = page < (paging + maxNumberOfPagesShown);
+
+            return (pageInDesiredRange && pageIsWithinLimit);
+          }
+
+          pageInDesiredRange = (page <= numberOfPages);
+          pageIsWithinLimit = page > (numberOfPages - maxNumberOfPagesShown);
+
+          return (pageInDesiredRange && pageIsWithinLimit);
+        })
+    );
+
+    return generator;
+  }, [numberOfPages, paging]);
+
+  const shownRecipesByPage = useMemo(() => {
+    const recipesToShow = loadedRecipes.filter((_, index) => {
+      const recipesPerPage = 12;
+
+      const MIN_INDEX = currentPage * recipesPerPage - recipesPerPage;
+      const MAX_INDEX = currentPage * recipesPerPage;
+
+      const recipesInPageRage = (index >= MIN_INDEX && index < MAX_INDEX);
+
+      return recipesInPageRage;
+    });
+
+    return recipesToShow;
+  }, [currentPage, loadedRecipes]);
+
+  const handlePageChange = useCallback(({ target }) => {
+    const selectedPage = Number(target.value);
+
+    if (selectedPage <= numberOfPages) {
+      setCurrentPage(selectedPage);
+      setPaging(selectedPage);
+    }
+  }, [numberOfPages]);
+
+  const handlePageDown = useCallback(() => {
+    const MINIMUM_PAGING = 1;
+
+    const possibleNewPaging = paging - 1;
+
+    if (possibleNewPaging >= MINIMUM_PAGING) {
+      setPaging(possibleNewPaging);
+    }
+  }, [paging]);
+
+  const handlePageUp = useCallback(() => {
+    const MAX_PAGING = numberOfPages;
+
+    const possibleNewPaging = paging + 1;
+
+    if (possibleNewPaging <= MAX_PAGING) {
+      setPaging(possibleNewPaging);
+    }
+  }, [numberOfPages, paging]);
+
   if (loadingFilters) {
     return (
       <LoadingBook />
@@ -80,9 +218,13 @@ function Recipes({ pageType }) {
       <Navbar />
 
       <section className="recipe-filters">
+        <button type="button" onClick={ handleFilterDown } disabled={ filterPage === 1 }>
+          <FiChevronLeft />
+        </button>
+
         <div className="filters-container">
 
-          {currentRecipeFilters.map((filter) => (
+          {filtersShown.map((filter) => (
             <div className="label-container" key={ filter }>
               <input
                 type="checkbox"
@@ -103,7 +245,11 @@ function Recipes({ pageType }) {
 
             </div>
           ))}
+
         </div>
+        <button type="button" onClick={ handleFilterUp } disabled={ filterPage === filterPages }>
+          <FiChevronRight />
+        </button>
 
       </section>
 
@@ -111,25 +257,65 @@ function Recipes({ pageType }) {
         ? (
           <LoadingSpinner />
         ) : (
-          <div className="recipes-container">
-            {loadedRecipes.map((recipe, index) => (
-              <Link
-                to={ `/${pageType}/${recipe.idMeal || recipe.idDrink}` }
-                className="recipe-card"
-                data-testid={ `${index}-recipe-card` }
-                key={ recipe.idMeal || recipe.idDrink }
-              >
-                <img
-                  src={ recipe.strMealThumb || recipe.strDrinkThumb }
-                  alt={ recipe.strMeal || recipe.strDrink }
-                  data-testid={ `${index}-card-img` }
-                />
+          <div className="recipe-page-card-container">
+            <div className="recipes-container">
+              {shownRecipesByPage.map((recipe, index) => (
+                <Link
+                  to={ `/${pageType}/${recipe.idMeal || recipe.idDrink}` }
+                  className="recipe-card"
+                  data-testid={ `${index}-recipe-card` }
+                  key={ recipe.idMeal || recipe.idDrink }
+                >
+                  <img
+                    src={ recipe.strMealThumb || recipe.strDrinkThumb }
+                    alt={ recipe.strMeal || recipe.strDrink }
+                    data-testid={ `${index}-card-img` }
+                  />
 
-                <strong data-testid={ `${index}-card-name` }>
-                  {recipe.strMeal || recipe.strDrink }
-                </strong>
-              </Link>
-            ))}
+                  <strong data-testid={ `${index}-card-name` }>
+                    {recipe.strMeal || recipe.strDrink }
+                  </strong>
+                </Link>
+              ))}
+            </div>
+
+            <div className="paging-container">
+              <button
+                type="button"
+                onClick={ handlePageDown }
+                disabled={ paging === 1 }
+              >
+                <FiChevronLeft />
+              </button>
+
+              {pageGenerator.map((page) => (
+                <label
+                  key={ `${page}-${Math.random()}` }
+                  className="single-paging"
+                  htmlFor={ `page-${page}` }
+                >
+                  <input
+                    type="radio"
+                    name="page"
+                    id={ `page-${page}` }
+                    value={ page }
+                    onChange={ handlePageChange }
+                    checked={ currentPage === page }
+                  />
+                  <span>
+                    {page}
+                  </span>
+                </label>
+              ))}
+
+              <button
+                type="button"
+                onClick={ handlePageUp }
+                disabled={ paging === numberOfPages }
+              >
+                <FiChevronRight />
+              </button>
+            </div>
           </div>
         )}
 

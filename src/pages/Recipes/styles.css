@@ -5,15 +5,33 @@
 .recipes-page .recipe-filters {
   background-color: var(--main-color);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipes-page .recipe-filters > button {
+  border: none;
+  outline: none;
+  background-color: var(--secondary-color);
+  border-radius: 5px;
+  width: 24px;
+  height: 24px;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .recipes-page .filters-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   row-gap: 12px;
+  column-gap: 12px;
   max-width: 700px;
-  margin: 0 auto ;
   padding: 20px 0;
+  margin: 0 20px;
 }
 
 .recipes-page .filters-container input[type=checkbox] {
@@ -31,7 +49,7 @@
   border: 2px solid var(--secondary-color);;
   cursor: pointer;
   display: inline-block;
-  min-width: 100px;
+  min-width: 150px;
   text-align: center;
   border-radius: 5px;
   padding: 4px;
@@ -48,6 +66,11 @@
   border-color: white;
 }
 
+.recipe-page-card-container {
+  margin: 40px auto 80px;
+  padding: 0 40px;
+}
+
 .recipes-page .recipes-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -55,9 +78,6 @@
   column-gap: 40px;
 
   max-width: 1200px;
-
-  margin: 40px auto 80px;
-  padding: 0 40px;
 }
 
 .recipes-page .recipe-card {
@@ -94,7 +114,6 @@
 
 @media (max-width: 500px) {
 
-
   .recipes-page .recipes-container {
     grid-template-columns: 1fr;
 
@@ -109,7 +128,9 @@
   }
 
   .recipes-page .filters-container label {
-    width: 140px;
+    min-width: 90px;
+    width: 90px;
+    font-size: 12px;
   }
 }
 

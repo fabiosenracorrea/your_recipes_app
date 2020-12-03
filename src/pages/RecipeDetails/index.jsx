@@ -101,6 +101,11 @@ function RecipeDetails({ pageType }) {
     return workingURL;
   }, [recipeDetails]);
 
+  const recommendationURL = useMemo(
+    () => (pageType === 'meals' ? 'cocktails' : 'meals'),
+    [pageType],
+  );
+
   if (loadingSingleRecipe) {
     return (
       <LoadingBook />
@@ -132,7 +137,7 @@ function RecipeDetails({ pageType }) {
           {recipeDetails.strAlcoholic || recipeDetails.strCategory}
         </p>
 
-        {(pageType === 'comidas') && (
+        {(pageType === 'meals') && (
           <p>{recipeDetails.strArea}</p>
         )}
 
@@ -213,7 +218,8 @@ function RecipeDetails({ pageType }) {
             {recipeRecommendations.map((recommendation, index) => (
               <Link
                 key={ recommendation.idDrink || recommendation.idMeal }
-                to={ `/cocktails/${recommendation.idDrink}` }
+                // eslint-disable-next-line
+                to={ `/${recommendationURL}/${recommendation.idDrink || recommendation.idMeal}` }
                 className="recommendation-card"
                 data-testid={ `${index}-recomendation-card` }
               >

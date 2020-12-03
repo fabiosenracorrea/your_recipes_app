@@ -45,10 +45,16 @@ export async function fetchDrinksCategories(token) {
   const data = await fetch(urlToFetch);
   const { drinks } = await data.json();
 
-  const CATEGORY_LIMIT = 5;
-  const categories = drinks
-    .filter((_, index) => index < CATEGORY_LIMIT)
-    .map((category) => category.strCategory);
+  const categories = drinks.map((category) => {
+    let categoryName = category.strCategory;
+    const unknownRegex = new RegExp('/unknown', 'i');
+
+    if (unknownRegex.test(categoryName)) {
+      categoryName = categoryName.replace(unknownRegex, '');
+    }
+
+    return categoryName;
+  });
 
   return categories;
 }
