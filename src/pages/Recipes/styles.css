@@ -1,0 +1,115 @@
+.recipes-page {
+  min-height: 100vh;
+}
+
+.recipes-page .recipe-filters {
+  background-color: var(--main-color);
+
+}
+
+.recipes-page .filters-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 12px;
+  max-width: 700px;
+  margin: 0 auto ;
+  padding: 20px 0;
+}
+
+.recipes-page .filters-container input[type=checkbox] {
+  display: none;
+}
+
+.recipes-page .filters-container .label-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipes-page .filters-container label {
+  background-color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);;
+  cursor: pointer;
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 4px;
+  color: #fff;
+
+  transition: background-color 0.2s;
+}
+
+.recipes-page .filters-container label:hover {
+  background-color: var(--secondary-darker);
+}
+
+.recipes-page .filters-container input:checked ~ label {
+  border-color: white;
+}
+
+.recipes-page .recipes-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 20px;
+  column-gap: 40px;
+
+  max-width: 1200px;
+
+  margin: 40px auto 80px;
+  padding: 0 40px;
+}
+
+.recipes-page .recipe-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  border-radius: 5px;
+  border: 1px solid black;
+  padding-bottom: 15px;
+  color: #000;
+
+  transition: opacity 0.2s;
+}
+
+.recipes-page .recipe-card:hover {
+  opacity: 0.7;
+  color: var(--main-color)
+}
+
+.recipes-page .recipe-card img {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+  margin-bottom: 10px;
+}
+
+@media (max-width: 800px) {
+  .recipes-page .recipes-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+
+
+  .recipes-page .recipes-container {
+    grid-template-columns: 1fr;
+
+  }
+
+  .recipes-page .recipe-card img {
+    height: 20vh;
+  }
+
+  .recipes-page .filters-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .recipes-page .filters-container label {
+    width: 140px;
+  }
+}
+

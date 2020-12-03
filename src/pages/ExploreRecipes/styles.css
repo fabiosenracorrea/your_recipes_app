@@ -1,0 +1,85 @@
+.explore-recipes-page h1 {
+  text-align: center;
+  padding-top: 80px;
+}
+
+.explore-recipes-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  place-content: center;
+  justify-items: center;
+  margin: -40px auto 0;
+
+  min-height: 80vh;
+  max-width: 800px;
+
+  padding: 40px 20px;
+}
+
+.explore-recipes-content.explore-drinks {
+  grid-template-columns: 1fr 1fr;
+
+}
+
+.explore-recipes-content a,
+.explore-recipes-content button {
+  width: 220px;
+  height: 220px;
+  border-radius: 5px;
+  padding: 4px;
+  color: #fff;
+  font-size: 25px;
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  transition: background-color 0.2s;
+}
+
+.explore-recipes-content a {
+  background-color: var(--secondary-color);
+
+  transition: background-color 0.2s;
+}
+
+.explore-recipes-content a:hover {
+  background-color: var(--secondary-darker);
+}
+
+.explore-recipes-content a svg,
+.explore-recipes-content button svg {
+  font-size: 80px;
+  color: #fff;
+
+  margin-bottom: 20px;
+}
+
+.explore-recipes-content a span,
+.explore-recipes-content button span {
+  display: none;
+}
+
+.explore-recipes-content button {
+  background: linear-gradient(135deg, var(--main-color), var(--secondary-color), var(--complement-blue));
+  border: none;
+  transition: opacity 0.2s;
+}
+
+.explore-recipes-content button:hover {
+  opacity: 0.75;
+}
+
+@media (max-width: 650px) {
+  .explore-recipes-page h1 {
+    padding-top: 40px;
+  }
+
+  .explore-recipes-content {
+    grid-template-columns: 1fr;
+    row-gap: 30px;
+    margin: 30px 0;
+  }
+}

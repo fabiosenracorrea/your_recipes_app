@@ -1,0 +1,149 @@
+.done-recipes-page {
+  min-height: 100vh;
+}
+
+.done-recipes-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
+  row-gap: 20px;
+  max-width: 1100px;
+  margin: 40px auto 0;
+  padding: 0 20px 20px;
+
+}
+
+.done-recipes-container .done-recipe-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--main-color);
+  border-radius: 5px;
+  padding-bottom: 10px;
+  position: relative;
+}
+
+.done-recipes-container .done-recipe-card a img {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+}
+
+.done-recipes-container .done-recipe-card a:first-of-type {
+  position: absolute;
+  top: 0;
+}
+
+.done-recipes-container .done-recipe-card a:first-of-type:hover {
+  opacity: 0.8;
+}
+
+.done-recipes-container .done-recipe-card a + a {
+  margin: 32vh 0 12px;
+  font-size: 20px;
+  color: var(--main-color);
+
+  transition: color 0.1s;
+}
+
+.done-recipes-container .done-recipe-card a + a:hover {
+  color: var(--bright-red);
+}
+
+.done-recipes-container .done-recipe-card > p:first-of-type {
+  margin: 5px 0;
+}
+
+.done-recipe-card .done-recipe-share-container {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.done-recipe-card .done-recipe-share-container button {
+  height: 26px;
+  width: 26px;
+  margin-left: 12px;
+  border-radius: 100%;
+  background-color: var(--secondary-color);
+  border: none;
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background-color 0.2s;
+}
+
+.done-recipe-share-container button p {
+  position: absolute;
+  border-radius: 10px;
+  bottom: -160%;
+
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+
+  animation: appear 2.1s;
+}
+
+.done-recipe-share-container button p:after {
+  position: absolute;
+  content: '';
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--secondary-color) transparent;
+}
+
+.done-recipe-card .done-recipe-share-container button:hover {
+  background-color: var(--secondary-darker);
+
+}
+
+.done-recipe-card .done-recipe-share-container button img {
+  width: 15px;
+  height: 15px;
+}
+
+.done-recipe-card .recipe-tag-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 6px;
+}
+
+.done-recipe-card .recipe-tag-container span {
+  background-color: var(--main-color);
+  color: white;
+  border-radius: 5px;
+  padding: 4px;
+  font-size: 13px;
+}
+
+.done-recipe-card .recipe-tag-container span:not(:last-child) {
+  margin-right: 5px;
+}
+
+@media (max-width: 880px) {
+
+  .done-recipes-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .done-recipes-container {
+    grid-template-columns: 1fr;
+  }
+}
+

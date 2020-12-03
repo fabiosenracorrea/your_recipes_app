@@ -1,0 +1,46 @@
+.food-drink-filters {
+  background-color: var(--main-color);
+
+}
+
+.food-drink-filters .filters-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 12px;
+  max-width: 700px;
+  margin: 0 auto ;
+  padding: 20px 0;
+}
+
+.food-drink-filters .filters-container input[type=radio] {
+  display: none;
+}
+
+.food-drink-filters .filters-container .label-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.food-drink-filters .filters-container label {
+  background-color: var(--secondary-color);
+  border: 2px solid var(--secondary-color);
+  cursor: pointer;
+  display: inline-block;
+  min-width: 100px;
+  text-align: center;
+  border-radius: 5px;
+  padding: 4px;
+  color: #fff;
+
+  transition: background-color 0.2s;
+}
+
+.food-drink-filters .filters-container label:hover {
+  background-color: var(--secondary-darker);
+  border-color: var(--secondary-darker);
+}
+
+.food-drink-filters .filters-container input:checked ~ label {
+  border-color: white;
+}

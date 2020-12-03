@@ -1,0 +1,50 @@
+.not-found-page {
+  height: 100vh;
+  width: 100vw;
+}
+
+.not-found-header {
+  height: 20vh;
+  background-color: var(--main-color);
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.not-found-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.not-found-body svg {
+  font-size: 120px;
+  color: var(--main-color);
+}
+
+.not-found-body h3 {
+  font-size: 44px;
+  margin: 20px 0;
+}
+
+.not-found-body a {
+  background-color: var(--secondary-color);
+  color: #fff;
+  border-radius: 5px;
+  width: 160px;
+  height: 44px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: background-color 0.2s;
+}
+
+.not-found-body a:hover {
+  background-color: var(--secondary-darker);
+}

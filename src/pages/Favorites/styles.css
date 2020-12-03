@@ -1,0 +1,132 @@
+.favorite-recipes-page {
+  min-height: 100vh;
+}
+
+.favorite-recipes-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
+  row-gap: 20px;
+  max-width: 1100px;
+  margin: 40px auto 0;
+  padding: 0 20px 20px;
+
+}
+
+.favorite-recipes-container .favorite-recipe-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--main-color);
+  border-radius: 5px;
+  padding-bottom: 10px;
+}
+
+.favorite-recipes-container .favorite-recipe-card a img {
+  width: 100%;
+  height: 30vh;
+  object-fit: cover;
+  border-radius: 5px 5px 0 0;
+}
+
+.favorite-recipes-container .favorite-recipe-card a:first-of-type:hover {
+  opacity: 0.8;
+}
+
+.favorite-recipes-container .favorite-recipe-card a + a {
+  margin: 12px 0;
+  font-size: 20px;
+  color: var(--main-color);
+
+  transition: color 0.1s;
+}
+
+.favorite-recipes-container .favorite-recipe-card a + a:hover {
+  color: var(--bright-red);
+}
+
+.favorite-recipes-container .favorite-recipe-card > p:first-of-type {
+  margin: 5px 0;
+}
+
+.favorite-recipe-card .favorite-btn-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.favorite-recipe-card .favorite-btn-container button {
+  height: 40px;
+  width: 40px;
+  border-radius: 100%;
+  border: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: opacity 0.2s;
+}
+
+.favorite-recipe-card .favorite-btn-container button:hover {
+  opacity: 0.81;
+}
+
+.favorite-recipe-card .favorite-btn-container button img {
+  width: 26px;
+  height: 26px;
+}
+
+.done-recipe-share-container button {
+  background-color: var(--secondary-color);
+
+  outline: none;
+  position: relative;
+}
+
+.done-recipe-share-container p {
+  position: absolute;
+  border-radius: 10px;
+  bottom: 0;
+
+  background-color: var(--secondary-color);
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+  z-index: 9999;
+
+  animation: appear 2.0s;
+}
+
+.done-recipe-share-container p:after {
+  position: absolute;
+  content: '';
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent var(--secondary-color) transparent;
+}
+
+.favorite-recipe-card .favorite-btn-container > button {
+  margin-left: 12px;
+
+  background-color: var(--main-color);
+}
+
+@media (max-width: 880px) {
+
+  .favorite-recipes-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .favorite-recipes-container {
+    grid-template-columns: 1fr;
+  }
+}
