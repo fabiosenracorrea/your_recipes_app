@@ -59,7 +59,7 @@ function Recipes({ pageType }) {
     setFilterSelected(category);
     setCurrentPage(1);
     setPaging(1);
-  }, [updateFilteredRecipes, pageType, infoSearched, appSearch, filterSelected]);
+  }, [updateFilteredRecipes, pageType, appSearch, filterSelected]);
 
   const loadedRecipes = useMemo(() => {
     if (filterSelected === 'All') {
@@ -218,7 +218,12 @@ function Recipes({ pageType }) {
       <Navbar />
 
       <section className="recipe-filters">
-        <button type="button" onClick={ handleFilterDown } disabled={ filterPage === 1 }>
+
+        <button
+          type="button"
+          onClick={ handleFilterDown }
+          disabled={ filterPage === 1 }
+        >
           <FiChevronLeft />
         </button>
 
@@ -247,7 +252,12 @@ function Recipes({ pageType }) {
           ))}
 
         </div>
-        <button type="button" onClick={ handleFilterUp } disabled={ filterPage === filterPages }>
+
+        <button
+          type="button"
+          onClick={ handleFilterUp }
+          disabled={ filterPage === filterPages }
+        >
           <FiChevronRight />
         </button>
 
