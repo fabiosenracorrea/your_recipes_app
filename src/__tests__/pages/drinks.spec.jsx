@@ -96,7 +96,7 @@ describe('foods page structure and logic testing', () => {
     });
   });
 
-  it('should have an \'All\' filter + 5 only available categories', () => {
+  it('should have an \'All\' filter + 5 only available categories selected', () => {
     expect(fakeFetch).toHaveBeenCalledWith('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
 
     const allOptionFilter = screen.getByTestId('All-category-filter');
@@ -105,8 +105,14 @@ describe('foods page structure and logic testing', () => {
     const { drinks: categoriesAvailable } = drinkCategories;
 
     categoriesAvailable.forEach((category, index) => {
+      let categoryName = category.strCategory;
+
+      if (categoryName.match('Unknown')) {
+        categoryName = categoryName.replace('/Unknown', '');
+      }
+
       const categoryElement = screen.queryByTestId(
-        `${category.strCategory}-category-filter`,
+        `${categoryName}-category-filter`,
       );
 
       const CATEGORY_LIMIT = 5;
@@ -208,7 +214,8 @@ describe('foods page structure and logic testing', () => {
 
   it('should update current recipes when clicked on the Other filter', async () => {
     const category = categoriesToRender[3];
-    const categoryElement = screen.queryByTestId(`${category}-category-filter`);
+    const curatedCategory = category.replace('/Unknown', '');
+    const categoryElement = screen.queryByTestId(`${curatedCategory}-category-filter`);
 
     fireEvent.click(categoryElement);
 

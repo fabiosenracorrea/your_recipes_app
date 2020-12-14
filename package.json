@@ -64,15 +64,12 @@
     "mochawesome-report-generator": "^5.1.0"
   },
   "jest": {
-    "coveragePathIgnorePatterns": [
-      "index.js",
-      "serviceWorker.js"
-    ],
-    "coverageReporters": [
-      "json",
-      "lcovonly",
-      "text",
-      "clover"
+    "collectCoverageFrom": [
+      "src/pages/**",
+      "src/components/**",
+      "src/hooks/**",
+      "!src/hooks/index.jsx",
+      "!src/utils/**"
     ]
   }
 }

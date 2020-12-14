@@ -84,7 +84,10 @@ const fetch = (url) => Promise.resolve({
 
     if (url === 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Milk / Float / Shake') { return Promise.resolve(milkDrinks); }
 
-    if (url === 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Other/Unknown') { return Promise.resolve(otherDrinks); }
+    if (
+      url === 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Other/Unknown'
+        || url === 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Other'
+    ) { return Promise.resolve(otherDrinks); }
 
     if (url === 'https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=Cocoa') { return Promise.resolve(cocoaDrinks); }
 

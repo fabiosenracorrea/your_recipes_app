@@ -60,7 +60,13 @@ export async function fetchDrinksCategories(token) {
 }
 
 export async function fetchDrinksByCategory(category, token) {
-  const urlToFetch = `${baseURL}/${token}/${FILTER_CATEGORIES_KEY}=${category}`;
+  let curatedCategory = category;
+
+  if (curatedCategory.match('Other')) {
+    curatedCategory = 'Other/Unknown';
+  }
+
+  const urlToFetch = `${baseURL}/${token}/${FILTER_CATEGORIES_KEY}=${curatedCategory}`;
 
   const data = await fetch(urlToFetch);
   const { drinks } = await data.json();
