@@ -118,7 +118,7 @@ function RecipeInProgress({ pageType }) {
   }
 
   return (
-    <div className="recipe-details-page">
+    <div className="recipe-progress-page">
       <header className="details-header">
         <Link to={ `/${pageType}` }>
           <FiArrowLeft />

@@ -7,6 +7,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 import { useSearch, initialSearchValues } from '../../hooks/search';
 import { useRecipes } from '../../hooks/recipes';
+import usePaging from '../../hooks/paging';
 
 import Header from '../../components/Header';
 import Navbar from '../../components/Navbar';
@@ -18,8 +19,6 @@ import './styles.css';
 function Recipes({ pageType }) {
   const [filterSelected, setFilterSelected] = useState('All');
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [paging, setPaging] = useState(1);
   const [filterPage, setFilterPage] = useState(1);
 
   const { infoSearched, appSearch, loadingRecipes } = useSearch();
@@ -39,6 +38,27 @@ function Recipes({ pageType }) {
     appSearch(pageType, recipesToSearch);
   }, [pageType]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const loadedRecipes = useMemo(() => {
+    if (filterSelected === 'All') {
+      return currentRecipes[pageType];
+    }
+
+    return currentFilteredRecipes[pageType];
+  }, [currentRecipes, currentFilteredRecipes, filterSelected, pageType]);
+
+  const {
+    paging,
+    currentPage,
+    numberOfPages,
+    shownRecipesByPage,
+    pageGenerator,
+    lastShownPage,
+    handlePageDown,
+    handlePageUp,
+    handlePageChange,
+    resetPaging,
+  } = usePaging(loadedRecipes);
+
   const handleFilterChange = useCallback(({ target }) => {
     const { value: category } = target;
 
@@ -50,24 +70,14 @@ function Recipes({ pageType }) {
       appSearch(pageType, recipesToSearch);
 
       setFilterSelected(noFilterCategory);
-      setCurrentPage(1);
-      setPaging(1);
+      resetPaging();
       return;
     }
 
     updateFilteredRecipes(pageType, category);
     setFilterSelected(category);
-    setCurrentPage(1);
-    setPaging(1);
+    resetPaging();
   }, [updateFilteredRecipes, pageType, appSearch, filterSelected]);
-
-  const loadedRecipes = useMemo(() => {
-    if (filterSelected === 'All') {
-      return currentRecipes[pageType];
-    }
-
-    return currentFilteredRecipes[pageType];
-  }, [currentRecipes, currentFilteredRecipes, filterSelected, pageType]);
 
   const currentRecipeFilters = useMemo(() => {
     const apiFilters = currentFilters[pageType];
@@ -120,91 +130,6 @@ function Recipes({ pageType }) {
 
     return filtersToShow;
   }, [filterPage, currentRecipeFilters]);
-
-  const numberOfPages = useMemo(() => {
-    const totalRecipes = loadedRecipes.length;
-    const recipesPerPage = 12;
-
-    const pages = Math.ceil(totalRecipes / recipesPerPage);
-
-    return pages;
-  }, [loadedRecipes]);
-
-  const pageGenerator = useMemo(() => {
-    const maxNumberOfPagesShown = 6;
-
-    const generator = (
-      Array
-        .from(
-          { length: numberOfPages },
-          (_, index) => index + 1,
-        )
-        .filter((page) => {
-          const lastPageToShow = paging + maxNumberOfPagesShown;
-
-          let pageInDesiredRange;
-          let pageIsWithinLimit;
-
-          if (lastPageToShow <= numberOfPages) {
-            pageInDesiredRange = (page >= paging);
-            pageIsWithinLimit = page < (paging + maxNumberOfPagesShown);
-
-            return (pageInDesiredRange && pageIsWithinLimit);
-          }
-
-          pageInDesiredRange = (page <= numberOfPages);
-          pageIsWithinLimit = page > (numberOfPages - maxNumberOfPagesShown);
-
-          return (pageInDesiredRange && pageIsWithinLimit);
-        })
-    );
-
-    return generator;
-  }, [numberOfPages, paging]);
-
-  const shownRecipesByPage = useMemo(() => {
-    const recipesToShow = loadedRecipes.filter((_, index) => {
-      const recipesPerPage = 12;
-
-      const MIN_INDEX = currentPage * recipesPerPage - recipesPerPage;
-      const MAX_INDEX = currentPage * recipesPerPage;
-
-      const recipesInPageRage = (index >= MIN_INDEX && index < MAX_INDEX);
-
-      return recipesInPageRage;
-    });
-
-    return recipesToShow;
-  }, [currentPage, loadedRecipes]);
-
-  const handlePageChange = useCallback(({ target }) => {
-    const selectedPage = Number(target.value);
-
-    if (selectedPage <= numberOfPages) {
-      setCurrentPage(selectedPage);
-      setPaging(selectedPage);
-    }
-  }, [numberOfPages]);
-
-  const handlePageDown = useCallback(() => {
-    const MINIMUM_PAGING = 1;
-
-    const possibleNewPaging = paging - 1;
-
-    if (possibleNewPaging >= MINIMUM_PAGING) {
-      setPaging(possibleNewPaging);
-    }
-  }, [paging]);
-
-  const handlePageUp = useCallback(() => {
-    const MAX_PAGING = numberOfPages;
-
-    const possibleNewPaging = paging + 1;
-
-    if (possibleNewPaging <= MAX_PAGING) {
-      setPaging(possibleNewPaging);
-    }
-  }, [numberOfPages, paging]);
 
   if (loadingFilters) {
     return (
@@ -321,7 +246,7 @@ function Recipes({ pageType }) {
               <button
                 type="button"
                 onClick={ handlePageUp }
-                disabled={ paging === numberOfPages }
+                disabled={ lastShownPage === numberOfPages }
               >
                 <FiChevronRight />
               </button>
