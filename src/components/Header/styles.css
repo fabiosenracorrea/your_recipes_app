@@ -172,10 +172,18 @@ form .search-input-container input {
     font-size: 15px;
     padding-left: 25px;
   }
+
+  .search-bar-container {
+    padding: 0 10px;
+  }
 }
 
 @media (max-width: 350px) {
   .radio-type-container .radio-container label {
     font-size: 13px;
+  }
+
+  .search-bar-container {
+    padding: 0 10px;
   }
 }

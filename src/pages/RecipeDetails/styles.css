@@ -231,7 +231,7 @@
 @media (max-width: 500px) {
 
   .recipe-details-page .recipe-name-container h2 {
-    font-size: 3vh;
+    font-size: 5vh;
   }
 
   .recipe-details-page .recipe-name-container img {

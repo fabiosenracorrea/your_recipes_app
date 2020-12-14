@@ -1,13 +1,13 @@
-.recipe-details-page {
+.recipe-progress-page {
   min-height: 100vh;
 }
 
-.recipe-details-page header.details-header {
+.recipe-progress-page header.details-header {
   background-color: var(--main-color);
   height: 15vh;
 }
 
-.recipe-details-page header.details-header a {
+.recipe-progress-page header.details-header a {
   position: absolute;
   top: 3vh;
   left: 4vw;
@@ -15,7 +15,7 @@
   font-size: 22px;
 }
 
-.recipe-details-page .recipe-name-container {
+.recipe-progress-page .recipe-name-container {
   display: flex;
   justify-content: space-between;
   max-width: 1200px;
@@ -26,11 +26,11 @@
   margin: -7vh auto 0;
 }
 
-.recipe-details-page .recipe-name-container h2 {
+.recipe-progress-page .recipe-name-container h2 {
   font-size: 6vh;
 }
 
-.recipe-details-page .recipe-name-container img {
+.recipe-progress-page .recipe-name-container img {
   height: 20vh;
   border-radius: 100%;
   border: 1px solid black;
@@ -38,25 +38,25 @@
 
 /* btn section */
 
-.recipe-details-page .recipe-details-container {
+.recipe-progress-page .recipe-details-container {
   padding: 0 20px;
   max-width: 1200px;
   margin: -10vh auto 15vh;
 }
 
-.recipe-details-page .recipe-details-container > p:first-of-type,
-.recipe-details-page .recipe-details-container > p:nth-of-type(2) {
+.recipe-progress-page .recipe-details-container > p:first-of-type,
+.recipe-progress-page .recipe-details-container > p:nth-of-type(2) {
   font-weight: 500;
   font-size: 20px;
 }
 
-.recipe-details-page .recipe-details-container .recipe-btn-container {
+.recipe-progress-page .recipe-details-container .recipe-btn-container {
   position: relative;
   margin: 12px 0;
   display: flex;
 }
 
-.recipe-details-page .recipe-details-container .recipe-btn-container > span {
+.recipe-progress-page .recipe-details-container .recipe-btn-container > span {
   position: absolute;
   left: 97px;
   top: 50%;
@@ -71,7 +71,7 @@
   animation: appear 2s;
 }
 
-.recipe-details-page .recipe-details-container .recipe-btn-container > span:after {
+.recipe-progress-page .recipe-details-container .recipe-btn-container > span:after {
   position: absolute;
   content: '';
   top: 50%;
@@ -133,16 +133,16 @@
 
 /* ingredients */
 
-.recipe-details-page .recipe-ingredients div {
+.recipe-progress-page .recipe-ingredients div {
   margin: 8px 0 8px 10px;
 }
 
-.recipe-details-page .in-progress-ingredients label,
-.recipe-details-page .in-progress-ingredients input {
+.recipe-progress-page .in-progress-ingredients label,
+.recipe-progress-page .in-progress-ingredients input {
   cursor: pointer;
 }
 
-.recipe-details-page .in-progress-ingredients label {
+.recipe-progress-page .in-progress-ingredients label {
   margin-left: 6px;
 }
 
@@ -154,7 +154,7 @@
 
 /* instructions section */
 
-.recipe-details-page .recipe-instructions > p {
+.recipe-progress-page .recipe-instructions > p {
   line-height: 24px;
   font-size: 18px;
   text-align: justify;
@@ -208,16 +208,16 @@
 
 @media (max-width: 500px) {
 
-  .recipe-details-page .recipe-name-container h2 {
+  .recipe-progress-page .recipe-name-container h2 {
     font-size: 3vh;
   }
 
-  .recipe-details-page .recipe-name-container img {
+  .recipe-progress-page .recipe-name-container img {
     height: 15vh;
   }
 
 
-  .recipe-details-page .recipe-details-container {
+  .recipe-progress-page .recipe-details-container {
     margin-top: -7vh;
   }
 }
