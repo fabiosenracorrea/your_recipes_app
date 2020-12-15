@@ -29,6 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test-coverage": "react-scripts test --coverage --watchAll=false",
+    "testC": "npm run test-coverage -- --coverageReporters='lcov' --testFailureExitCode=0",
     "eject": "react-scripts eject",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js,.jsx"
   },
@@ -65,9 +66,9 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/pages/**",
-      "src/components/**",
-      "src/hooks/**",
+      "src/pages/**/*.jsx",
+      "src/components/**/*.jsx",
+      "src/hooks/**/*.jsx",
       "!src/hooks/index.jsx",
       "!src/utils/**"
     ]
