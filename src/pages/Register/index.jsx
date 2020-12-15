@@ -108,6 +108,7 @@ function Register() {
           <button
             type="button"
             className="help-btn"
+            data-testid="register-modal"
             onClick={ handleHelpModalOpen }
           >
             Disclaimer

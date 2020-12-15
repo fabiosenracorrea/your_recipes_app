@@ -86,6 +86,7 @@ function Login() {
           <button
             type="button"
             className="help-btn"
+            data-testid="login-modal"
             onClick={ handleHelpModalOpen }
           >
             Having trouble?

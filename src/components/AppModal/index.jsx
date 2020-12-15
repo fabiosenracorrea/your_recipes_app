@@ -28,15 +28,15 @@ function AppModal({ title, description }, ref) {
       <div className="modal">
 
         <div className="modal-content">
-          <button type="button" onClick={ closeModal }>
+          <button data-testid="modal-close" type="button" onClick={ closeModal }>
             <FiX />
           </button>
 
           <FiAlertCircle />
 
-          <h1>{title}</h1>
+          <h1 data-testid="modal-title">{title}</h1>
 
-          <p>{description}</p>
+          <p data-testid="modal-description">{description}</p>
         </div>
 
       </div>
