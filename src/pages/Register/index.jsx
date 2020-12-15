@@ -1,8 +1,9 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { FiArrowLeft, FiUser, FiLock, FiInfo } from 'react-icons/fi';
 
 import Input from '../../components/Input';
+import AppModal from '../../components/AppModal';
 
 import loginLogo from '../../images/login-logo.png';
 import appLogo from '../../images/app-icon.png';
@@ -13,6 +14,7 @@ function Register() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const modalRef = useRef();
 
   const { push } = useHistory();
 
@@ -45,6 +47,10 @@ function Register() {
 
     setPassword(passwordTyped);
   }, []);
+
+  const handleHelpModalOpen = useCallback(() => {
+    modalRef.current.openModal();
+  }, [modalRef]);
 
   const userDataIsValid = useMemo(() => {
     const emailRegex = /\w+@(\w+\.)+\w+$/i;
@@ -100,7 +106,16 @@ function Register() {
           />
 
           <button
+            type="button"
+            className="help-btn"
+            onClick={ handleHelpModalOpen }
+          >
+            Disclaimer
+          </button>
+
+          <button
             type="submit"
+            className="register-btn"
             data-testid="register-submit-btn"
             disabled={ !userDataIsValid }
           >
@@ -117,6 +132,13 @@ function Register() {
           Back to Login
         </Link>
       </div>
+
+      <AppModal
+        title="This is a fake register page!"
+        // eslint-disable-next-line
+        description="Just like the sign in page, this is just the concept. There's only an easter egg related to this page. Can you find it? Happy eating :)"
+        ref={ modalRef }
+      />
 
     </div>
   );

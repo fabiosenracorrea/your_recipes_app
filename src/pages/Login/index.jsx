@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { FiAlertCircle, FiUser, FiLock } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
+import AppModal from '../../components/AppModal';
 
 import loginLogo from '../../images/login-logo.png';
 import appLogo from '../../images/app-icon.png';
@@ -14,6 +15,7 @@ import './styles.css';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const modalRef = useRef();
 
   const { signIn } = useAuth();
   const { push } = useHistory();
@@ -39,6 +41,10 @@ function Login() {
 
     setPassword(passwordTyped);
   }, []);
+
+  const handleHelpModalOpen = useCallback(() => {
+    modalRef.current.openModal();
+  }, [modalRef]);
 
   const userDataIsValid = useMemo(() => {
     const emailRegex = /\w+@(\w+\.)+\w+$/i;
@@ -78,7 +84,16 @@ function Login() {
           />
 
           <button
+            type="button"
+            className="help-btn"
+            onClick={ handleHelpModalOpen }
+          >
+            Having trouble?
+          </button>
+
+          <button
             type="submit"
+            className="login-btn"
             data-testid="login-submit-btn"
             disabled={ !userDataIsValid }
           >
@@ -102,6 +117,13 @@ function Login() {
           <h1>Your recipes app</h1>
         </div>
       </div>
+
+      <AppModal
+        title="Need help getting in?"
+        // eslint-disable-next-line
+        description="This is a mock up sign in page, designed conceptually. To get in the application, just input a valid e-mail and a password longer than 6 characters. Happy eating :)"
+        ref={ modalRef }
+      />
     </div>
   );
 }

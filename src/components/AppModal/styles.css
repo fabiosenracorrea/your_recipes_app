@@ -1,0 +1,82 @@
+.modal-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background-color: rgba(189, 183, 183, 0.8);
+
+  animation: modal-appear 0.4s ease-in;
+}
+
+.modal-content {
+  background-color: var(--main-color);
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
+
+  width: 60%;
+  max-width: 800px;
+  height: 50%;
+  border-radius: 10px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.modal-content button {
+  position: absolute;
+  right: 1%;
+  top: 2%;
+
+  background-color: transparent;
+  border: none;
+  outline: none;
+
+  color: white;
+  font-size: 28px;
+}
+
+.modal-content button:hover {
+  opacity: 0.7;
+}
+
+.modal-content > svg {
+  font-size: 70px;
+}
+
+
+.modal-content h1 {
+  font-size: 33px;
+  margin: 18px 0;
+}
+
+.modal-content p {
+  text-align: justify;
+  max-width: 460px;
+  font-size: 18px;
+}
+
+@keyframes modal-appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .modal-content {
+    width: 80%;
+    height: 70%;
+    padding: 0 20px;
+  }
+}
