@@ -62,6 +62,26 @@ describe('Login page structure testing', () => {
 
     expect(screen.getByTestId('login-submit-btn')).toBeEnabled();
   });
+
+  it('should have a modal button functioning correctly', () => {
+    const openModalBtn = screen.getByTestId('login-modal');
+
+    expect(openModalBtn).toBeInTheDocument();
+
+    fireEvent.click(openModalBtn);
+
+    const modalTitle = screen.getByTestId('modal-title');
+    const modalDescription = screen.getByTestId('modal-description');
+
+    expect(modalTitle).toBeInTheDocument();
+    expect(modalDescription).toBeInTheDocument();
+
+    const closeModalButton = screen.getByTestId('modal-close');
+    fireEvent.click(closeModalButton);
+
+    const modalTitleCheck = screen.queryByTestId('modal-title');
+    expect(modalTitleCheck).not.toBeInTheDocument();
+  });
 });
 
 describe('Login page logic testing', () => {
