@@ -77,7 +77,7 @@ function Recipes({ pageType }) {
     updateFilteredRecipes(pageType, category);
     setFilterSelected(category);
     resetPaging();
-  }, [updateFilteredRecipes, pageType, appSearch, filterSelected]);
+  }, [updateFilteredRecipes, pageType, appSearch, filterSelected, resetPaging]);
 
   const currentRecipeFilters = useMemo(() => {
     const apiFilters = currentFilters[pageType];

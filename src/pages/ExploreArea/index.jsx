@@ -74,7 +74,7 @@ function ExploreArea({ pageType }) {
 
     setAreaSelected(area);
     resetPaging();
-  }, []);
+  }, [resetPaging]);
 
   if (loadingAreas) {
     return (
