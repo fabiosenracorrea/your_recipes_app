@@ -33,6 +33,7 @@ const Input = ({ name, icon: Icon, error, value, ...rest }) => {
         ${error ? 'has-error' : ''}
         ${hasText ? 'has-text' : ''}
       ` }
+      data-testid="input-container"
     >
       {Icon && <Icon size={ 24 } />}
 
@@ -42,6 +43,7 @@ const Input = ({ name, icon: Icon, error, value, ...rest }) => {
         value={ value }
         onFocus={ handleFocus }
         onBlur={ handleBlur }
+        data-testid="input-elm"
         { ...rest }
       />
     </div>
