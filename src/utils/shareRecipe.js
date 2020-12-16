@@ -1,7 +1,7 @@
 import copy from 'clipboard-copy';
 
 export function shareWhenSingleRecipePresent(id, type, updateCallback) {
-  const url = `http://localhost:3000/${type}/${id}`;
+  const url = `${process.env.REACT_APP_APP_URL}/${type}/${id}`;
 
   copy(url);
 
@@ -15,7 +15,7 @@ export function shareWhenSingleRecipePresent(id, type, updateCallback) {
 }
 
 export async function shareWhenMultipleRecipesPresent(id, type, updateCallback) {
-  const url = `http://localhost:3000/${type}/${id}`;
+  const url = `${process.env.REACT_APP_APP_URL}/${type}/${id}`;
 
   await copy(url);
 
