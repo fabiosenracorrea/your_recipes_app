@@ -167,23 +167,19 @@ form .search-input-container input {
   transform: rotate(45deg);
 }
 
-@media (max-width: 550px) {
+@media (max-width: 650px) {
   .radio-type-container .radio-container label {
     font-size: 15px;
     padding-left: 25px;
   }
 
   .search-bar-container {
-    padding: 0 10px;
+    padding: 0 20px;
   }
 }
 
 @media (max-width: 350px) {
   .radio-type-container .radio-container label {
     font-size: 13px;
-  }
-
-  .search-bar-container {
-    padding: 0 10px;
   }
 }

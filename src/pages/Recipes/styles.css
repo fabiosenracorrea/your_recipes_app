@@ -112,7 +112,7 @@
   }
 }
 
-@media (max-width: 500px) {
+@media (max-width: 600px) {
 
   .recipes-page .recipes-container {
     grid-template-columns: 1fr;
