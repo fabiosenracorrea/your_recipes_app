@@ -167,7 +167,7 @@ function RecipeInProgress({ pageType }) {
           </button>
 
           {copiedLink && (
-            <span>Copied Link!</span>
+            <span data-testid="share-return">Copied Link!</span>
           )}
         </div>
 

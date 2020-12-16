@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import { FiMenu } from 'react-icons/fi';
 
 import Input from '../../components/Input';
@@ -24,7 +24,7 @@ describe('AppModal component testing', () => {
     expect(input.tagName).toBe('INPUT');
   });
 
-  it('should add proper style when focused and remove it once blur happens', async () => {
+  it('should add proper style when focused and remove it once blur happens', () => {
     screen = render(
       <Input
         name={ inputName }
@@ -35,7 +35,7 @@ describe('AppModal component testing', () => {
 
     const input = screen.getByTestId('input-elm');
 
-    await wait(() => {
+    act(() => {
       fireEvent.focus(input);
     });
 
@@ -44,7 +44,7 @@ describe('AppModal component testing', () => {
 
     expect(container).toHaveClass(expectedClass);
 
-    await wait(() => {
+    act(() => {
       fireEvent.blur(input);
     });
 
@@ -53,7 +53,7 @@ describe('AppModal component testing', () => {
     expect(containerCheck).not.toHaveClass(expectedClass);
   });
 
-  it('should add proper style when input has text', async () => {
+  it('should add proper style when input has text', () => {
     screen = render(
       <Input
         name={ inputName }
@@ -69,7 +69,7 @@ describe('AppModal component testing', () => {
     expect(container).toHaveClass(expectedClass);
   });
 
-  it('should add proper style when error is present', async () => {
+  it('should add proper style when error is present', () => {
     screen = render(
       <Input
         name={ inputName }

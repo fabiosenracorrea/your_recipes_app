@@ -1,15 +1,21 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render, fireEvent, waitForElement } from '@testing-library/react';
+import { render, fireEvent, waitForElement, act, wait } from '@testing-library/react';
 
 import RecipeInProgress from '../../pages/RecipeInProgress';
 import AppProvider from '../../hooks';
+import App from '../../App';
+import { shareWhenSingleRecipePresent } from '../../utils/shareRecipe';
 
 import LocalStorageFake from '../../fakes/localStorage';
 import mockedFetch from '../../fakes/mocks_copy/fetch';
 import oneMeal, { mealIngredientsAndMeasure } from '../../fakes/mocks_copy/oneMeal';
 import inProgressRecipes from '../../fakes/recipes/inProgress';
+
+jest.mock('../../utils/shareRecipe.js', () => ({
+  shareWhenSingleRecipePresent: jest.fn((_, __, callback) => callback(true)),
+}));
 
 let screen;
 let localStorageFake;
@@ -210,6 +216,20 @@ describe('food details page structure testing', () => {
     expect(ingredientStillPresent).toBeFalsy();
   });
 
+  it('should copy link to clipboard when share link clicked', async () => {
+    const shareBtn = screen.getByTestId('share-btn');
+
+    act(() => {
+      fireEvent.click(shareBtn);
+    });
+
+    await wait(() => {
+      expect(screen.getByTestId('share-return')).toBeInTheDocument();
+    });
+
+    expect(shareWhenSingleRecipePresent).toHaveBeenCalled();
+  });
+
   it('should correctly save recipe and navigate if we finalize it', () => {
     const foodProgress = inProgressRecipes.meals[mealRendered.idMeal];
 
@@ -267,5 +287,114 @@ describe('food details page structure testing', () => {
     const { pathname } = history.location;
     const expectedPath = '/done-recipes';
     expect(pathname).toBe(expectedPath);
+  });
+});
+
+describe('food details exception tests', () => {
+  it('should load an empty array as progress if previously not present', async () => {
+    localStorageFake = new LocalStorageFake();
+
+    const fakeProgress = {
+      meals: {},
+      cocktails: {},
+    };
+
+    localStorageFake.setItem('inProgressRecipes', fakeProgress);
+
+    Object.defineProperty(global, 'localStorage', {
+      value: localStorageFake,
+      writable: true,
+    });
+
+    jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
+    jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
+
+    fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockedFetch);
+
+    const mealPath = `/meals/${mealRendered.idMeal}/in-progress`;
+
+    history = createMemoryHistory({
+      initialEntries: [mealPath],
+    });
+
+    screen = render(
+      <Router history={ history }>
+        <AppProvider>
+          <Route
+            path="/meals/:id/in-progress"
+            render={ () => <RecipeInProgress pageType="meals" /> }
+          />
+        </AppProvider>
+      </Router>,
+    );
+
+    await waitForElement(() => screen.getByTestId('recipe-title'));
+
+    const firstIngredient = screen.getByTestId('0-ingredient-step');
+
+    act(() => {
+      fireEvent.click(firstIngredient);
+    });
+
+    const progressArray = localStorageFake.store.inProgressRecipes.meals[mealRendered.idMeal];
+
+    const progressExpected = ['0'];
+
+    expect(progressArray).toStrictEqual(progressExpected);
+  });
+});
+
+describe('app navigation to test session recipe info saving', () => {
+  it('save recipe details if loaded from meals details page', async () => {
+    fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockedFetch);
+
+    localStorageFake = new LocalStorageFake();
+
+    const fakeProgress = {
+      meals: {},
+      cocktails: {},
+    };
+
+    localStorageFake.setItem('inProgressRecipes', fakeProgress);
+    jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
+    jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
+
+    Object.defineProperty(global, 'localStorage', {
+      value: localStorageFake,
+      writable: true,
+    });
+
+    screen = render(
+      <App />,
+    );
+
+    const validEmail = 'fabio@email.com';
+    const validPw = 'fabio123456';
+
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
+
+    fireEvent.change(emailInput, { target: { value: validEmail } });
+    fireEvent.change(passwordInput, { target: { value: validPw } });
+
+    const loginBtn = screen.getByTestId('login-submit-btn');
+
+    fireEvent.click(loginBtn);
+
+    await waitForElement(() => screen.getByTestId('0-recipe-card'));
+
+    fireEvent.click(screen.getByTestId('0-recipe-card'));
+
+    await waitForElement(() => screen.getByTestId('recipe-title'));
+
+    const fetchCallsBeforeComponentLoad = fakeFetch.mock.calls.length;
+
+    fireEvent.click(screen.getByTestId('start-recipe-btn'));
+
+    await waitForElement(() => screen.getByTestId('recipe-photo'));
+
+    const fetchCallsAfterComponentLoad = fakeFetch.mock.calls.length;
+
+    expect(fetchCallsAfterComponentLoad).toBe(fetchCallsBeforeComponentLoad);
   });
 });

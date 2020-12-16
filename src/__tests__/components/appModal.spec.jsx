@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 
 import AppModal from '../../components/AppModal';
 
@@ -30,8 +30,8 @@ describe('AppModal component testing', () => {
     expect(screen.queryByTestId('modal-description')).not.toBeInTheDocument();
   });
 
-  it('should correctly forward ref and show title/description when opened', async () => {
-    await wait(() => {
+  it('should correctly forward ref and show title/description when opened', () => {
+    act(() => {
       testModalRef.current.openModal();
     });
 
@@ -44,14 +44,14 @@ describe('AppModal component testing', () => {
     expect(closeElement).toBeInTheDocument();
   });
 
-  it('should display nothing after closed', async () => {
-    await wait(() => {
+  it('should display nothing after closed', () => {
+    act(() => {
       testModalRef.current.openModal();
     });
 
     const closeElement = screen.getByTestId('modal-close');
 
-    await wait(() => {
+    act(() => {
       fireEvent.click(closeElement);
     });
 

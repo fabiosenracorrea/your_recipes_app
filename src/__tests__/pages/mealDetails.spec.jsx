@@ -1,10 +1,11 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render, fireEvent, waitForElement } from '@testing-library/react';
+import { render, fireEvent, waitForElement, act, wait } from '@testing-library/react';
 
 import RecipeDetails from '../../pages/RecipeDetails';
 import AppProvider from '../../hooks';
+import { shareWhenSingleRecipePresent } from '../../utils/shareRecipe';
 
 import LocalStorageFake from '../../fakes/localStorage';
 import mockedFetch from '../../fakes/mocks_copy/fetch';
@@ -17,6 +18,10 @@ let history;
 let fakeFetch;
 const mealRendered = oneMeal.meals[0];
 const recommendationDrinks = drinks.drinks;
+
+jest.mock('../../utils/shareRecipe.js', () => ({
+  shareWhenSingleRecipePresent: jest.fn((_, __, callback) => callback(true)),
+}));
 
 describe('food details page structure testing', () => {
   beforeEach(async () => {
@@ -189,6 +194,20 @@ describe('food details logic testing', () => {
         expect(recipeIsFavorite).toBeFalsy();
       }
     });
+  });
+
+  it('should copy link to clipboard when share link clicked', async () => {
+    const shareBtn = screen.getByTestId('share-btn');
+
+    act(() => {
+      fireEvent.click(shareBtn);
+    });
+
+    await wait(() => {
+      expect(screen.getByTestId('share-return')).toBeInTheDocument();
+    });
+
+    expect(shareWhenSingleRecipePresent).toHaveBeenCalled();
   });
 });
 

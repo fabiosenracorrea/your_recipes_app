@@ -153,16 +153,16 @@ function RecipeDetails({ pageType }) {
           <button
             onClick={ () => shareWhenSingleRecipePresent(id, pageType, setCopiedLink) }
             type="button"
+            data-testid="share-btn"
           >
             <img
-              data-testid="share-btn"
               src={ shareIcon }
               alt="share this recipe"
             />
           </button>
 
           {copiedLink && (
-            <span>Copied Link!</span>
+            <span data-testid="share-return">Copied Link!</span>
           )}
         </div>
 
