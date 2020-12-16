@@ -75,6 +75,35 @@ describe('profile page structure testing', () => {
     expect(screen.getByTestId('profile-favorite-btn')).toBeInTheDocument();
   });
 
+  it('should display user name if data present', () => {
+    const localStorageFake = new LocalStorageFake();
+
+    const userName = 'Fábio Corrêa';
+
+    const userData = { email: validEmail };
+    const userNames = { [validEmail]: userName };
+
+    localStorageFake.setItem('user', userData);
+    localStorageFake.setItem('userNames', userNames);
+
+    Object.defineProperty(global, 'localStorage', {
+      value: localStorageFake,
+      writable: true,
+    });
+
+    jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
+
+    screen = render(
+      <MemoryRouter>
+        <AppProvider>
+          <Profile />
+        </AppProvider>
+      </MemoryRouter>,
+    );
+
+    expect(screen.getByText(userName)).toBeInTheDocument();
+  });
+
   it('should redirect user to login page when logged out, clearing localStorage', () => {
     const history = createMemoryHistory();
 
