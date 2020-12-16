@@ -5,6 +5,7 @@ import { render, fireEvent, waitForElement } from '@testing-library/react';
 
 import RecipeInProgress from '../../pages/RecipeInProgress';
 import AppProvider from '../../hooks';
+import App from '../../App';
 
 import LocalStorageFake from '../../fakes/localStorage';
 import mockedFetch from '../../fakes/mocks_copy/fetch';
@@ -266,5 +267,64 @@ describe('food details page structure testing', () => {
     const { pathname } = history.location;
     const expectedPath = '/done-recipes';
     expect(pathname).toBe(expectedPath);
+  });
+});
+
+describe('app navigation to test session recipe info saving', () => {
+  it('save recipe details if loaded from cocktails details page', async () => {
+    fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockedFetch);
+
+    localStorageFake = new LocalStorageFake();
+
+    const fakeProgress = {
+      meals: {},
+      cocktails: {},
+    };
+
+    localStorageFake.setItem('inProgressRecipes', fakeProgress);
+    jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
+    jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
+
+    Object.defineProperty(global, 'localStorage', {
+      value: localStorageFake,
+      writable: true,
+    });
+
+    screen = render(
+      <App />,
+    );
+
+    const validEmail = 'fabio@email.com';
+    const validPw = 'fabio123456';
+
+    const emailInput = screen.getByTestId('email-input');
+    const passwordInput = screen.getByTestId('password-input');
+
+    fireEvent.change(emailInput, { target: { value: validEmail } });
+    fireEvent.change(passwordInput, { target: { value: validPw } });
+
+    const loginBtn = screen.getByTestId('login-submit-btn');
+
+    fireEvent.click(loginBtn);
+
+    await waitForElement(() => screen.getByTestId('0-recipe-card'));
+
+    fireEvent.click(screen.getByTestId('drinks-bottom-btn'));
+
+    await waitForElement(() => screen.getByTestId('2-recipe-card'));
+
+    fireEvent.click(screen.getByTestId('0-recipe-card'));
+
+    await waitForElement(() => screen.getByTestId('recipe-title'));
+
+    const fetchCallsBeforeComponentLoad = fakeFetch.mock.calls.length;
+
+    fireEvent.click(screen.getByTestId('start-recipe-btn'));
+
+    await waitForElement(() => screen.getByTestId('recipe-photo'));
+
+    const fetchCallsAfterComponentLoad = fakeFetch.mock.calls.length;
+
+    expect(fetchCallsAfterComponentLoad).toBe(fetchCallsBeforeComponentLoad);
   });
 });

@@ -27,6 +27,7 @@ import japaneseMeals from './japaneseMeals';
 import italianMeals from './italianMeals';
 import anotherOneDrink from './anotherOneDrink';
 import anotherOneMeal from './anotherOneMeal';
+import thirdSingleDrink from './thirdSingleDrink';
 
 const fetch = (url) => Promise.resolve({
   status: 200,
@@ -98,6 +99,8 @@ const fetch = (url) => Promise.resolve({
     if (url === 'https://www.themealdb.com/api/json/v1/1/lookup.php?i=52929') { return Promise.resolve(anotherOneMeal) }
 
     if (url === 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=17837') { return Promise.resolve(anotherOneDrink) }
+
+    if (url === 'https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=15997') { return Promise.resolve(thirdSingleDrink) }
 
     return Promise.resolve(meals);
   },
