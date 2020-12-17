@@ -7,9 +7,7 @@
   --bright-red-darker: #d03f35;
 
   /* loading */
-  /* --background: linear-gradient(135deg, #23c4f8, #275efe); */
   --background: linear-gradient(135deg, #1c990b, #1c990b);
-  /* --shadow: rgba(47, 199, 166, 0.28); */
   /* --shadow: rgba(39, 94, 254, 0.28); */
   --text: #6c7486;
   --page: rgba(255, 255, 255, 0.36);
