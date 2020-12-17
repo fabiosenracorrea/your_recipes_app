@@ -1,8 +1,10 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/5df1d320-d121-4e44-bc97-e96455cd0a3b/deploy-status)](https://app.netlify.com/sites/quirky-panini-58efa6/deploys)
+
 # Your recipes app
 
 This application uses 2 public APIs to gather info about [food recipes](https://www.themealdb.com/) and [cocktails](https://www.thecocktaildb.com/) to serve you a complete "recipe website" experience, where you can browse through every recipe available on these APIs, check their info, start to cook them with an interactive completion screen and favorite and share those that you like!
 
-[Check it out](placeholder)
+[Check it out](https://quirky-panini-58efa6.netlify.app/)
 
 ## Fake login
 
