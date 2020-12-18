@@ -150,7 +150,45 @@
   text-decoration: line-through;
 }
 
-.in-progress-ingredients div
+.recipe-progress-page .progress-bar-section h3 {
+  color: var(--main-color);
+  margin: 24px 0;
+  font-size: 24px;
+}
+
+.recipe-progress-page .progress-bar-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recipe-progress-page .progress-bar-container > div {
+  width: 30px;
+  height: 30px;
+  background-color: rgba(182, 181, 181, 0.823);
+  margin: 0;
+  border-style: solid;
+  border-color: black;
+  border-width: 1px 0 1px 0;
+}
+
+.recipe-progress-page .progress-bar-container > div:first-of-type {
+  border-radius: 10px 0 0 10px;
+  border-width: 1px 0 1px 1px;
+}
+
+.recipe-progress-page .progress-bar-container > div:last-of-type {
+  border-radius: 0 10px 10px 0;
+  border-width: 1px 1px 1px 0;
+}
+
+.recipe-progress-page .progress-bar-container > div.p-done {
+  background-color: var(--secondary-color);
+}
+
+.recipe-progress-page .progress-bar-container > div.i-done {
+  background-color:  rgb(143, 233, 143)
+}
 
 /* instructions section */
 

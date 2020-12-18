@@ -97,6 +97,16 @@ function RecipeInProgress({ pageType }) {
     return newProgressArray;
   }, [recipesProgress, id, pageType]);
 
+  const oneLastIngredient = useMemo(() => {
+    const lengthOfMissingOneIngredient = recipeIngredients.length - 1;
+
+    const missingOneIngredient = (
+      lengthOfMissingOneIngredient === currentProgress.length
+    );
+
+    return missingOneIngredient;
+  }, [currentProgress, recipeIngredients]);
+
   const canFinalizeRecipe = useMemo(() => {
     const everyIngredientChecked = recipeIngredients.every(
       (_, index) => currentProgress.includes(`${index}`),
@@ -198,6 +208,28 @@ function RecipeInProgress({ pageType }) {
               </label>
             </div>
           ))}
+
+          {!!currentProgress.length && (
+            <div className="progress-bar-section">
+              <h3>
+                {oneLastIngredient
+                  ? 'One more to go!'
+                  : `${canFinalizeRecipe ? 'Nice job!!' : 'Current Progress'}`}
+              </h3>
+
+              <div className="progress-bar-container">
+                {recipeIngredients.map((ingredient, index) => (
+                  <div
+                    key={ `${ingredient}-${index}` }
+                    className={ `
+                    ${(currentProgress[index]) ? 'p-done' : 'p-miss'}
+                    ${currentProgress.length === recipeIngredients.length ? 'i-done' : ''}
+                  ` }
+                  />
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div data-testid="instructions" className="recipe-instructions">
