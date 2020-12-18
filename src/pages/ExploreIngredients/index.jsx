@@ -56,13 +56,13 @@ function ExploreIngredients({ pageType }) {
 
       <h1>Find delicious recipes with these ingredients!</h1>
 
-      <div className="ingredients-container">
+      <div className="recipes-container">
         {shownIngredientsByPage.map((ingredient, index) => (
           <Link
             to={ `/${pageType}` }
             onClick={ () => handleIngredientClick(ingredient) }
             data-testid={ `${index}-ingredient-card` }
-            className="ingredient-card"
+            className="recipe-card"
             key={ ingredient }
           >
             <img
