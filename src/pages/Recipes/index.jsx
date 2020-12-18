@@ -36,6 +36,9 @@ function Recipes({ pageType }) {
     const recipesToSearch = infoSearched[pageType];
 
     appSearch(pageType, recipesToSearch);
+
+    setFilterSelected('All');
+    setFilterPage(1);
   }, [pageType]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadedRecipes = useMemo(() => {
