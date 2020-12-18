@@ -13,7 +13,7 @@ function Explore() {
       <Header pageTitle="Explore" />
       <Navbar />
 
-      <h1>Explore ainda mais delícias</h1>
+      <h1>Explore even more delicious recipes!</h1>
 
       <div className="explore-content">
         <Link
