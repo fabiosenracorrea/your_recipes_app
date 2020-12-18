@@ -66,7 +66,10 @@ function Favorites() {
         ) : (
           <div className="favorite-recipes-container">
             {filteredItems.map((recipe, index) => (
-              <div className="favorite-recipe-card" key={ `${recipe.type}-${recipe.name}` }>
+              <div
+                className="favorite-recipe-card"
+                key={ `${recipe.type}-${recipe.name}` }
+              >
                 <Link to={ `/${recipe.type}/${recipe.id}` }>
                   <img
                     src={ recipe.image }

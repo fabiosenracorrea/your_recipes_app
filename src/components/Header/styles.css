@@ -182,4 +182,8 @@ form .search-input-container input {
   .radio-type-container .radio-container label {
     font-size: 13px;
   }
+
+  .app-header > span {
+    font-size: 22px;
+  }
 }
