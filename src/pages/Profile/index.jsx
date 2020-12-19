@@ -51,7 +51,6 @@ function Profile() {
         </Link>
 
         <div className="logout-container">
-
           <div className="logout-icon">
             <FiLogOut />
           </div>
@@ -63,7 +62,6 @@ function Profile() {
           >
             Logout
           </button>
-
         </div>
       </div>
 
