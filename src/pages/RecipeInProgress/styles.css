@@ -133,7 +133,7 @@
 
 /* ingredients */
 
-.recipe-progress-page .recipe-ingredients div {
+.recipe-progress-page .recipe-ingredients .ingredients-checkbox-container {
   margin: 8px 0 8px 10px;
 }
 
