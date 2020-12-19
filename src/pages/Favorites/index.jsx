@@ -1,10 +1,12 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Header from '../../components/Header';
+import NoRecipeToShow from '../../components/NoRecipeToShow';
 import FoodDrinkFilter from '../../components/FoodDrinkFilter';
 
 import { useRecipes } from '../../hooks/recipes';
+import useFilterByType from '../../hooks/filterByType';
 
 import { shareWhenMultipleRecipesPresent } from '../../utils/shareRecipe';
 
@@ -18,32 +20,18 @@ function Favorites() {
 
   const [copyLink, setCopyLink] = useState({});
 
-  const [filter, setFilter] = useState('All');
-
-  const filteredItems = useMemo(() => {
-    switch (filter) {
-    case 'meals':
-      return favoriteRecipes.filter((recipe) => recipe.type === 'meals');
-    case 'cocktails':
-      return favoriteRecipes.filter((recipe) => recipe.type === 'cocktails');
-    default:
-      return favoriteRecipes;
-    }
-  }, [favoriteRecipes, filter]);
-
-  const handleFilterChange = useCallback(({ target }) => {
-    const { value: filterClicked } = target;
-
-    setFilter(filterClicked);
-  }, []);
+  const {
+    filter,
+    filteredItems,
+    selectedFilterIsCocktails,
+    handleFilterChange,
+  } = useFilterByType(favoriteRecipes);
 
   const handleRecipeUnfavorite = useCallback((id) => {
     const dataToUnfavorite = { id };
 
     updateFavoriteRecipes(dataToUnfavorite, true);
   }, [updateFavoriteRecipes]);
-
-  const selectedFilterIsCocktails = useMemo(() => filter === 'cocktails', [filter]);
 
   return (
     <div className="favorite-recipes-page">
@@ -56,13 +44,7 @@ function Favorites() {
 
       {!filteredItems.length
         ? (
-          <div className="zero-done-recipes-container">
-            <h2>You don&apos;t have any completed recipe here.</h2>
-
-            <Link to={ `${selectedFilterIsCocktails ? '/cocktails' : '/meals'}` }>
-              Find one to cook now!
-            </Link>
-          </div>
+          <NoRecipeToShow isCocktail={ selectedFilterIsCocktails } isFavorites />
         ) : (
           <div className="favorite-recipes-container">
             {filteredItems.map((recipe, index) => (

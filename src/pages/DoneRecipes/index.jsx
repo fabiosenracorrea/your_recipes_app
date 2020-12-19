@@ -1,12 +1,12 @@
-import React, {
-  useCallback, useMemo, useState,
-} from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Header from '../../components/Header';
+import NoRecipeToShow from '../../components/NoRecipeToShow';
 import FoodDrinkFilter from '../../components/FoodDrinkFilter';
 
 import { useCook } from '../../hooks/cook';
+import useFilterByType from '../../hooks/filterByType';
 
 import { shareWhenMultipleRecipesPresent } from '../../utils/shareRecipe';
 
@@ -14,31 +14,19 @@ import shareIcon from '../../images/shareIcon.svg';
 
 import './styles.css';
 
+const tagLimit = 2;
+
 function DoneRecipes() {
   const { doneRecipes } = useCook();
 
   const [copyLink, setCopyLink] = useState({});
 
-  const [filter, setFilter] = useState('All');
-
-  const filteredItems = useMemo(() => {
-    switch (filter) {
-    case 'meals':
-      return doneRecipes.filter((recipe) => recipe.type === 'meals');
-    case 'cocktails':
-      return doneRecipes.filter((recipe) => recipe.type === 'cocktails');
-    default:
-      return doneRecipes;
-    }
-  }, [doneRecipes, filter]);
-
-  const handleFilterChange = useCallback(({ target }) => {
-    const { value: filterClicked } = target;
-
-    setFilter(filterClicked);
-  }, []);
-
-  const selectedFilterIsCocktails = useMemo(() => filter === 'cocktails', [filter]);
+  const {
+    filter,
+    filteredItems,
+    selectedFilterIsCocktails,
+    handleFilterChange,
+  } = useFilterByType(doneRecipes);
 
   return (
     <div className="done-recipes-page">
@@ -51,13 +39,7 @@ function DoneRecipes() {
 
       {!filteredItems.length
         ? (
-          <div className="zero-done-recipes-container">
-            <h2>You don&apos;t have any completed recipe here.</h2>
-
-            <Link to={ `${selectedFilterIsCocktails ? '/cocktails' : '/meals'}` }>
-              Find one to cook now!
-            </Link>
-          </div>
+          <NoRecipeToShow isCocktail={ selectedFilterIsCocktails } />
         ) : (
           <div className="done-recipes-container">
             {filteredItems.map((recipe, index) => (
@@ -114,7 +96,7 @@ function DoneRecipes() {
 
                 {recipe.type === 'meals' && (
                   <div className="recipe-tag-container">
-                    {recipe.tags.filter((tag, i) => i < 1 + 1).map((tag) => (
+                    {recipe.tags.filter((tag, i) => i < tagLimit).map((tag) => (
                       <span
                         key={ tag }
                         data-testid={ `${index}-${tag}-horizontal-tag` }
