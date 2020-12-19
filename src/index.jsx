@@ -5,8 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 
 import './styles/global.css';
-import './styles/paging.css';
-import './styles/recipe-card.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
