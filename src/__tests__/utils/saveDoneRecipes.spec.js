@@ -11,7 +11,7 @@ let localSetItem;
 const mealToSave = oneMeal.meals[0];
 const drinkToSave = oneDrink.drinks[0];
 const fakeNow = 1606254408524;
-const expectedDate = '6:46 PM - 11/24/2020';
+const expectedDate = '18:46 - 11/24/2020';
 const localKey = 'doneRecipes';
 
 describe('save done recipes standard testing', () => {
