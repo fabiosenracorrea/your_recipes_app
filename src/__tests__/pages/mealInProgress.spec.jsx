@@ -266,7 +266,7 @@ describe('food details page structure testing', () => {
 
     expect(recipeSuccessfullySaved).toBeTruthy();
 
-    const expectedDate = '6:46 PM - 11/24/2020';
+    const expectedDate = '18:46 - 11/24/2020';
 
     const expectedTags = mealRendered.strTags.split(',');
 

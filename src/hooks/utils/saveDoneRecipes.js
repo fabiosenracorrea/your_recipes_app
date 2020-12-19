@@ -51,13 +51,15 @@ function extractRecipeInfo(type, recipe) {
 }
 
 function parseDateToDisplayFormat(rawDate) {
-  const [date, time] = rawDate.toLocaleString().split(',');
+  const day = rawDate.getDate();
+  const month = rawDate.getMonth() + 1; // JS months start at 0.
+  const year = rawDate.getFullYear();
 
-  const parsedDate = date.split('-').reverse().join('/');
+  const parsedDate = `${month}/${day}/${year}`;
 
-  const [hours, minutes, secondsAndShift] = time.trim().split(':');
-  const [, shift] = secondsAndShift.split(' ');
-  const parsedTime = `${hours}:${minutes} ${shift}`;
+  const [time] = rawDate.toTimeString().split(' ');
+  const [hours, minutes] = time.split(':');
+  const parsedTime = `${hours}:${minutes}`;
 
   const parsedDoneDate = `${parsedTime} - ${parsedDate}`;
 
