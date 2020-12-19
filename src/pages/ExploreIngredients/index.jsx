@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 import { useExplore } from '../../hooks/explore';
 import { useSearch } from '../../hooks/search';
@@ -9,6 +8,7 @@ import usePaging from '../../hooks/paging';
 
 import Header from '../../components/Header';
 import Navbar from '../../components/Navbar';
+import Paging from '../../components/Paging';
 import LoadingBook from '../../components/LoadingBook';
 
 import getIngredientUrl from './utils/ingredientImageUrl';
@@ -75,43 +75,16 @@ function ExploreIngredients({ pageType }) {
         ))}
       </div>
 
-      <div className="paging-container">
-        <button
-          type="button"
-          onClick={ handlePageDown }
-          disabled={ paging === 1 }
-        >
-          <FiChevronLeft />
-        </button>
-
-        {pageGenerator.map((page) => (
-          <label
-            key={ `${page}-${Math.random()}` }
-            className="single-paging"
-            htmlFor={ `page-${page}` }
-          >
-            <input
-              type="radio"
-              name="page"
-              id={ `page-${page}` }
-              value={ page }
-              onChange={ handlePageChange }
-              checked={ currentPage === page }
-            />
-            <span>
-              {page}
-            </span>
-          </label>
-        ))}
-
-        <button
-          type="button"
-          onClick={ handlePageUp }
-          disabled={ lastShownPage === numberOfPages }
-        >
-          <FiChevronRight />
-        </button>
-      </div>
+      <Paging
+        handlePageChange={ handlePageChange }
+        handlePageDown={ handlePageDown }
+        handlePageUp={ handlePageUp }
+        generator={ pageGenerator }
+        currentPage={ currentPage }
+        paging={ paging }
+        lastShownPage={ lastShownPage }
+        numberOfPages={ numberOfPages }
+      />
 
     </div>
   );
