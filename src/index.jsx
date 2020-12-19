@@ -5,7 +5,6 @@ import * as serviceWorker from './serviceWorker';
 import App from './App';
 
 import './styles/global.css';
-import './styles/paging.css';
 
 ReactDOM.render(<App />, document.getElementById('root'));
 

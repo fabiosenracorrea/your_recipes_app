@@ -1,8 +1,6 @@
 .explore-page h1 {
   text-align: center;
-  padding-top: 80px;
-  margin-bottom: 20px;
-
+  margin: 30px 0;
 }
 
 .explore-content {
@@ -10,12 +8,12 @@
   grid-template-columns: 1fr 1fr;
   place-content: center;
   justify-items: center;
-  margin: -40px auto 0;
+  margin: 20px auto 0;
 
   min-height: 80vh;
   max-width: 800px;
 
-  padding: 40px 20px;
+  padding: 0 20px 80px;
 }
 
 .explore-content a {
@@ -47,9 +45,6 @@
 }
 
 @media (max-width: 550px) {
-  .explore-page h1 {
-    padding-top: 40px;
-  }
 
   .explore-content {
     grid-template-columns: 1fr;

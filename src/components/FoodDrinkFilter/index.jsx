@@ -7,14 +7,17 @@ const filterOptions = [
   {
     value: 'All',
     test: 'all',
+    display: 'All',
   },
   {
-    value: 'Foods',
+    value: 'meals',
     test: 'food',
+    display: 'Meals',
   },
   {
-    value: 'Drinks',
+    value: 'cocktails',
     test: 'drink',
+    display: 'Cocktails',
   },
 ];
 
@@ -37,7 +40,7 @@ function FoodDrinkFilter({ handleFilterChange, currentFilter }) {
               htmlFor={ filterOption.value }
               data-testid={ `filter-by-${filterOption.test}-btn` }
             >
-              {filterOption.value}
+              {filterOption.display}
             </label>
           </div>
         ))}

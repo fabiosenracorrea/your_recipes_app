@@ -1,6 +1,6 @@
 .explore-recipes-page h1 {
   text-align: center;
-  padding-top: 80px;
+  margin: 30px 0;
 }
 
 .explore-recipes-content {
@@ -8,12 +8,12 @@
   grid-template-columns: 1fr 1fr 1fr;
   place-content: center;
   justify-items: center;
-  margin: -40px auto 0;
+  margin: -50px auto 0;
 
   min-height: 80vh;
   max-width: 800px;
 
-  padding: 40px 20px;
+  padding: 0 20px 40px;
 }
 
 .explore-recipes-content.explore-drinks {
@@ -73,13 +73,14 @@
 }
 
 @media (max-width: 650px) {
-  .explore-recipes-page h1 {
-    padding-top: 40px;
-  }
-
   .explore-recipes-content {
     grid-template-columns: 1fr;
     row-gap: 30px;
-    margin: 30px 0;
+    margin: 20px 0 30px;
+  }
+
+  .explore-recipes-content.explore-drinks {
+    grid-template-columns: 1fr;
+
   }
 }

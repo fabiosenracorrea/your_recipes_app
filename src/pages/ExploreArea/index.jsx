@@ -1,9 +1,7 @@
 import React, {
   useCallback, useEffect, useState, useMemo,
 } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 import { useExplore } from '../../hooks/explore';
 import { useRecipes } from '../../hooks/recipes';
@@ -12,6 +10,9 @@ import usePaging from '../../hooks/paging';
 
 import Header from '../../components/Header';
 import Navbar from '../../components/Navbar';
+import Paging from '../../components/Paging';
+import SelectArea from './components/SelectArea';
+import RecipeCards from '../../components/RecipeCards';
 import LoadingBook from '../../components/LoadingBook';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
@@ -27,7 +28,7 @@ function ExploreArea({ pageType }) {
   const [areaSelected, setAreaSelected] = useState('All');
 
   const {
-    loadAreas, loadingAreas, foodAreas, loadingFoodsByArea, loadFoodsByArea,
+    loadAreas, loadingAreas, loadingFoodsByArea, loadFoodsByArea,
   } = useExplore();
 
   const { currentRecipes } = useRecipes();
@@ -87,93 +88,25 @@ function ExploreArea({ pageType }) {
       <Header pageType={ pageType } pageTitle="Explore Origin" showSearch />
       <Navbar />
 
-      <div className="area-select-container">
-        <h3>Choose a category:</h3>
-
-        <select
-          name="area"
-          id="area"
-          value={ areaSelected }
-          onChange={ handleAreaChange }
-          data-testid="explore-by-area-dropdown"
-        >
-          <option value="All" data-testid="All-option">All</option>
-
-          {foodAreas.map((area) => (
-            <option
-              key={ area }
-              value={ area }
-              data-testid={ `${area}-option` }
-            >
-              {area}
-
-            </option>
-          ))}
-        </select>
-      </div>
+      <SelectArea areaSelected={ areaSelected } handleAreaChange={ handleAreaChange } />
 
       {(loadingFoodsByArea || loadingRecipes)
         ? (
           <LoadingSpinner />
         ) : (
-
           <div className="recipe-page-card-container">
-            <div className="recipes-container">
-              {shownRecipesByPage.map((meal, index) => (
-                <Link
-                  to={ `/${pageType}/${meal.idMeal}` }
-                  className="recipe-card"
-                  data-testid={ `${index}-recipe-card` }
-                  key={ meal.idMeal }
-                >
-                  <img
-                    src={ meal.strMealThumb }
-                    alt={ meal.strMeal }
-                    data-testid={ `${index}-card-img` }
-                  />
-                  <strong data-testid={ `${index}-card-name` }>{meal.strMeal}</strong>
-                </Link>
-              ))}
-            </div>
+            <RecipeCards recipes={ shownRecipesByPage } type={ pageType } />
 
-            <div className="paging-container">
-              <button
-                type="button"
-                onClick={ handlePageDown }
-                disabled={ paging === 1 }
-              >
-                <FiChevronLeft />
-              </button>
-
-              {pageGenerator.map((page) => (
-                <label
-                  key={ `${page}-${Math.random()}` }
-                  className="single-paging"
-                  htmlFor={ `page-${page}` }
-                >
-                  <input
-                    type="radio"
-                    name="page"
-                    id={ `page-${page}` }
-                    value={ page }
-                    onChange={ handlePageChange }
-                    checked={ currentPage === page }
-                  />
-                  <span>
-                    {page}
-                  </span>
-                </label>
-              ))}
-
-              <button
-                type="button"
-                onClick={ handlePageUp }
-                disabled={ lastShownPage === numberOfPages }
-              >
-                <FiChevronRight />
-              </button>
-            </div>
-
+            <Paging
+              handlePageChange={ handlePageChange }
+              handlePageDown={ handlePageDown }
+              handlePageUp={ handlePageUp }
+              generator={ pageGenerator }
+              currentPage={ currentPage }
+              paging={ paging }
+              lastShownPage={ lastShownPage }
+              numberOfPages={ numberOfPages }
+            />
           </div>
         )}
 
