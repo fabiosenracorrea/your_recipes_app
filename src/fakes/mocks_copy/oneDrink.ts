@@ -1,3 +1,5 @@
+import { iDrink } from '../../@types/apiTypes';
+
 const oneDrink = {
   drinks: [
     {
@@ -61,9 +63,8 @@ const oneDrink = {
 const drink = oneDrink.drinks[0];
 
 export const mealIngredientsAndMeasure = (
-  Object
-    .keys(drink)
-    .filter((detail) => {
+  (Object.keys(drink) as Array<keyof iDrink>)
+    .filter((detail: keyof iDrink) => {
       const ingredientPattern = /strIngredient\d/i;
 
       const detailIsIngredient = (
@@ -81,7 +82,7 @@ export const mealIngredientsAndMeasure = (
       const everyNonDigitChar = /[^\d]/g;
       const ingredientNumber = ingredientKey.replace(everyNonDigitChar, '');
 
-      const matchingMeasure = `strMeasure${ingredientNumber}`;
+      const matchingMeasure = `strMeasure${ingredientNumber}` as keyof iDrink;
 
       const ingredient = drink[ingredientKey];
       const measure = drink[matchingMeasure];
