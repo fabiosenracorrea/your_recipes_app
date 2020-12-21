@@ -29,9 +29,24 @@ import anotherOneDrink from './anotherOneDrink';
 import anotherOneMeal from './anotherOneMeal';
 import thirdSingleDrink from './thirdSingleDrink';
 
-const fetch = (url: string) => Promise.resolve({
+
+const fetch = (url: RequestInfo) => Promise.resolve({
   status: 200,
   ok: true,
+  headers: {} as Headers,
+  redirected: false,
+  statusText: '',
+  trailer: Promise.resolve({} as Headers),
+  type: 'basic' as ResponseType,
+  url: '',
+  clone() {return {} as Response},
+  body: null,
+  bodyUsed: false,
+  arrayBuffer() {return Promise.resolve(new ArrayBuffer(8))},
+  blob() {return Promise.resolve(new Blob(['2', '12']))},
+  formData() {return Promise.resolve(new FormData())},
+  text() {return Promise.resolve('text')},
+
   json: () => {
     if (url === 'https://www.themealdb.com/api/json/v1/1/list.php?c=list') { return Promise.resolve(mealCategories); }
 
@@ -106,4 +121,4 @@ const fetch = (url: string) => Promise.resolve({
   },
 });
 
-module.exports = fetch;
+export default fetch;
