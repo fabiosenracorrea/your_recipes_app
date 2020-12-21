@@ -128,6 +128,9 @@
     ],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "@typescript-eslint/class-name-casing": "off",
+    "@typescript-eslint/camelcase": "off",
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
     "import/extensions": [
       "error",
       "ignorePackages",
