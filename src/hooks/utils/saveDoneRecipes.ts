@@ -1,4 +1,21 @@
-function extractRecipeInfo(type, recipe) {
+import { tRecipeTypes, iRecipeOptions } from '../../@types/appTypes';
+
+interface iExtractedRecipe {
+  id: string;
+  area: string;
+  name: string;
+  category: string;
+  image: string;
+  tags: string[];
+  alcoholicOrNot: string;
+  type: tRecipeTypes;
+}
+
+interface iSavedRecipe extends iExtractedRecipe {
+  doneDate: string;
+}
+
+function extractRecipeInfo(type: tRecipeTypes, recipe: iRecipeOptions): iExtractedRecipe {
   if (type === 'meals') {
     const {
       idMeal: id,
@@ -50,7 +67,7 @@ function extractRecipeInfo(type, recipe) {
   };
 }
 
-function parseDateToDisplayFormat(rawDate) {
+function parseDateToDisplayFormat(rawDate: Date): string {
   const day = rawDate.getDate();
   const month = rawDate.getMonth() + 1; // JS months start at 0.
   const year = rawDate.getFullYear();
@@ -66,8 +83,14 @@ function parseDateToDisplayFormat(rawDate) {
   return parsedDoneDate;
 }
 
-export default function saveDoneRecipe(type, recipe) {
-  const previouslyDoneRecipes = JSON.parse(localStorage.getItem('doneRecipes')) || [];
+export default function saveDoneRecipe(type: tRecipeTypes, recipe: iRecipeOptions): iSavedRecipe[] {
+  const potentiallySavedRecipes = localStorage.getItem('doneRecipes');
+
+  let previouslyDoneRecipes = [];
+
+  if (potentiallySavedRecipes) {
+    previouslyDoneRecipes = JSON.parse(potentiallySavedRecipes);
+  }
 
   const newRecipeInfoParsed = extractRecipeInfo(type, recipe);
 
