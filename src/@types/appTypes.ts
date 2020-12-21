@@ -2,7 +2,24 @@ import { iDrink, iMeal } from './apiTypes';
 
 export type tRecipeTypes = 'meals' | 'cocktails';
 
-export type iRecipeOptions = iDrink | iMeal;
+type iRecipes = iDrink | iMeal;
+
+export type iRecipeOptions = iRecipes & {
+  strMealThumb?: string;
+  strDrinkThumb?: string;
+  strAlcoholic?: string;
+  idDrink?: string;
+
+  strMeal?: string;
+  strDrink?: string;
+  idMeal?: string;
+  strArea?:string;
+  strTags?: string;
+  strYoutube?: string;
+
+  strCategory?: string;
+  strInstructions?: string;
+}
 
 export interface iFavoriteRecipe {
   id: string;
@@ -24,4 +41,10 @@ export interface iDoneRecipe {
   alcoholicOrNot: string;
   type: tRecipeTypes;
   doneDate: string;
+}
+
+export interface iSearchOptions {
+  option: 'name' | 'first_letter' | 'ingredients';
+  value: string;
+  token: string;
 }
