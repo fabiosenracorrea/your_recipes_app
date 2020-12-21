@@ -80,10 +80,7 @@ const SingleRecipeProvider: React.FC = ({ children }) => {
     try {
       const recipe = await loadRecipe(recipeID, userToken);
 
-      let recommendations = await loadRecommendations(userToken);
-
-      const REC_LIMIT = 6;
-      recommendations = recommendations.filter((_, index) => index < REC_LIMIT);
+      const recommendations = await loadRecommendations(userToken);
 
       const newSingleRecipe = {
         recipe,
@@ -113,10 +110,7 @@ const SingleRecipeProvider: React.FC = ({ children }) => {
     try {
       [randomID, recipe] = await loadRandom(userToken);
 
-      let recommendations = await loadRecommendations(userToken);
-
-      const REC_LIMIT = 6;
-      recommendations = recommendations.filter((_, index) => index < REC_LIMIT);
+      const recommendations = await loadRecommendations(userToken);
 
       setRandomRedirect(true);
 

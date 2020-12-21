@@ -37,7 +37,7 @@ const ExploreProvider: React.FC = ({ children }) => {
   const [ingredientsSearched, setIngredientsSearched] = useState<string[]>([]);
   const [loadingIngredients, setLoadingIngredients] = useState(true);
 
-  const [foodAreas, setFoodAreas] = useState([]);
+  const [foodAreas, setFoodAreas] = useState<string[]>([]);
   const [loadingAreas, setLoadingAreas] = useState(true);
   const [loadingFoodsByArea, setLoadingFoodsByArea] = useState(false);
 
@@ -52,21 +52,7 @@ const ExploreProvider: React.FC = ({ children }) => {
     try {
       const ingredients = await fetchIngredients(userToken);
 
-      const normalizedIngredients = ingredients.map((ingredient) => {
-        const iRegex = /strIngredient/i;
-
-        const [ingredientKey] = (
-          Object
-            .keys(ingredient)
-            .filter((key) => iRegex.test(key))
-        );
-
-        const ingredientName = ingredient[ingredientKey];
-
-        return ingredientName;
-      });
-
-      setIngredientsSearched(normalizedIngredients);
+      setIngredientsSearched(ingredients);
     } catch (err) {
       console.log(err);
     } finally {
@@ -80,9 +66,7 @@ const ExploreProvider: React.FC = ({ children }) => {
     try {
       const apiAreas = await fetchFoodAreas(userToken);
 
-      const areaNames = apiAreas.map((area) => area.strArea);
-
-      setFoodAreas(areaNames);
+      setFoodAreas(apiAreas);
     } catch (err) {
       console.log(err);
     } finally {
@@ -123,7 +107,7 @@ const ExploreProvider: React.FC = ({ children }) => {
       {children}
     </exploreContext.Provider>
   );
-}
+};
 
 function useExplore(): iExploreContextProps {
   const context = useContext(exploreContext);

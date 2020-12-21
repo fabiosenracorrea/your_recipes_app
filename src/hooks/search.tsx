@@ -1,6 +1,4 @@
-import React, {
-  createContext, useCallback, useContext, useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import { useRecipes } from './recipes';
 import { useAuth } from './auth';
@@ -15,18 +13,7 @@ const getID = {
   cocktails: 'idDrink',
 };
 
-export const initialSearchValues = {
-  meals: {
-    option: 'name',
-    value: '',
-    token: '1',
-  },
-  cocktails: {
-    option: 'name',
-    value: '',
-    token: '1',
-  },
-};
+type tRecipeID = 'idMeal' | 'idDrink';
 
 const fetchSearchOptions = {
   meals: fetchMealsSearch,
@@ -34,7 +21,7 @@ const fetchSearchOptions = {
 };
 
 interface iSearchOptions {
-  option: string;
+  option: 'name' | 'first_letter' | 'ingredients';
   value: string;
   token: string;
 }
@@ -50,6 +37,19 @@ interface iSearchProviderProps {
   appSearch(type: tRecipeTypes, searchOptions: iSearchOptions): Promise<string | undefined>;
   updateSearch(type: tRecipeTypes, newSearchOptions: Omit<iSearchOptions, 'token'>): void;
 }
+
+export const initialSearchValues = {
+  meals: {
+    option: 'name',
+    value: '',
+    token: '1',
+  },
+  cocktails: {
+    option: 'name',
+    value: '',
+    token: '1',
+  },
+} as iInfoSearched;
 
 const searchContext = createContext<iSearchProviderProps>({} as iSearchProviderProps);
 
@@ -76,18 +76,18 @@ const SearchProvider: React.FC = ({ children }) => {
       const fetchRecipes = fetchSearchOptions[type];
       const recipesSearched = await fetchRecipes(userSearch);
 
-      if (!recipesSearched) {
+      if (!recipesSearched.length) {
         // eslint-disable-next-line
         alert("Sorry, we couldn't find any recipe with your search.");
 
-        return null;
+        return;
       }
 
       const singleRecipeReturned = (recipesSearched.length === 1);
 
       if (singleRecipeReturned) {
         const firstItem = recipesSearched[0];
-        const correctIDAccess = getID[type];
+        const correctIDAccess = getID[type] as tRecipeID;
         firstItemID = firstItem[correctIDAccess];
       }
 

@@ -6,7 +6,8 @@ import { fetchDrinksCategories, fetchDrinksByCategory } from '../services/drinks
 import { fetchFoodsCategories, fetchMealsByCategory } from '../services/foodApi';
 import { useAuth } from './auth';
 
-import { iFavoriteRecipe, iRecipeOptions, tRecipeTypes } from '../@types/appTypes';
+import { iFavoriteRecipe, tRecipeTypes } from '../@types/appTypes';
+import { iDrink, iMeal } from '../@types/apiTypes';
 
 const recipesStructure = {
   meals: [],
@@ -24,8 +25,8 @@ interface iFiltersByType {
 }
 
 interface iRecipesByType {
-  meals: iRecipeOptions[];
-  cocktails: iRecipeOptions[];
+  meals: iMeal[];
+  cocktails: iDrink[];
 }
 
 interface iRecipesContextProps {
@@ -35,7 +36,7 @@ interface iRecipesContextProps {
   currentFilteredRecipes: iRecipesByType;
   loadingFilters: boolean;
   loadingByCategory: boolean;
-  updateRecipes(type: tRecipeTypes, newRecipes: iRecipeOptions[]): void;
+  updateRecipes(type: tRecipeTypes, newRecipes: iMeal[] | iDrink[]): void;
   updateFilteredRecipes(type: tRecipeTypes, category: string): Promise<void>;
   updateFavoriteRecipes(recipeInfo: iFavoriteRecipe, isFavorite: boolean): void;
 }
@@ -85,7 +86,7 @@ const RecipeProvider: React.FC = ({ children }) => {
     getCategories();
   }, [userToken]);
 
-  const updateRecipes = useCallback((type: tRecipeTypes, newRecipes: iRecipeOptions[]) => {
+  const updateRecipes = useCallback((type: tRecipeTypes, newRecipes: iDrink[] | iMeal[]) => {
     setCurrentRecipes((oldRecipes) => ({
       ...oldRecipes,
       [type]: newRecipes,

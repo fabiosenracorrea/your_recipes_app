@@ -42,7 +42,9 @@ const AuthProvider: React.FC = ({ children }) => {
       return existentMealsToken;
     }
 
-    return '1';
+    const DEFAULT_TOKEN = '1';
+
+    return DEFAULT_TOKEN;
   });
 
   const signIn = useCallback(({ email }: iUser) => {

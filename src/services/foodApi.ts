@@ -1,3 +1,5 @@
+import { iMeal } from '../@types/apiTypes';
+
 const baseURL = 'https://www.themealdb.com/api/json/v1';
 // const searchBase = 'search.php?';
 
@@ -20,46 +22,69 @@ export const searchOptions = {
   ingredients: FILTER_INGREDIENTS_KEY,
 };
 
-export async function fetchMealsSearch({ option, value, token }) {
+interface iMealSearchOptions {
+  option: keyof typeof searchOptions;
+  value: string;
+  token: string;
+}
+
+type tAreas = Array<{ strArea: string }>;
+
+type tCategories = Array<{ strCategory: string }>;
+
+interface iIngredients {
+  strIngredient: string;
+  idIngredient: string;
+  strDescription: string;
+}
+
+export async function fetchMealsSearch({ option, value, token }: iMealSearchOptions): Promise<iMeal[]> {
   const searchKey = searchOptions[option];
   const urlToFetch = `${baseURL}/${token}/${searchKey}=${value}`;
 
   const data = await fetch(urlToFetch);
   const { meals } = await data.json();
 
-  return meals;
+  return meals || [];
 }
 
-export async function fetchFoodRecommendations(token) {
+export async function fetchFoodRecommendations(token: string): Promise<iMeal[]> {
   const urlToFetch = `${baseURL}/${token}/${NAME_KEY}=`;
 
   const data = await fetch(urlToFetch);
   const { meals } = await data.json();
 
-  return meals;
+  const recommendations = meals as iMeal[];
+
+  const REC_LIMIT = 6;
+  const toDisplayRecommendations = recommendations.filter((_, index) => index < REC_LIMIT);
+
+  return toDisplayRecommendations || [];
 }
 
-export async function fetchFoodsCategories(token) {
+export async function fetchFoodsCategories(token: string): Promise<string[]> {
   const urlToFetch = `${baseURL}/${token}/${CATEGORIES_KEY_VALUE}`;
 
   const data = await fetch(urlToFetch);
   const { meals } = await data.json();
 
-  const categories = meals.map((category) => category.strCategory);
+  const categories = meals as tCategories;
 
-  return categories;
+  const categoriesList = categories.map((category) => category.strCategory);
+
+  return categoriesList;
 }
 
-export async function fetchMealsByCategory(category, token) {
+export async function fetchMealsByCategory(category: string, token: string): Promise<iMeal[]> {
   const urlToFetch = `${baseURL}/${token}/${FILTER_CATEGORIES_KEY}=${category}`;
 
   const data = await fetch(urlToFetch);
   const { meals } = await data.json();
 
-  return meals;
+  return meals || [];
 }
 
-export async function fetchMealDetails(mealID, token) {
+export async function fetchMealDetails(mealID: string, token: string): Promise<iMeal> {
   const urlToFetch = `${baseURL}/${token}/${ID_KEY}=${mealID}`;
 
   const data = await fetch(urlToFetch);
@@ -70,7 +95,7 @@ export async function fetchMealDetails(mealID, token) {
   return mealDetails;
 }
 
-export async function fetchRandomMeal(token) {
+export async function fetchRandomMeal(token: string): Promise<[id: string, meal: iMeal]> {
   const urlToFetch = `${baseURL}/${token}/${RANDOM}`;
 
   const data = await fetch(urlToFetch);
@@ -82,29 +107,43 @@ export async function fetchRandomMeal(token) {
   return [idMeal, randomMeal];
 }
 
-export async function fetchMealIngredients(token) {
+export async function fetchMealIngredients(token: string): Promise<string[]> {
   const urlToFetch = `${baseURL}/${token}/${INGREDIENTS_KEY_VALUE}`;
 
   const data = await fetch(urlToFetch);
-  const { meals: ingredients } = await data.json();
+  const { meals } = await data.json();
 
-  return ingredients;
+  const ingredients = meals as iIngredients[];
+
+  const ingredientNames = ingredients.map((ingredient) => {
+    const ingredientNameKey = 'strIngredient';
+
+    const ingredientName = ingredient[ingredientNameKey];
+
+    return ingredientName;
+  });
+
+  return ingredientNames;
 }
 
-export async function fetchFoodAreas(token) {
+export async function fetchFoodAreas(token: string): Promise<string[]> {
   const urlToFetch = `${baseURL}/${token}/${AREA_KEY_VALUE}`;
 
   const data = await fetch(urlToFetch);
-  const { meals: areas } = await data.json();
+  const { meals } = await data.json();
 
-  return areas;
+  const areas = meals as tAreas;
+
+  const areaNames = areas.map((area) => area.strArea);
+
+  return areaNames;
 }
 
-export async function fetchFoodsByArea(area, token) {
+export async function fetchFoodsByArea(area: string, token: string): Promise<iMeal[]> {
   const urlToFetch = `${baseURL}/${token}/${FILTER_AREA_KEY}=${area}`;
 
   const data = await fetch(urlToFetch);
   const { meals } = await data.json();
 
-  return meals;
+  return meals || [];
 }

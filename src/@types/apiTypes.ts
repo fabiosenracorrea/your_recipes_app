@@ -1,6 +1,7 @@
 export interface iDrink {
-  idDrink: string | null;
-  strDrink: string | null;
+  idDrink: string;
+  idMeal: string | undefined;
+  strDrink: string;
   strDrinkAlternate: string | null;
   strDrinkES: string | null;
   strDrinkDE: string | null;
@@ -55,8 +56,9 @@ export interface iDrink {
 }
 
 export interface iMeal {
-  idMeal: string | null;
-  strMeal: string | null;
+  idMeal: string;
+  idDrink: string | undefined;
+  strMeal: string;
   strDrinkAlternate: string | null;
   strCategory: string | null;
   strArea: string | null;
