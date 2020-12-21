@@ -109,37 +109,37 @@ export interface iMeal {
 }
 
 export interface iGlobalRecipe {
-  idDrink: string;
-  strDrink: string;
-  strDrinkThumb: string;
-  strDrinkES: string | null;
-  strDrinkDE: string | null;
-  strDrinkFR: string | null;
-  'strDrinkZH-HANS': string | null;
-  'strDrinkZH-HANT': string | null;
-  strVideo: string | null;
-  strIBA: string | null;
-  strAlcoholic: string;
-  strGlass: string | null;
-  strInstructionsES: string | null;
-  strInstructionsDE: string | null;
-  strInstructionsFR: string | null;
-  'strInstructionsZH-HANS': string | null;
-  'strInstructionsZH-HANT': string | null;
-  strCreativeCommonsConfirmed: string | null;
+  idDrink?: string;
+  strDrink?: string;
+  strDrinkThumb?: string;
+  strDrinkES?: string | null;
+  strDrinkDE?: string | null;
+  strDrinkFR?: string | null;
+  'strDrinkZH-HANS'?: string | null;
+  'strDrinkZH-HANT'?: string | null;
+  strVideo?: string | null;
+  strIBA?: string | null;
+  strAlcoholic?: string;
+  strGlass?: string | null;
+  strInstructionsES?: string | null;
+  strInstructionsDE?: string | null;
+  strInstructionsFR?: string | null;
+  'strInstructionsZH-HANS'?: string | null;
+  'strInstructionsZH-HANT'?: string | null;
+  strCreativeCommonsConfirmed?: string | null;
 
-  strTags: string;
-  strDrinkAlternate: string;
+  strTags: string | null;
+  strDrinkAlternate: string | null;
   strCategory: string;
   strInstructions: string;
   dateModified: string | null;
 
-  idMeal: string;
-  strMeal: string;
-  strArea: string;
-  strMealThumb: string;
-  strYoutube: string;
-  strSource: string | null;
+  idMeal?: string;
+  strMeal?: string;
+  strArea?: string;
+  strMealThumb?: string;
+  strYoutube?: string;
+  strSource?: string | null;
 
   strIngredient1: string | null;
   strIngredient2: string | null;
@@ -153,14 +153,14 @@ export interface iGlobalRecipe {
   strIngredient10: string | null;
   strIngredient11: string | null;
   strIngredient12: string | null;
-  strIngredient13: string | null;
-  strIngredient14: string | null;
-  strIngredient15: string | null;
-  strIngredient16: string | null;
-  strIngredient17: string | null;
-  strIngredient18: string | null;
-  strIngredient19: string | null;
-  strIngredient20: string | null;
+  strIngredient13?: string | null;
+  strIngredient14?: string | null;
+  strIngredient15?: string | null;
+  strIngredient16?: string | null;
+  strIngredient17?: string | null;
+  strIngredient18?: string | null;
+  strIngredient19?: string | null;
+  strIngredient20?: string | null;
   strMeasure1: string | null;
   strMeasure2: string | null;
   strMeasure3: string | null;
@@ -173,12 +173,12 @@ export interface iGlobalRecipe {
   strMeasure10: string | null;
   strMeasure11: string | null;
   strMeasure12: string | null;
-  strMeasure13: string | null;
-  strMeasure14: string | null;
-  strMeasure15: string | null;
-  strMeasure16: string | null;
-  strMeasure17: string | null;
-  strMeasure18: string | null;
-  strMeasure19: string | null;
-  strMeasure20: string | null;
+  strMeasure13?: string | null;
+  strMeasure14?: string | null;
+  strMeasure15?: string | null;
+  strMeasure16?: string | null;
+  strMeasure17?: string | null;
+  strMeasure18?: string | null;
+  strMeasure19?: string | null;
+  strMeasure20?: string | null;
 }
