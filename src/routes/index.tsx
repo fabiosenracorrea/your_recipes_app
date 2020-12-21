@@ -15,7 +15,7 @@ import ExploreIngredients from '../pages/ExploreIngredients';
 import ExploreArea from '../pages/ExploreArea';
 import NotFound from '../pages/NotFound';
 
-function Routes() {
+const Routes: React.FC = () => {
   return (
     <Switch>
       <Route path="/" exact component={ Login } />
@@ -95,6 +95,6 @@ function Routes() {
       <Route component={ NotFound } />
     </Switch>
   );
-}
+};
 
 export default Routes;

@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import Routes from './routes';
 import AppProvider from './hooks';
 
-function App() {
+const App: React.FC = () => {
   return (
     <BrowserRouter>
       <AppProvider>
@@ -12,6 +12,6 @@ function App() {
       </AppProvider>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
