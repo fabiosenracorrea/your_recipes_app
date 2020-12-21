@@ -4,7 +4,7 @@ import { FaSadTear } from 'react-icons/fa';
 
 import './styles.css';
 
-function NotFound() {
+const NotFound: React.FC = () => {
   return (
     <div className="not-found-page">
       <div className="not-found-header">
@@ -22,6 +22,6 @@ function NotFound() {
       </div>
     </div>
   );
-}
+};
 
 export default NotFound;
