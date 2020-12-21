@@ -1,11 +1,12 @@
 import React, {
   createContext, useCallback, useContext, useEffect, useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import { fetchDrinksCategories, fetchDrinksByCategory } from '../services/drinksApi';
 import { fetchFoodsCategories, fetchMealsByCategory } from '../services/foodApi';
 import { useAuth } from './auth';
+
+import { iFavoriteRecipe, iRecipeOptions, tRecipeTypes } from '../@types/appTypes';
 
 const recipesStructure = {
   meals: [],
@@ -17,20 +18,42 @@ const fetchCategoryOptions = {
   cocktails: fetchDrinksByCategory,
 };
 
-const recipesContext = createContext();
+interface iFiltersByType {
+  meals: string[];
+  cocktails: string[];
+}
 
-function RecipeProvider({ children }) {
-  const [currentRecipes, setCurrentRecipes] = useState(recipesStructure);
+interface iRecipesByType {
+  meals: iRecipeOptions[];
+  cocktails: iRecipeOptions[];
+}
 
-  const [currentFilteredRecipes, setCurrentFilteredRecipes] = useState(recipesStructure);
+interface iRecipesContextProps {
+  currentRecipes: iRecipesByType;
+  currentFilters: iFiltersByType;
+  favoriteRecipes: iFavoriteRecipe[];
+  currentFilteredRecipes: iRecipesByType;
+  loadingFilters: boolean;
+  loadingByCategory: boolean;
+  updateRecipes(type: tRecipeTypes, newRecipes: iRecipeOptions[]): void;
+  updateFilteredRecipes(type: tRecipeTypes, category: string): Promise<void>;
+  updateFavoriteRecipes(recipeInfo: iFavoriteRecipe, isFavorite: boolean): void;
+}
 
-  const [currentFilters, setCurrentFilters] = useState(recipesStructure);
+const recipesContext = createContext<iRecipesContextProps>({} as iRecipesContextProps);
+
+const RecipeProvider: React.FC = ({ children }) => {
+  const [currentRecipes, setCurrentRecipes] = useState<iRecipesByType>(recipesStructure);
+
+  const [currentFilteredRecipes, setCurrentFilteredRecipes] = useState<iRecipesByType>(recipesStructure);
+
+  const [currentFilters, setCurrentFilters] = useState<iFiltersByType>(recipesStructure);
 
   const [loadingFilters, setLoadingFilters] = useState(true);
 
   const [loadingByCategory, setLoadingByCategory] = useState(false);
 
-  const [favoriteRecipes, setFavoriteRecipes] = useState(() => {
+  const [favoriteRecipes, setFavoriteRecipes] = useState<iFavoriteRecipe[]>(() => {
     const favorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
 
     return favorites;
@@ -43,7 +66,7 @@ function RecipeProvider({ children }) {
   }, [favoriteRecipes]);
 
   useEffect(() => {
-    async function getCategories() {
+    async function getCategories(): Promise<void> {
       setLoadingFilters(true);
       const foodCategories = await fetchFoodsCategories(userToken);
       const drinkCategories = await fetchDrinksCategories(userToken);
@@ -62,14 +85,14 @@ function RecipeProvider({ children }) {
     getCategories();
   }, [userToken]);
 
-  const updateRecipes = useCallback((type, newRecipes) => {
+  const updateRecipes = useCallback((type: tRecipeTypes, newRecipes: iRecipeOptions[]) => {
     setCurrentRecipes((oldRecipes) => ({
       ...oldRecipes,
       [type]: newRecipes,
     }));
   }, []);
 
-  const updateFilteredRecipes = useCallback(async (type, category) => {
+  const updateFilteredRecipes = useCallback(async (type: tRecipeTypes, category: string) => {
     setLoadingByCategory(true);
 
     const fetchCategories = fetchCategoryOptions[type];
@@ -86,7 +109,7 @@ function RecipeProvider({ children }) {
 
   const updateFavoriteRecipes = useCallback(({
     id, type, area, category, alcoholicOrNot, name, image,
-  }, isFavorite) => {
+  }: iFavoriteRecipe, isFavorite: boolean) => {
     if (isFavorite) { // we should un-favorite and end function
       setFavoriteRecipes((oldFavorites) => {
         const newFavorites = oldFavorites.filter((recipe) => recipe.id !== id);
@@ -127,9 +150,9 @@ function RecipeProvider({ children }) {
       {children}
     </recipesContext.Provider>
   );
-}
+};
 
-function useRecipes() {
+function useRecipes(): iRecipesContextProps {
   const context = useContext(recipesContext);
 
   if (!context) {
@@ -140,10 +163,3 @@ function useRecipes() {
 }
 
 export { RecipeProvider, useRecipes };
-
-RecipeProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
-};

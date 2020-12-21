@@ -1,6 +1,21 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, ChangeEvent } from 'react';
 
-export default function usePaging(recipes) {
+import { iRecipeOptions } from '../@types/appTypes';
+
+interface iPaging {
+  paging: number;
+  currentPage: number;
+  numberOfPages: number;
+  lastShownPage: number;
+  shownRecipesByPage: iRecipeOptions[];
+  pageGenerator: number[];
+  handlePageDown(): void;
+  handlePageUp(): void;
+  handlePageChange(inputChangeEvent: ChangeEvent<HTMLInputElement>): void;
+  resetPaging(): void;
+}
+
+export default function usePaging(recipes: iRecipeOptions[]): iPaging {
   const [currentPage, setCurrentPage] = useState(1);
   const [paging, setPaging] = useState(1);
 
@@ -68,7 +83,7 @@ export default function usePaging(recipes) {
     return recipesToShow;
   }, [currentPage, recipes]);
 
-  const handlePageChange = useCallback(({ target }) => {
+  const handlePageChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const selectedPage = Number(target.value);
 
     if (selectedPage <= numberOfPages) {

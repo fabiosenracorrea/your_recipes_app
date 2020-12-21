@@ -1,13 +1,14 @@
 import React, {
   createContext, useCallback, useContext, useEffect, useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import { useAuth } from './auth';
 import { fetchSinglesOptions } from './singleRecipe';
 
-import saveDoneRecipe from './utils/saveDoneRecipes';
+import saveDoneRecipe, { iSavedRecipe } from './utils/saveDoneRecipes';
 import removeInProgressRecipe from './utils/removeInProgressRecipe';
+
+import { iRecipeOptions, tRecipeTypes } from '../@types/appTypes';
 
 const sessionRecipesStructure = {
   meals: [],
@@ -24,14 +25,44 @@ const recipeIdOptions = {
   cocktails: 'idDrink',
 };
 
-const cookContext = createContext();
+interface iSessionRecipe {
+  recipe: iRecipeOptions;
+  finished: boolean;
+}
 
-function CookProvider({ children }) {
-  const [sessionStartedRecipes, setSessionStartedRecipes] = useState(
+interface iSessionStartedRecipes {
+  meals: Array<iSessionRecipe>;
+  cocktails: Array<iSessionRecipe>;
+}
+
+interface iRecipesProgress {
+  cocktails: {
+    [id: string]: string[];
+  }
+
+  meals: {
+    [id: string]: string[];
+  }
+}
+
+interface iCookContextProps {
+  sessionStartedRecipes: iSessionStartedRecipes;
+  recipesProgress: iRecipesProgress;
+  doneRecipes: iSavedRecipe[];
+  startCooking(type: tRecipeTypes, recipe: iRecipeOptions): void;
+  updateRecipeProgress(type: tRecipeTypes, recipeID: string, item: string): void;
+  finalizeRecipe(type: tRecipeTypes, recipeID: string): void;
+  loadRecipeToCook(type: tRecipeTypes, recipeID: string): void;
+}
+
+const cookContext = createContext<iCookContextProps>({} as iCookContextProps);
+
+const CookProvider: React.FC = ({ children }) => {
+  const [sessionStartedRecipes, setSessionStartedRecipes] = useState<iSessionStartedRecipes>(
     sessionRecipesStructure,
   );
 
-  const [recipesProgress, setRecipesProgress] = useState(() => {
+  const [recipesProgress, setRecipesProgress] = useState<iRecipesProgress>(() => {
     const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
 
     if (inProgressRecipes) {
@@ -41,7 +72,7 @@ function CookProvider({ children }) {
     return localStorageTrack;
   });
 
-  const [doneRecipes, setDoneRecipes] = useState(() => {
+  const [doneRecipes, setDoneRecipes] = useState<iSavedRecipe[]>(() => {
     const recipesDone = JSON.parse(localStorage.getItem('doneRecipes'));
 
     if (recipesDone) {
@@ -57,7 +88,7 @@ function CookProvider({ children }) {
     localStorage.setItem('inProgressRecipes', JSON.stringify(recipesProgress));
   }, [recipesProgress]);
 
-  const startCooking = useCallback((type, recipe) => {
+  const startCooking = useCallback((type: tRecipeTypes, recipe: iRecipeOptions) => {
     setSessionStartedRecipes((oldCooks) => {
       const oldRecipesStarted = oldCooks[type];
 
@@ -75,7 +106,7 @@ function CookProvider({ children }) {
     });
   }, []);
 
-  const updateRecipeProgress = useCallback((type, recipeID, item) => {
+  const updateRecipeProgress = useCallback((type: tRecipeTypes, recipeID: string, item: string) => {
     setRecipesProgress((oldRecipes) => {
       const recipeProgress = oldRecipes[type][recipeID] || [];
       const toUpdateProgress = [...recipeProgress];
@@ -102,12 +133,12 @@ function CookProvider({ children }) {
     });
   }, []);
 
-  const finalizeRecipe = useCallback((type, recipeID) => {
+  const finalizeRecipe = useCallback((type: tRecipeTypes, recipeID: string) => {
     setSessionStartedRecipes((oldCooks) => {
       const oldRecipesStarted = oldCooks[type];
 
       const updatedRecipes = oldRecipesStarted.map(({ recipe, finished }) => {
-        const recipeAccess = recipeIdOptions[type];
+        const recipeAccess = recipeIdOptions[type] as keyof iRecipeOptions;
         const recipeToUpdateID = recipe[recipeAccess];
 
         if (recipeToUpdateID !== recipeID) {
@@ -130,7 +161,7 @@ function CookProvider({ children }) {
     });
   }, []);
 
-  const loadRecipeToCook = useCallback(async (type, recipeID) => {
+  const loadRecipeToCook = useCallback(async (type: tRecipeTypes, recipeID: string) => {
     const fetchSingle = fetchSinglesOptions[type];
 
     try {
@@ -159,7 +190,7 @@ function CookProvider({ children }) {
   );
 }
 
-function useCook() {
+function useCook(): iCookContextProps {
   const context = useContext(cookContext);
 
   if (!context) {
@@ -170,10 +201,3 @@ function useCook() {
 }
 
 export { CookProvider, useCook };
-
-CookProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
-};

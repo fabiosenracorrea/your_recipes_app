@@ -1,11 +1,22 @@
 import React, {
   createContext, useCallback, useContext, useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
-const authContext = createContext();
+interface iUser {
+  email: string;
+  name?: string;
+}
 
-function AuthProvider({ children }) {
+interface iAuthContextProps {
+  user: iUser;
+  userToken: string;
+  signIn(userData: iUser): void;
+  signOut(): void;
+}
+
+const authContext = createContext<iAuthContextProps>({} as iAuthContextProps);
+
+const AuthProvider: React.FC = ({ children }) => {
   const [user, setUserData] = useState(() => {
     let previousUserData = JSON.parse(localStorage.getItem('user'));
 
@@ -34,11 +45,11 @@ function AuthProvider({ children }) {
     return '1';
   });
 
-  const signIn = useCallback(({ email }) => {
+  const signIn = useCallback(({ email }: iUser) => {
     const userDataToPersist = { email };
     const AUTH_TOKEN = '1';
 
-    setUserData((prevData) => ({
+    setUserData((prevData: iUser) => ({
       ...prevData,
       ...userDataToPersist,
     }));
@@ -70,9 +81,9 @@ function AuthProvider({ children }) {
       {children}
     </authContext.Provider>
   );
-}
+};
 
-function useAuth() {
+function useAuth(): iAuthContextProps {
   const context = useContext(authContext);
 
   if (!context) {
@@ -83,10 +94,3 @@ function useAuth() {
 }
 
 export { AuthProvider, useAuth };
-
-AuthProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
-};

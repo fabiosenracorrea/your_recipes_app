@@ -1,13 +1,14 @@
 import React, {
   createContext, useCallback, useContext, useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import { useRecipes } from './recipes';
 import { useAuth } from './auth';
 
 import { fetchMealsSearch } from '../services/foodApi';
 import { fetchDrinksSearch } from '../services/drinksApi';
+
+import { tRecipeTypes } from '../@types/appTypes';
 
 const getID = {
   meals: 'idMeal',
@@ -32,16 +33,34 @@ const fetchSearchOptions = {
   cocktails: fetchDrinksSearch,
 };
 
-const searchContext = createContext();
+interface iSearchOptions {
+  option: string;
+  value: string;
+  token: string;
+}
 
-function SearchProvider({ children }) {
-  const [infoSearched, setInfoSearched] = useState(initialSearchValues);
+interface iInfoSearched {
+  meals: iSearchOptions
+  cocktails: iSearchOptions
+}
+
+interface iSearchProviderProps {
+  infoSearched: iInfoSearched;
+  loadingRecipes: boolean;
+  appSearch(type: tRecipeTypes, searchOptions: iSearchOptions): Promise<string | undefined>;
+  updateSearch(type: tRecipeTypes, newSearchOptions: Omit<iSearchOptions, 'token'>): void
+}
+
+const searchContext = createContext<iSearchProviderProps>({} as iSearchProviderProps);
+
+const SearchProvider: React.FC = ({ children }) => {
+  const [infoSearched, setInfoSearched] = useState<iInfoSearched>(initialSearchValues);
   const [loadingRecipes, setLoadingRecipes] = useState(true);
 
   const { updateRecipes } = useRecipes();
   const { userToken } = useAuth();
 
-  const appSearch = useCallback(async (type, { option, value, token }) => {
+  const appSearch = useCallback(async (type: tRecipeTypes, { option, value, token }: iSearchOptions) => {
     setLoadingRecipes(true);
 
     const userSearch = { option, value, token };
@@ -50,6 +69,8 @@ function SearchProvider({ children }) {
       ...oldInfo,
       [type]: userSearch,
     }));
+
+    let firstItemID;
 
     try {
       const fetchRecipes = fetchSearchOptions[type];
@@ -62,7 +83,6 @@ function SearchProvider({ children }) {
         return null;
       }
 
-      let firstItemID;
       const singleRecipeReturned = (recipesSearched.length === 1);
 
       if (singleRecipeReturned) {
@@ -75,7 +95,6 @@ function SearchProvider({ children }) {
 
       setLoadingRecipes(false);
 
-      return firstItemID;
     } catch (err) {
       console.log(err);
 
@@ -84,9 +103,11 @@ function SearchProvider({ children }) {
     } finally {
       setLoadingRecipes(false);
     }
+
+    return firstItemID;
   }, [updateRecipes]);
 
-  const updateSearch = useCallback((type, { option, value }) => {
+  const updateSearch = useCallback((type: tRecipeTypes, { option, value }: Omit<iSearchOptions, 'token'>) => {
     const userSearch = { option, value, token: userToken };
 
     setInfoSearched((oldInfo) => ({
@@ -106,7 +127,7 @@ function SearchProvider({ children }) {
   );
 }
 
-function useSearch() {
+function useSearch(): iSearchProviderProps {
   const context = useContext(searchContext);
 
   if (!context) {
@@ -117,10 +138,3 @@ function useSearch() {
 }
 
 export { SearchProvider, useSearch };
-
-SearchProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
-};

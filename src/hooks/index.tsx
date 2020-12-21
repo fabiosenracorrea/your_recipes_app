@@ -1,5 +1,4 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ReactChildren } from 'react';
 
 import { AuthProvider } from './auth';
 import { SearchProvider } from './search';
@@ -8,7 +7,11 @@ import { SingleRecipeProvider } from './singleRecipe';
 import { CookProvider } from './cook';
 import { ExploreProvider } from './explore';
 
-function AppProvider({ children }) {
+interface iAppProviderProps {
+  children: ReactChildren;
+}
+
+const AppProvider: React.FC<iAppProviderProps> = ({ children }) => {
   return (
     <AuthProvider>
       <RecipeProvider>
@@ -25,12 +28,5 @@ function AppProvider({ children }) {
     </AuthProvider>
   );
 }
-
-AppProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
-};
 
 export default AppProvider;

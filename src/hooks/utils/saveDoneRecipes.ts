@@ -1,21 +1,9 @@
-import { tRecipeTypes, iRecipeOptions } from '../../@types/appTypes';
+import { tRecipeTypes, iRecipeOptions, iDoneRecipe } from '../../@types/appTypes';
 
-interface iExtractedRecipe {
-  id: string;
-  area: string;
-  name: string;
-  category: string;
-  image: string;
-  tags: string[];
-  alcoholicOrNot: string;
-  type: tRecipeTypes;
-}
-
-interface iSavedRecipe extends iExtractedRecipe {
-  doneDate: string;
-}
-
-function extractRecipeInfo(type: tRecipeTypes, recipe: iRecipeOptions): iExtractedRecipe {
+function extractRecipeInfo(
+  type: tRecipeTypes,
+  recipe: iRecipeOptions,
+): Omit<iDoneRecipe, 'doneDate'> {
   if (type === 'meals') {
     const {
       idMeal: id,
@@ -83,7 +71,7 @@ function parseDateToDisplayFormat(rawDate: Date): string {
   return parsedDoneDate;
 }
 
-export default function saveDoneRecipe(type: tRecipeTypes, recipe: iRecipeOptions): iSavedRecipe[] {
+export default function saveDoneRecipe(type: tRecipeTypes, recipe: iRecipeOptions): iDoneRecipe[] {
   const potentiallySavedRecipes = localStorage.getItem('doneRecipes');
 
   let previouslyDoneRecipes = [];

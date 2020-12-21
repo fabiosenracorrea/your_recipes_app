@@ -1,7 +1,6 @@
 import React, {
   createContext, useCallback, useContext, useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import { useAuth } from './auth';
 import { useRecipes } from './recipes';
@@ -12,15 +11,30 @@ import { fetchMealIngredients,
 } from '../services/foodApi';
 import { fetchDrinkIngredients } from '../services/drinksApi';
 
+import { tRecipeTypes } from '../@types/appTypes';
+
 const fetchIngredientsOptions = {
   meals: fetchMealIngredients,
   cocktails: fetchDrinkIngredients,
 };
 
-const exploreContext = createContext();
+interface iExploreContextProps {
+  ingredientsSearched: string[];
+  foodAreas: string[];
 
-function ExploreProvider({ children }) {
-  const [ingredientsSearched, setIngredientsSearched] = useState([]);
+  loadingIngredients: boolean;
+  loadingAreas: boolean;
+  loadingFoodsByArea: boolean;
+
+  loadIngredients(type: tRecipeTypes): Promise<void>;
+  loadAreas(): void;
+  loadFoodsByArea(area: string): void;
+}
+
+const exploreContext = createContext<iExploreContextProps>({} as iExploreContextProps);
+
+const ExploreProvider: React.FC = ({ children }) => {
+  const [ingredientsSearched, setIngredientsSearched] = useState<string[]>([]);
   const [loadingIngredients, setLoadingIngredients] = useState(true);
 
   const [foodAreas, setFoodAreas] = useState([]);
@@ -30,7 +44,7 @@ function ExploreProvider({ children }) {
   const { userToken } = useAuth();
   const { updateRecipes } = useRecipes();
 
-  const loadIngredients = useCallback(async (type) => {
+  const loadIngredients = useCallback(async (type: tRecipeTypes) => {
     setLoadingIngredients(true);
 
     const fetchIngredients = fetchIngredientsOptions[type];
@@ -41,7 +55,7 @@ function ExploreProvider({ children }) {
       const normalizedIngredients = ingredients.map((ingredient) => {
         const iRegex = /strIngredient/i;
 
-        const ingredientKey = (
+        const [ingredientKey] = (
           Object
             .keys(ingredient)
             .filter((key) => iRegex.test(key))
@@ -76,7 +90,7 @@ function ExploreProvider({ children }) {
     }
   }, [userToken]);
 
-  const loadFoodsByArea = useCallback(async (area) => {
+  const loadFoodsByArea = useCallback(async (area: string) => {
     setLoadingFoodsByArea(true);
 
     try {
@@ -111,7 +125,7 @@ function ExploreProvider({ children }) {
   );
 }
 
-function useExplore() {
+function useExplore(): iExploreContextProps {
   const context = useContext(exploreContext);
 
   if (!context) {
@@ -122,10 +136,3 @@ function useExplore() {
 }
 
 export { ExploreProvider, useExplore };
-
-ExploreProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
-};

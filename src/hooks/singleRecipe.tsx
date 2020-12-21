@@ -1,7 +1,6 @@
 import React, {
   createContext, useCallback, useContext, useState,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import {
   fetchDrinkDetails, fetchRandomDrink, fetchDrinkRecommendations,
@@ -12,13 +11,15 @@ import {
 
 import { useAuth } from './auth';
 
+import { tRecipeTypes, iRecipeOptions } from '../@types/appTypes';
+
 const singleRecipeStructure = {
   meals: {
-    recipe: {},
+    recipe: {} as iRecipeOptions,
     recommendations: [],
   },
   cocktails: {
-    recipe: {},
+    recipe: {} as iRecipeOptions,
     recommendations: [],
   },
 };
@@ -38,10 +39,28 @@ const fetchRandomOptions = {
   cocktails: fetchRandomDrink,
 };
 
-const singleRecipeContext = createContext();
+interface iSingleRecipe {
+  recipe: iRecipeOptions;
+  recommendations: iRecipeOptions[];
+}
 
-function SingleRecipeProvider({ children }) {
-  const [currentFocusedRecipes, setCurrentFocusedRecipes] = useState(
+interface iSingleRecipesByType {
+  meals: iSingleRecipe;
+  cocktails: iSingleRecipe;
+}
+
+interface iSingleRecipeContextProps {
+  currentFocusedRecipes: iSingleRecipesByType;
+  loadingSingleRecipe: boolean;
+  loadSingleRecipe(type: tRecipeTypes, recipeID: string): void;
+  loadRandomRecipe(type: tRecipeTypes): void;
+  unloadRandom(): void;
+}
+
+const singleRecipeContext = createContext<iSingleRecipeContextProps>({} as iSingleRecipeContextProps);
+
+const SingleRecipeProvider: React.FC = ({ children }) => {
+  const [currentFocusedRecipes, setCurrentFocusedRecipes] = useState<iSingleRecipesByType>(
     singleRecipeStructure,
   );
 
@@ -50,7 +69,7 @@ function SingleRecipeProvider({ children }) {
 
   const { userToken } = useAuth();
 
-  const loadSingleRecipe = useCallback(async (type, recipeID) => {
+  const loadSingleRecipe = useCallback(async (type: tRecipeTypes, recipeID: string) => {
     if (randomRedirect) return;
 
     setLoadingSingleRecipe(true);
@@ -82,7 +101,7 @@ function SingleRecipeProvider({ children }) {
     }
   }, [userToken, randomRedirect]);
 
-  const loadRandomRecipe = useCallback(async (type) => {
+  const loadRandomRecipe = useCallback(async (type: tRecipeTypes) => {
     setLoadingSingleRecipe(true);
 
     const loadRandom = fetchRandomOptions[type];
@@ -136,9 +155,9 @@ function SingleRecipeProvider({ children }) {
       {children}
     </singleRecipeContext.Provider>
   );
-}
+};
 
-function useSingleRecipe() {
+function useSingleRecipe(): iSingleRecipeContextProps {
   const context = useContext(singleRecipeContext);
 
   if (!context) {
@@ -149,10 +168,3 @@ function useSingleRecipe() {
 }
 
 export { SingleRecipeProvider, useSingleRecipe };
-
-SingleRecipeProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.func,
-  ]).isRequired,
-};
