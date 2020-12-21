@@ -7,7 +7,7 @@ import mealIcon from '../../images/mealIcon.svg';
 
 import './styles.css';
 
-function Navbar() {
+const Navbar: React.FC = () => {
   return (
     <nav className="app-nav-bar" data-testid="footer">
       <Link to="/cocktails">
@@ -23,6 +23,6 @@ function Navbar() {
       </Link>
     </nav>
   );
-}
+};
 
 export default Navbar;

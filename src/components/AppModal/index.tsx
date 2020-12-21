@@ -3,8 +3,17 @@ import { FiAlertCircle, FiX } from 'react-icons/fi';
 
 import './styles.css';
 
+interface iModalProps {
+  title: string;
+  description: string;
+}
+
+interface ModalRef {
+  openModal(): void;
+}
+
 // eslint-disable-next-line
-function AppModal({ title, description }, ref) {
+const AppModal: React.ForwardRefRenderFunction<ModalRef, iModalProps> = ({ title, description }, ref) => {
   const [visible, setVisible] = useState(false);
 
   const openModal = useCallback(() => {
@@ -20,7 +29,7 @@ function AppModal({ title, description }, ref) {
   }));
 
   if (!visible) {
-    return;
+    return null;
   }
 
   return (
@@ -42,6 +51,6 @@ function AppModal({ title, description }, ref) {
       </div>
     </div>
   );
-}
+};
 
 export default forwardRef(AppModal);

@@ -1,10 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import './styles.css';
 
-function NoRecipeToShow({ isCocktail, isFavorites = false }) {
+interface iNoRecipesProps {
+  isCocktail: boolean;
+  isFavorites?: boolean;
+}
+
+const NoRecipeToShow: React.FC<iNoRecipesProps> = ({ isCocktail, isFavorites = false }) => {
   return (
     <div className="zero-recipes-container">
       <h2>
@@ -20,15 +24,6 @@ function NoRecipeToShow({ isCocktail, isFavorites = false }) {
       </Link>
     </div>
   );
-}
-
-NoRecipeToShow.defaultProps = {
-  isFavorites: false,
-};
-
-NoRecipeToShow.propTypes = {
-  isCocktail: PropTypes.bool.isRequired,
-  isFavorites: PropTypes.bool,
 };
 
 export default NoRecipeToShow;

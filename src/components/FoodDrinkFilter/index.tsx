@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import './styles.css';
 
@@ -21,7 +20,14 @@ const filterOptions = [
   },
 ];
 
-function FoodDrinkFilter({ handleFilterChange, currentFilter }) {
+interface iFoodDrinkFilterProps {
+  handleFilterChange(): void;
+  currentFilter: string;
+}
+
+const FoodDrinkFilter: React.FC<iFoodDrinkFilterProps> = (
+  { handleFilterChange, currentFilter },
+) => {
   return (
     <div className="food-drink-filters">
       <div className="filters-container">
@@ -47,11 +53,6 @@ function FoodDrinkFilter({ handleFilterChange, currentFilter }) {
       </div>
     </div>
   );
-}
-
-FoodDrinkFilter.propTypes = {
-  handleFilterChange: PropTypes.func.isRequired,
-  currentFilter: PropTypes.string.isRequired,
 };
 
 export default FoodDrinkFilter;

@@ -1,10 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+
+import { tRecipeTypes, iRecipeOptions } from '../../@types/appTypes';
 
 import './styles.css';
 
-function RecipeCards({ type, recipes }) {
+interface iRecipeCardsProps {
+  type: tRecipeTypes;
+  recipes: Array<iRecipeOptions>;
+}
+
+const RecipeCards: React.FC<iRecipeCardsProps> = ({ type, recipes }) => {
   return (
     <div className="recipes-container">
       {recipes.map((recipe, index) => (
@@ -27,20 +33,6 @@ function RecipeCards({ type, recipes }) {
       ))}
     </div>
   );
-}
-
-RecipeCards.propTypes = {
-  type: PropTypes.string.isRequired,
-  recipes: PropTypes.arrayOf(
-    PropTypes.shape({
-      idMeal: PropTypes.string,
-      idDrink: PropTypes.string,
-      strMealThumb: PropTypes.string,
-      strDrinkThumb: PropTypes.string,
-      strMeal: PropTypes.string,
-      strDrink: PropTypes.string,
-    }),
-  ).isRequired,
 };
 
 export default RecipeCards;

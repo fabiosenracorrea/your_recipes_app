@@ -1,20 +1,30 @@
 import React, { useCallback, useMemo } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import PropTypes from 'prop-types';
 
 import { useSearch, initialSearchValues } from '../../hooks/search';
 import { useRecipes } from '../../hooks/recipes';
 
+import { tRecipeTypes } from '../../@types/appTypes';
+
 import './styles.css';
 
-function RecipeFilters({
+interface iRecipeFilterProps {
+  pageType: tRecipeTypes;
+  filterPage: number;
+  filterSelected: string;
+  resetPaging(): void;
+  setFilterPage(page: number): void;
+  setFilterSelected(filter: string): void;
+}
+
+const RecipeFilters: React.FC<iRecipeFilterProps> = ({
   pageType,
   resetPaging,
   filterPage,
   setFilterPage,
   filterSelected,
   setFilterSelected,
-}) {
+}) => {
   const { currentFilters, updateFilteredRecipes } = useRecipes();
   const { appSearch } = useSearch();
 
@@ -37,7 +47,7 @@ function RecipeFilters({
     updateFilteredRecipes(pageType, category);
     setFilterSelected(category);
     resetPaging();
-  }, [updateFilteredRecipes, pageType, appSearch, filterSelected, resetPaging, setFilterSelected]); // eslint-disable-line
+  }, [updateFilteredRecipes, pageType, appSearch, filterSelected, resetPaging, setFilterSelected]);
 
   const currentRecipeFilters = useMemo(() => {
     const apiFilters = currentFilters[pageType];
@@ -137,16 +147,6 @@ function RecipeFilters({
 
     </section>
   );
-}
-
-RecipeFilters.propTypes = {
-  pageType: PropTypes.string.isRequired,
-  resetPaging: PropTypes.func.isRequired,
-
-  filterPage: PropTypes.number.isRequired,
-  setFilterPage: PropTypes.func.isRequired,
-  filterSelected: PropTypes.string.isRequired,
-  setFilterSelected: PropTypes.func.isRequired,
 };
 
 export default RecipeFilters;

@@ -1,10 +1,21 @@
 import React from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import PropTypes from 'prop-types';
 
 import './styles.css';
 
-function Paging({
+interface iPagingProps {
+  generator: Array<number>;
+  currentPage: number;
+  paging: number;
+  lastShownPage: number;
+  numberOfPages: number;
+
+  handlePageChange(): void;
+  handlePageDown(): void;
+  handlePageUp(): void;
+}
+
+const Paging: React.FC<iPagingProps> = ({
   handlePageChange,
   handlePageDown,
   handlePageUp,
@@ -13,7 +24,7 @@ function Paging({
   paging,
   lastShownPage,
   numberOfPages,
-}) {
+}) => {
   return (
     <div className="paging-container">
       <button
@@ -53,25 +64,6 @@ function Paging({
       </button>
     </div>
   );
-}
-
-Paging.defaultProps = {
-  lastShownPage: 0,
-};
-
-Paging.propTypes = {
-  handlePageChange: PropTypes.func.isRequired,
-  handlePageDown: PropTypes.func.isRequired,
-  handlePageUp: PropTypes.func.isRequired,
-
-  generator: PropTypes.arrayOf(
-    PropTypes.number,
-  ).isRequired,
-
-  currentPage: PropTypes.number.isRequired,
-  paging: PropTypes.number.isRequired,
-  lastShownPage: PropTypes.number,
-  numberOfPages: PropTypes.number.isRequired,
 };
 
 export default Paging;

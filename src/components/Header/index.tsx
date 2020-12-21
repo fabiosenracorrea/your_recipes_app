@@ -1,8 +1,7 @@
 import React, {
-  useCallback, useRef, useState, useMemo,
+  useCallback, useRef, useState, useMemo, FormEvent,
 } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { FiSearch } from 'react-icons/fi';
 import { BsHouseFill } from 'react-icons/bs';
 import { AiOutlineUser } from 'react-icons/ai';
@@ -30,8 +29,14 @@ const searchOptions = [
   },
 ];
 
-function Header({ pageType = 'meals', pageTitle, showSearch = false }) {
-  const searchInputRef = useRef();
+interface iHeaderProps {
+  pageType: string;
+  pageTitle: string;
+  showSearch?: boolean;
+}
+
+const Header: React.FC<iHeaderProps> = ({ pageType = 'meals', pageTitle, showSearch = false }) => {
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const [searchBarShowing, setSearchBarShowing] = useState(false);
   const [radioValue, setRadioValue] = useState('');
@@ -48,10 +53,10 @@ function Header({ pageType = 'meals', pageTitle, showSearch = false }) {
     setRadioValue(target.value);
   }, []);
 
-  const handleRecipeSearch = useCallback(async (formEvent) => {
+  const handleRecipeSearch = useCallback(async (formEvent: FormEvent) => {
     formEvent.preventDefault();
 
-    const search = searchInputRef.current.value;
+    const search = searchInputRef.current?.value;
     const option = radioValue;
 
     if (!search || !option) {
@@ -158,17 +163,6 @@ function Header({ pageType = 'meals', pageTitle, showSearch = false }) {
       )}
     </div>
   );
-}
-
-Header.defaultProps = {
-  showSearch: false,
-  pageType: 'meals',
-};
-
-Header.propTypes = {
-  pageTitle: PropTypes.string.isRequired,
-  pageType: PropTypes.string,
-  showSearch: PropTypes.bool,
 };
 
 export default Header;

@@ -4,7 +4,7 @@ import getSvgPath from './utils/getSvgPath';
 
 import './styles.css';
 
-function LoadingBook() {
+const LoadingBook: React.FC = () => {
   const loaderRepeater = useMemo(() => {
     const repeater = Array.from({
       length: 6,
@@ -33,6 +33,6 @@ function LoadingBook() {
     </div>
 
   );
-}
+};
 
 export default LoadingBook;

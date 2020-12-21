@@ -2,12 +2,20 @@ import React, {
   useState,
   useCallback,
   useEffect,
+  InputHTMLAttributes,
 } from 'react';
-import PropTypes from 'prop-types';
+import { IconBaseProps } from 'react-icons';
 
 import './styles.css';
 
-const Input = ({ name, icon: Icon, error, value, ...rest }) => {
+interface iInputProps extends InputHTMLAttributes<HTMLInputElement> {
+  name: string;
+  icon?: React.ComponentType<IconBaseProps>;
+  error: boolean;
+  value?: string;
+}
+
+const Input: React.FC<iInputProps> = ({ name, icon: Icon, error, value, ...rest }) => {
   const [hasFocus, setHasFocus] = useState(false);
   const [hasText, setHasText] = useState(false);
 
@@ -48,23 +56,6 @@ const Input = ({ name, icon: Icon, error, value, ...rest }) => {
       />
     </div>
   );
-};
-
-Input.defaultProps = {
-  error: false,
-  value: '',
-};
-
-Input.propTypes = {
-  name: PropTypes.string.isRequired,
-  icon: PropTypes.elementType.isRequired,
-
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-
-  error: PropTypes.bool,
 };
 
 export default Input;
