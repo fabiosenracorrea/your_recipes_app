@@ -40,15 +40,15 @@ interface iSearchOptions {
 }
 
 interface iInfoSearched {
-  meals: iSearchOptions
-  cocktails: iSearchOptions
+  meals: iSearchOptions;
+  cocktails: iSearchOptions;
 }
 
 interface iSearchProviderProps {
   infoSearched: iInfoSearched;
   loadingRecipes: boolean;
   appSearch(type: tRecipeTypes, searchOptions: iSearchOptions): Promise<string | undefined>;
-  updateSearch(type: tRecipeTypes, newSearchOptions: Omit<iSearchOptions, 'token'>): void
+  updateSearch(type: tRecipeTypes, newSearchOptions: Omit<iSearchOptions, 'token'>): void;
 }
 
 const searchContext = createContext<iSearchProviderProps>({} as iSearchProviderProps);
@@ -94,7 +94,6 @@ const SearchProvider: React.FC = ({ children }) => {
       updateRecipes(type, recipesSearched);
 
       setLoadingRecipes(false);
-
     } catch (err) {
       console.log(err);
 
@@ -125,7 +124,7 @@ const SearchProvider: React.FC = ({ children }) => {
       {children}
     </searchContext.Provider>
   );
-}
+};
 
 function useSearch(): iSearchProviderProps {
   const context = useContext(searchContext);

@@ -5,10 +5,10 @@ import React, {
 import { useAuth } from './auth';
 import { fetchSinglesOptions } from './singleRecipe';
 
-import saveDoneRecipe, { iSavedRecipe } from './utils/saveDoneRecipes';
+import saveDoneRecipe from './utils/saveDoneRecipes';
 import removeInProgressRecipe from './utils/removeInProgressRecipe';
 
-import { iRecipeOptions, tRecipeTypes } from '../@types/appTypes';
+import { iRecipeOptions, tRecipeTypes, iDoneRecipe } from '../@types/appTypes';
 
 const sessionRecipesStructure = {
   meals: [],
@@ -38,17 +38,17 @@ interface iSessionStartedRecipes {
 interface iRecipesProgress {
   cocktails: {
     [id: string]: string[];
-  }
+  };
 
   meals: {
     [id: string]: string[];
-  }
+  };
 }
 
 interface iCookContextProps {
   sessionStartedRecipes: iSessionStartedRecipes;
   recipesProgress: iRecipesProgress;
-  doneRecipes: iSavedRecipe[];
+  doneRecipes: iDoneRecipe[];
   startCooking(type: tRecipeTypes, recipe: iRecipeOptions): void;
   updateRecipeProgress(type: tRecipeTypes, recipeID: string, item: string): void;
   finalizeRecipe(type: tRecipeTypes, recipeID: string): void;
@@ -63,7 +63,7 @@ const CookProvider: React.FC = ({ children }) => {
   );
 
   const [recipesProgress, setRecipesProgress] = useState<iRecipesProgress>(() => {
-    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes'));
+    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '');
 
     if (inProgressRecipes) {
       return inProgressRecipes;
@@ -72,8 +72,8 @@ const CookProvider: React.FC = ({ children }) => {
     return localStorageTrack;
   });
 
-  const [doneRecipes, setDoneRecipes] = useState<iSavedRecipe[]>(() => {
-    const recipesDone = JSON.parse(localStorage.getItem('doneRecipes'));
+  const [doneRecipes, setDoneRecipes] = useState<iDoneRecipe[]>(() => {
+    const recipesDone = JSON.parse(localStorage.getItem('doneRecipes') || '');
 
     if (recipesDone) {
       return recipesDone;
@@ -188,7 +188,7 @@ const CookProvider: React.FC = ({ children }) => {
       {children}
     </cookContext.Provider>
   );
-}
+};
 
 function useCook(): iCookContextProps {
   const context = useContext(cookContext);
