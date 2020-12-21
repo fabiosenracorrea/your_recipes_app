@@ -1,7 +1,8 @@
-export default function parseIngredientAndMeasures(recipe) {
+import { iGlobalRecipe } from '../@types/apiTypes';
+
+function parseIngredientAndMeasures(recipe: iGlobalRecipe): string[] {
   const parsedIngredients = (
-    Object
-      .keys(recipe)
+    (Object.keys(recipe) as Array<keyof iGlobalRecipe>)
       .filter((detail) => {
         const ingredientPattern = /strIngredient\d/i;
 
@@ -20,7 +21,7 @@ export default function parseIngredientAndMeasures(recipe) {
         const everyNonDigitChar = /[^\d]/g;
         const ingredientNumber = ingredientKey.replace(everyNonDigitChar, '');
 
-        const matchingMeasure = `strMeasure${ingredientNumber}`;
+        const matchingMeasure = `strMeasure${ingredientNumber}` as keyof iGlobalRecipe;
 
         const ingredient = recipe[ingredientKey];
         const measure = recipe[matchingMeasure];
@@ -33,3 +34,5 @@ export default function parseIngredientAndMeasures(recipe) {
 
   return parsedIngredients;
 }
+
+export default parseIngredientAndMeasures;
