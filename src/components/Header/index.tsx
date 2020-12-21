@@ -9,6 +9,8 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { useAuth } from '../../hooks/auth';
 import { useSearch } from '../../hooks/search';
 
+import { tRecipeTypes } from '../../@types/appTypes';
+
 import './styles.css';
 
 const searchOptions = [
@@ -30,7 +32,7 @@ const searchOptions = [
 ];
 
 interface iHeaderProps {
-  pageType: string;
+  pageType: tRecipeTypes;
   pageTitle: string;
   showSearch?: boolean;
 }

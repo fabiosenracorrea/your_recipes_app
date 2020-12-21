@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 import './styles.css';
 
@@ -21,7 +21,7 @@ const filterOptions = [
 ];
 
 interface iFoodDrinkFilterProps {
-  handleFilterChange(): void;
+  handleFilterChange(inputChangeEvent: ChangeEvent<HTMLInputElement>): void;
   currentFilter: string;
 }
 
