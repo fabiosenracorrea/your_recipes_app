@@ -1,6 +1,5 @@
 export interface iDrink {
   idDrink: string;
-  idMeal?: string;
   strDrink: string;
   strDrinkAlternate: string | null;
   strDrinkES: string | null;
@@ -57,15 +56,14 @@ export interface iDrink {
 
 export interface iMeal {
   idMeal: string;
-  idDrink?: string;
   strMeal: string;
   strDrinkAlternate: string | null;
-  strCategory: string | null;
-  strArea: string | null;
-  strInstructions: string | null;
-  strMealThumb: string | null;
-  strTags: string | null;
-  strYoutube: string | null;
+  strCategory: string;
+  strArea: string;
+  strInstructions: string;
+  strMealThumb: string;
+  strTags: string;
+  strYoutube: string;
   strIngredient1: string | null;
   strIngredient2: string | null;
   strIngredient3: string | null;
@@ -134,14 +132,14 @@ export interface iGlobalRecipe {
   strDrinkAlternate: string;
   strCategory: string;
   strInstructions: string;
-  dateModified: string;
+  dateModified: string | null;
 
   idMeal: string;
   strMeal: string;
   strArea: string;
   strMealThumb: string;
   strYoutube: string;
-  strSource: string;
+  strSource: string | null;
 
   strIngredient1: string | null;
   strIngredient2: string | null;
