@@ -1,4 +1,4 @@
-import { iGlobalRecipe } from '../../@types/apiTypes';
+import { iGlobalRecipe, iMeal, iDrink } from '../../@types/apiTypes';
 import { tRecipeTypes, iDoneRecipe } from '../../@types/appTypes';
 
 function extractRecipeInfo(
@@ -6,6 +6,8 @@ function extractRecipeInfo(
   recipe: iGlobalRecipe,
 ): Omit<iDoneRecipe, 'doneDate'> {
   if (type === 'meals') {
+    const mealRecipe = recipe as iMeal;
+
     const {
       idMeal: id,
       strArea: area,
@@ -13,7 +15,7 @@ function extractRecipeInfo(
       strCategory: category,
       strMealThumb: image,
       strTags: stringTags,
-    } = recipe;
+    } = mealRecipe;
 
     const alcoholicOrNot = '';
 
@@ -31,6 +33,8 @@ function extractRecipeInfo(
     };
   }
 
+  const drinkRecipe = recipe as iDrink;
+
   const {
     idDrink: id,
     strDrink: name,
@@ -38,7 +42,7 @@ function extractRecipeInfo(
     strDrinkThumb: image,
     strTags: stringTags,
     strAlcoholic: alcoholicOrNot,
-  } = recipe;
+  } = drinkRecipe;
 
   const area = '';
 
