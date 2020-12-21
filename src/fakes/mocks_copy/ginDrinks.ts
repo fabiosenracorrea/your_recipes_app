@@ -883,4 +883,4 @@ const ginDrinks = {
   ],
 };
 
-module.exports = ginDrinks;
+export default ginDrinks;

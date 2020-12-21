@@ -93,4 +93,4 @@ const italianMeals = {
   ],
 };
 
-module.exports = italianMeals;
+export default italianMeals;

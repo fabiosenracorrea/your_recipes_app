@@ -1,17 +1,23 @@
+interface iFakeLocalStore {
+  [key: string]: any;
+}
+
 class LocalStorageFake {
+  public store: iFakeLocalStore;
+
   constructor() {
     this.store = {};
   }
 
-  removeItem(key) {
+  removeItem(key: string) {
     delete this.store[key];
   }
 
-  setItem(key, value) {
+  setItem(key: string, value: any) {
     this.store[key] = value;
   }
 
-  getItem(key) {
+  getItem(key: string) {
     return this.store[key] || null;
   }
 }

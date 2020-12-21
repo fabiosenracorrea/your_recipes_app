@@ -48,4 +48,4 @@ const cocoaDrinks = {
   ],
 };
 
-module.exports = cocoaDrinks;
+export default cocoaDrinks;

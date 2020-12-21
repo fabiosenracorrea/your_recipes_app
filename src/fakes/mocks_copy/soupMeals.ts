@@ -533,4 +533,4 @@ const soupMeals = {
   ],
 };
 
-module.exports = soupMeals;
+export default soupMeals;

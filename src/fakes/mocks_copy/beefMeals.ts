@@ -153,4 +153,4 @@ const beefMeals = {
   ],
 };
 
-module.exports = beefMeals;
+export default beefMeals;

@@ -29,7 +29,7 @@ import anotherOneDrink from './anotherOneDrink';
 import anotherOneMeal from './anotherOneMeal';
 import thirdSingleDrink from './thirdSingleDrink';
 
-const fetch = (url) => Promise.resolve({
+const fetch = (url: string) => Promise.resolve({
   status: 200,
   ok: true,
   json: () => {

@@ -1328,4 +1328,4 @@ const meals = {
   ],
 };
 
-module.exports = meals;
+export default meals;

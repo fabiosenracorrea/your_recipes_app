@@ -8,4 +8,4 @@ const goatMeals = {
   ],
 };
 
-module.exports = goatMeals;
+export default goatMeals;

@@ -88,4 +88,4 @@ const milkDrinks = {
   ],
 };
 
-module.exports = milkDrinks;
+export default milkDrinks;

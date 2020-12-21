@@ -53,4 +53,4 @@ const mealsByIngredient = {
   ],
 };
 
-module.exports = mealsByIngredient;
+export default mealsByIngredient;

@@ -503,4 +503,4 @@ const cocktailDrinks = {
   ],
 };
 
-module.exports = cocktailDrinks;
+export default cocktailDrinks;

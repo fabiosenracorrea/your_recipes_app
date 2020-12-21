@@ -38,4 +38,4 @@ const breakfastMeals = {
   ],
 };
 
-module.exports = breakfastMeals;
+export default breakfastMeals;

@@ -303,4 +303,4 @@ const drinkIngredients = {
   ],
 };
 
-module.exports = drinkIngredients;
+export default drinkIngredients;

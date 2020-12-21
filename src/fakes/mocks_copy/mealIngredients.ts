@@ -3381,4 +3381,4 @@ const mealIngredients = {
   ],
 };
 
-module.exports = mealIngredients;
+export default mealIngredients;

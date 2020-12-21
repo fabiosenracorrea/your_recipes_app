@@ -218,4 +218,4 @@ const drinksByIngredient = {
   ],
 };
 
-module.exports = drinksByIngredient;
+export default drinksByIngredient;

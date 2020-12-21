@@ -173,4 +173,4 @@ const otherDrinks = {
   ],
 };
 
-module.exports = otherDrinks;
+export default otherDrinks;

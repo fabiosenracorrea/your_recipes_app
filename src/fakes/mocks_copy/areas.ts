@@ -75,4 +75,4 @@ const areas = {
   ],
 };
 
-module.exports = areas;
+export default areas;

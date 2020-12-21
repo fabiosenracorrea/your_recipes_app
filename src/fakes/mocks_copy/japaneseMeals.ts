@@ -28,4 +28,4 @@ const japaneseMeals = {
   ],
 };
 
-module.exports = japaneseMeals;
+export default japaneseMeals;

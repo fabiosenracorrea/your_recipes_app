@@ -293,4 +293,4 @@ const dessertMeals = {
   ],
 };
 
-module.exports = dessertMeals;
+export default dessertMeals;
