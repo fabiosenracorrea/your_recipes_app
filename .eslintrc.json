@@ -42,6 +42,7 @@
     "no-param-reassign": ["off"],
     "consistent-return": ["off"],
     "no-undef": ["off"],
+    "no-alert": "off",
     "max-len": [
       "error",
       {
