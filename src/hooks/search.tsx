@@ -6,7 +6,7 @@ import { useAuth } from './auth';
 import { fetchMealsSearch } from '../services/foodApi';
 import { fetchDrinksSearch } from '../services/drinksApi';
 
-import { tRecipeTypes } from '../@types/appTypes';
+import { tRecipeTypes, iSearchOptions } from '../@types/appTypes';
 
 const getID = {
   meals: 'idMeal',
@@ -19,12 +19,6 @@ const fetchSearchOptions = {
   meals: fetchMealsSearch,
   cocktails: fetchDrinksSearch,
 };
-
-interface iSearchOptions {
-  option: 'name' | 'first_letter' | 'ingredients';
-  value: string;
-  token: string;
-}
 
 interface iInfoSearched {
   meals: iSearchOptions;

@@ -9,7 +9,7 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { useAuth } from '../../hooks/auth';
 import { useSearch } from '../../hooks/search';
 
-import { tRecipeTypes } from '../../@types/appTypes';
+import { tRecipeTypes, iSearchOptions } from '../../@types/appTypes';
 
 import './styles.css';
 
@@ -30,6 +30,8 @@ const searchOptions = [
     value: 'first_letter',
   },
 ];
+
+const validOptions = ['ingredients', 'name', 'first_letter'];
 
 interface iHeaderProps {
   pageType: tRecipeTypes;
@@ -61,18 +63,17 @@ const Header: React.FC<iHeaderProps> = ({ pageType = 'meals', pageTitle, showSea
     const search = searchInputRef.current?.value;
     const option = radioValue;
 
-    if (!search || !option) {
+    if (!search || !option || !validOptions.includes(option)) {
       return;
     }
 
     if (option === 'first_letter' && search.length !== 1) {
-      // eslint-disable-next-line
       alert('Your search should have only 1 (one) character');
 
       return;
     }
 
-    const infoToSearch = { option, value: search, token: userToken };
+    const infoToSearch = { option, value: search, token: userToken } as iSearchOptions;
 
     const singleResponseID = await appSearch(pageType, infoToSearch);
 
