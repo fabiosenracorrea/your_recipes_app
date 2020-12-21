@@ -1,4 +1,4 @@
-import { iMeal } from '../@types/apiTypes';
+import { iGlobalRecipe } from '../@types/apiTypes';
 
 const baseURL = 'https://www.themealdb.com/api/json/v1';
 // const searchBase = 'search.php?';
@@ -38,7 +38,7 @@ interface iIngredients {
   strDescription: string;
 }
 
-export async function fetchMealsSearch({ option, value, token }: iMealSearchOptions): Promise<iMeal[]> {
+export async function fetchMealsSearch({ option, value, token }: iMealSearchOptions): Promise<iGlobalRecipe[]> {
   const searchKey = searchOptions[option];
   const urlToFetch = `${baseURL}/${token}/${searchKey}=${value}`;
 
@@ -48,13 +48,13 @@ export async function fetchMealsSearch({ option, value, token }: iMealSearchOpti
   return meals || [];
 }
 
-export async function fetchFoodRecommendations(token: string): Promise<iMeal[]> {
+export async function fetchFoodRecommendations(token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${NAME_KEY}=`;
 
   const data = await fetch(urlToFetch);
   const { meals } = await data.json();
 
-  const recommendations = meals as iMeal[];
+  const recommendations = meals as iGlobalRecipe[];
 
   const REC_LIMIT = 6;
   const toDisplayRecommendations = recommendations.filter((_, index) => index < REC_LIMIT);
@@ -75,7 +75,7 @@ export async function fetchFoodsCategories(token: string): Promise<string[]> {
   return categoriesList;
 }
 
-export async function fetchMealsByCategory(category: string, token: string): Promise<iMeal[]> {
+export async function fetchMealsByCategory(category: string, token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${FILTER_CATEGORIES_KEY}=${category}`;
 
   const data = await fetch(urlToFetch);
@@ -84,7 +84,7 @@ export async function fetchMealsByCategory(category: string, token: string): Pro
   return meals || [];
 }
 
-export async function fetchMealDetails(mealID: string, token: string): Promise<iMeal> {
+export async function fetchMealDetails(mealID: string, token: string): Promise<iGlobalRecipe> {
   const urlToFetch = `${baseURL}/${token}/${ID_KEY}=${mealID}`;
 
   const data = await fetch(urlToFetch);
@@ -95,7 +95,7 @@ export async function fetchMealDetails(mealID: string, token: string): Promise<i
   return mealDetails;
 }
 
-export async function fetchRandomMeal(token: string): Promise<[id: string, meal: iMeal]> {
+export async function fetchRandomMeal(token: string): Promise<[id: string, meal: iGlobalRecipe]> {
   const urlToFetch = `${baseURL}/${token}/${RANDOM}`;
 
   const data = await fetch(urlToFetch);
@@ -139,7 +139,7 @@ export async function fetchFoodAreas(token: string): Promise<string[]> {
   return areaNames;
 }
 
-export async function fetchFoodsByArea(area: string, token: string): Promise<iMeal[]> {
+export async function fetchFoodsByArea(area: string, token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${FILTER_AREA_KEY}=${area}`;
 
   const data = await fetch(urlToFetch);

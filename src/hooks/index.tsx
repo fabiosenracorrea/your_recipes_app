@@ -27,6 +27,6 @@ const AppProvider: React.FC<iAppProviderProps> = ({ children }) => {
       </RecipeProvider>
     </AuthProvider>
   );
-}
+};
 
 export default AppProvider;

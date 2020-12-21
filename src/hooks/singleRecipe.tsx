@@ -11,15 +11,16 @@ import {
 
 import { useAuth } from './auth';
 
-import { tRecipeTypes, iRecipeOptions } from '../@types/appTypes';
+import { tRecipeTypes } from '../@types/appTypes';
+import { iGlobalRecipe } from '../@types/apiTypes';
 
 const singleRecipeStructure = {
   meals: {
-    recipe: {} as iRecipeOptions,
+    recipe: {} as iGlobalRecipe,
     recommendations: [],
   },
   cocktails: {
-    recipe: {} as iRecipeOptions,
+    recipe: {} as iGlobalRecipe,
     recommendations: [],
   },
 };
@@ -40,8 +41,8 @@ const fetchRandomOptions = {
 };
 
 interface iSingleRecipe {
-  recipe: iRecipeOptions;
-  recommendations: iRecipeOptions[];
+  recipe: iGlobalRecipe;
+  recommendations: iGlobalRecipe[];
 }
 
 interface iSingleRecipesByType {

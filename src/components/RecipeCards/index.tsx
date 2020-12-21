@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { tRecipeTypes, iRecipeOptions } from '../../@types/appTypes';
+import { tRecipeTypes } from '../../@types/appTypes';
+import { iGlobalRecipe } from '../../@types/apiTypes';
 
 import './styles.css';
 
 interface iRecipeCardsProps {
   type: tRecipeTypes;
-  recipes: Array<iRecipeOptions>;
+  recipes: Array<iGlobalRecipe>;
 }
 
 const RecipeCards: React.FC<iRecipeCardsProps> = ({ type, recipes }) => {

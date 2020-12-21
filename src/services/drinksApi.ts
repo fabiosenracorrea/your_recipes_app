@@ -1,4 +1,4 @@
-import { iDrink } from '../@types/apiTypes';
+import { iGlobalRecipe } from '../@types/apiTypes';
 
 const baseURL = 'https://www.thecocktaildb.com/api/json/v1';
 
@@ -22,7 +22,7 @@ export const searchOptions = {
   ingredients: FILTER_INGREDIENTS_KEY,
 };
 
-interface iMealSearchOptions {
+interface iDrinkSearchOptions {
   option: keyof typeof searchOptions;
   value: string;
   token: string;
@@ -36,7 +36,7 @@ interface iIngredients {
   strDescription: string;
 }
 
-export async function fetchDrinksSearch({ option, value, token }: iMealSearchOptions): Promise<iDrink[]> {
+export async function fetchDrinksSearch({ option, value, token }: iDrinkSearchOptions): Promise<iGlobalRecipe[]> {
   const searchKey = searchOptions[option];
   const urlToFetch = `${baseURL}/${token}/${searchKey}=${value}`;
 
@@ -46,13 +46,13 @@ export async function fetchDrinksSearch({ option, value, token }: iMealSearchOpt
   return drinks || [];
 }
 
-export async function fetchDrinkRecommendations(token: string): Promise<iDrink[]> {
+export async function fetchDrinkRecommendations(token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${NAME_KEY}=`;
 
   const data = await fetch(urlToFetch);
   const { drinks } = await data.json();
 
-  const recommendations = drinks as iDrink[];
+  const recommendations = drinks as iGlobalRecipe[];
 
   const REC_LIMIT = 6;
   const toDisplayRecommendations = recommendations.filter((_, index) => index < REC_LIMIT);
@@ -82,7 +82,7 @@ export async function fetchDrinksCategories(token: string): Promise<string[]> {
   return categoriesList;
 }
 
-export async function fetchDrinksByCategory(category: string, token: string): Promise<iDrink[]> {
+export async function fetchDrinksByCategory(category: string, token: string): Promise<iGlobalRecipe[]> {
   let curatedCategory = category;
 
   if (curatedCategory.match('Other')) {
@@ -97,7 +97,7 @@ export async function fetchDrinksByCategory(category: string, token: string): Pr
   return drinks || [];
 }
 
-export async function fetchDrinkDetails(drinkID: string, token: string): Promise<iDrink> {
+export async function fetchDrinkDetails(drinkID: string, token: string): Promise<iGlobalRecipe> {
   const urlToFetch = `${baseURL}/${token}/${ID_KEY}=${drinkID}`;
 
   const data = await fetch(urlToFetch);
@@ -108,7 +108,7 @@ export async function fetchDrinkDetails(drinkID: string, token: string): Promise
   return drinkDetails;
 }
 
-export async function fetchRandomDrink(token: string): Promise<[id: string, meal: iDrink]> {
+export async function fetchRandomDrink(token: string): Promise<[id: string, meal: iGlobalRecipe]> {
   const urlToFetch = `${baseURL}/${token}/${RANDOM}`;
 
   const data = await fetch(urlToFetch);

@@ -8,7 +8,8 @@ import { fetchSinglesOptions } from './singleRecipe';
 import saveDoneRecipe from './utils/saveDoneRecipes';
 import removeInProgressRecipe from './utils/removeInProgressRecipe';
 
-import { iRecipeOptions, tRecipeTypes, iDoneRecipe } from '../@types/appTypes';
+import { tRecipeTypes, iDoneRecipe } from '../@types/appTypes';
+import { iGlobalRecipe } from '../@types/apiTypes';
 
 const sessionRecipesStructure = {
   meals: [],
@@ -26,7 +27,7 @@ const recipeIdOptions = {
 };
 
 interface iSessionRecipe {
-  recipe: iRecipeOptions;
+  recipe: iGlobalRecipe;
   finished: boolean;
 }
 
@@ -49,7 +50,7 @@ interface iCookContextProps {
   sessionStartedRecipes: iSessionStartedRecipes;
   recipesProgress: iRecipesProgress;
   doneRecipes: iDoneRecipe[];
-  startCooking(type: tRecipeTypes, recipe: iRecipeOptions): void;
+  startCooking(type: tRecipeTypes, recipe: iGlobalRecipe): void;
   updateRecipeProgress(type: tRecipeTypes, recipeID: string, item: string): void;
   finalizeRecipe(type: tRecipeTypes, recipeID: string): void;
   loadRecipeToCook(type: tRecipeTypes, recipeID: string): void;
@@ -88,7 +89,7 @@ const CookProvider: React.FC = ({ children }) => {
     localStorage.setItem('inProgressRecipes', JSON.stringify(recipesProgress));
   }, [recipesProgress]);
 
-  const startCooking = useCallback((type: tRecipeTypes, recipe: iRecipeOptions) => {
+  const startCooking = useCallback((type: tRecipeTypes, recipe: iGlobalRecipe) => {
     setSessionStartedRecipes((oldCooks) => {
       const oldRecipesStarted = oldCooks[type];
 
@@ -138,7 +139,7 @@ const CookProvider: React.FC = ({ children }) => {
       const oldRecipesStarted = oldCooks[type];
 
       const updatedRecipes = oldRecipesStarted.map(({ recipe, finished }) => {
-        const recipeAccess = recipeIdOptions[type] as keyof iRecipeOptions;
+        const recipeAccess = recipeIdOptions[type] as keyof iGlobalRecipe;
         const recipeToUpdateID = recipe[recipeAccess];
 
         if (recipeToUpdateID !== recipeID) {
