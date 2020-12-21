@@ -1,4 +1,4 @@
-import React, { ReactChildren } from 'react';
+import React from 'react';
 
 import { AuthProvider } from './auth';
 import { SearchProvider } from './search';
@@ -7,11 +7,7 @@ import { SingleRecipeProvider } from './singleRecipe';
 import { CookProvider } from './cook';
 import { ExploreProvider } from './explore';
 
-interface iAppProviderProps {
-  children: ReactChildren;
-}
-
-const AppProvider: React.FC<iAppProviderProps> = ({ children }) => {
+const AppProvider: React.FC = ({ children }) => {
   return (
     <AuthProvider>
       <RecipeProvider>
