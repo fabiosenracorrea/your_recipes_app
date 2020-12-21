@@ -1,4 +1,7 @@
-export default function parseRecipeToFavorite(type, recipe) {
+import { iGlobalRecipe } from '../@types/apiTypes';
+import { tRecipeTypes, iFavoriteRecipe } from '../@types/appTypes';
+
+function parseRecipeToFavorite(type: tRecipeTypes, recipe: iGlobalRecipe): iFavoriteRecipe {
   const favorite = {
     id: recipe.idDrink || recipe.idMeal,
     type: (type === 'meals') ? 'meals' : 'cocktails',
@@ -11,3 +14,5 @@ export default function parseRecipeToFavorite(type, recipe) {
 
   return favorite;
 }
+
+export default parseRecipeToFavorite;
