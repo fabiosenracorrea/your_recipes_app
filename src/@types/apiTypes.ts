@@ -130,11 +130,11 @@ export interface iGlobalRecipe {
   'strInstructionsZH-HANT': string | null;
   strCreativeCommonsConfirmed: string | null;
 
-  strTags: string | null;
-  strDrinkAlternate: string | null;
-  strCategory: string | null;
-  strInstructions: string | null;
-  dateModified: string | null;
+  strTags: string;
+  strDrinkAlternate: string;
+  strCategory: string;
+  strInstructions: string;
+  dateModified: string;
 
   idMeal: string;
   strMeal: string;
