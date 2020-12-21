@@ -47,7 +47,7 @@ const RecipeFilters: React.FC<iRecipeFilterProps> = ({
     updateFilteredRecipes(pageType, category);
     setFilterSelected(category);
     resetPaging();
-  }, [updateFilteredRecipes, pageType, appSearch, filterSelected, resetPaging, setFilterSelected]);
+  }, [updateFilteredRecipes, pageType, appSearch, filterSelected, resetPaging, setFilterSelected, setFilterPage]);
 
   const currentRecipeFilters = useMemo(() => {
     const apiFilters = currentFilters[pageType];
