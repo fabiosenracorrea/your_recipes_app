@@ -54,7 +54,7 @@ const RecipeProvider: React.FC = ({ children }) => {
   const [loadingByCategory, setLoadingByCategory] = useState(false);
 
   const [favoriteRecipes, setFavoriteRecipes] = useState<iFavoriteRecipe[]>(() => {
-    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes')) || [];
+    const favorites = JSON.parse(localStorage.getItem('favoriteRecipes') || '[]');
 
     return favorites;
   });

@@ -18,9 +18,9 @@ const authContext = createContext<iAuthContextProps>({} as iAuthContextProps);
 
 const AuthProvider: React.FC = ({ children }) => {
   const [user, setUserData] = useState(() => {
-    let previousUserData = JSON.parse(localStorage.getItem('user'));
+    let previousUserData = JSON.parse(localStorage.getItem('user') || '');
 
-    const registeredUser = JSON.parse(localStorage.getItem('userNames')) || {};
+    const registeredUser = JSON.parse(localStorage.getItem('userNames') || '{}');
 
     if (previousUserData) {
       const userName = registeredUser[previousUserData.email];
