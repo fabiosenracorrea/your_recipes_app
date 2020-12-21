@@ -5,8 +5,8 @@ import saveDoneRecipes from '../../hooks/utils/saveDoneRecipes';
 import LocalStorageFake from '../../fakes/localStorage';
 import previouslyDoneRecipes from '../../fakes/recipes/done';
 
-let localStorageFake;
-let localSetItem;
+let localStorageFake: LocalStorageFake;
+let localSetItem: any; // eslint-disable-line
 
 const mealToSave = oneMeal.meals[0];
 const drinkToSave = oneDrink.drinks[0];

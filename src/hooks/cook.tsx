@@ -64,9 +64,9 @@ const CookProvider: React.FC = ({ children }) => {
   );
 
   const [recipesProgress, setRecipesProgress] = useState<iRecipesProgress>(() => {
-    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '');
+    const inProgressRecipes = JSON.parse(localStorage.getItem('inProgressRecipes') || '{}');
 
-    if (inProgressRecipes) {
+    if (inProgressRecipes.meals) {
       return inProgressRecipes;
     }
 
@@ -74,7 +74,7 @@ const CookProvider: React.FC = ({ children }) => {
   });
 
   const [doneRecipes, setDoneRecipes] = useState<iDoneRecipe[]>(() => {
-    const recipesDone = JSON.parse(localStorage.getItem('doneRecipes') || '');
+    const recipesDone = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
 
     if (recipesDone) {
       return recipesDone;

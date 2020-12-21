@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, MemoryRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent, act, wait } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { render, fireEvent, act, wait, RenderResult } from '@testing-library/react';
 
 import Header from '../../components/Header';
 import AppProvider from '../../hooks';
@@ -9,8 +9,8 @@ import AppProvider from '../../hooks';
 import mockedFetch from '../../fakes/mocks_copy/fetch';
 import oneMeal from '../../fakes/mocks_copy/oneMeal';
 
-let screen;
-let history;
+let screen: RenderResult;
+let history: History;
 
 const pageType = 'meals';
 const mealID = oneMeal.meals[0].idMeal;
@@ -221,7 +221,7 @@ describe('Header component testing', () => {
       </MemoryRouter>,
     );
 
-    const alertFunc = jest.spyOn(global, 'alert').mockImplementation(() => {});
+    const alertFunc = jest.spyOn(global, 'alert').mockImplementation(() => console.log('alert was called!'));
 
     const searchBarButton = await screen.findByTestId('search-top-btn');
 

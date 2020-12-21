@@ -11,7 +11,7 @@ import './styles.css';
 interface iInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   icon?: React.ComponentType<IconBaseProps>;
-  error: boolean;
+  error?: boolean;
   value?: string;
 }
 

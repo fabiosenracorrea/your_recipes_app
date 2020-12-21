@@ -1,13 +1,13 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { render, fireEvent, RenderResult } from '@testing-library/react';
 
 import Navbar from '../../components/Navbar';
 
-let screen;
-let testPath;
-let history;
+let screen: RenderResult;
+let testPath: string;
+let history: History;
 
 describe('NavBar component testing', () => {
   beforeEach(() => {

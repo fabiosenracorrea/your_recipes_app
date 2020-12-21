@@ -1,13 +1,19 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent, act, RenderResult } from '@testing-library/react';
 
 import AppModal from '../../components/AppModal';
 
 const modalTitle = 'This is a title!';
 const modalDescription = 'This is a description! :)';
 
-let screen;
-let testModalRef;
+interface iModalRef {
+  current: {
+    openModal(): void
+  } | null;
+}
+
+let screen: RenderResult;
+let testModalRef: iModalRef;
 
 describe('AppModal component testing', () => {
   beforeEach(() => {
@@ -32,7 +38,9 @@ describe('AppModal component testing', () => {
 
   it('should correctly forward ref and show title/description when opened', () => {
     act(() => {
-      testModalRef.current.openModal();
+      if (testModalRef.current) {
+        testModalRef.current.openModal();
+      }
     });
 
     const titleElement = screen.getByTestId('modal-title');
@@ -46,7 +54,9 @@ describe('AppModal component testing', () => {
 
   it('should display nothing after closed', () => {
     act(() => {
-      testModalRef.current.openModal();
+      if (testModalRef.current) {
+        testModalRef.current.openModal();
+      }
     });
 
     const closeElement = screen.getByTestId('modal-close');

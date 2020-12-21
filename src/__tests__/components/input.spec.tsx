@@ -1,12 +1,12 @@
 import React from 'react';
-import { render, fireEvent, act } from '@testing-library/react';
+import { render, fireEvent, act, RenderResult } from '@testing-library/react';
 import { FiMenu } from 'react-icons/fi';
 
 import Input from '../../components/Input';
 
 const inputName = 'e-mail';
 
-let screen;
+let screen: RenderResult;
 
 describe('AppModal component testing', () => {
   it('should render an Input correctly', () => {
@@ -14,7 +14,7 @@ describe('AppModal component testing', () => {
       <Input
         name={ inputName }
         icon={ FiMenu }
-        onChange={ () => {} }
+        onChange={ () => console.log('change function called!') }
       />,
     );
 
@@ -29,7 +29,7 @@ describe('AppModal component testing', () => {
       <Input
         name={ inputName }
         icon={ FiMenu }
-        onChange={ () => {} }
+        onChange={ () => console.log('change function called!') }
       />,
     );
 
@@ -59,7 +59,7 @@ describe('AppModal component testing', () => {
         name={ inputName }
         icon={ FiMenu }
         value="some-text"
-        onChange={ () => {} }
+        onChange={ () => console.log('change function called!') }
       />,
     );
 
@@ -74,7 +74,7 @@ describe('AppModal component testing', () => {
       <Input
         name={ inputName }
         icon={ FiMenu }
-        onChange={ () => {} }
+        onChange={ () => console.log('change function called!') }
         error
       />,
     );
