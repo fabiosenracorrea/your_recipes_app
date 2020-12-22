@@ -12,15 +12,11 @@ import RecipeCards from '../../components/RecipeCards';
 import LoadingBook from '../../components/LoadingBook';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
-import { tRecipeTypes } from '../../@types/appTypes';
+import { iBasicPageProps } from '../../@types/appTypes';
 
 import './styles.css';
 
-interface iRecipesPageProps {
-  pageType: tRecipeTypes;
-}
-
-const Recipes: React.FC<iRecipesPageProps> = ({ pageType }) => {
+const Recipes: React.FC<iBasicPageProps> = ({ pageType }) => {
   const [filterSelected, setFilterSelected] = useState('All');
 
   const [filterPage, setFilterPage] = useState(1);
