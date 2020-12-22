@@ -2,7 +2,6 @@ import React, {
   useMemo, useState, useCallback, useEffect,
 } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { FiArrowLeft, FiCheck } from 'react-icons/fi';
 
 import { useCook } from '../../hooks/cook';
@@ -18,9 +17,16 @@ import shareIcon from '../../images/shareIcon.svg';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
 
+import { iBasicPageProps } from '../../@types/appTypes';
+import { iGlobalRecipe } from '../../@types/apiTypes';
+
 import './styles.css';
 
-function RecipeInProgress({ pageType }) {
+interface iRouteParamsProps {
+  id: string;
+}
+
+const RecipeInProgress: React.FC<iBasicPageProps> = ({ pageType }) => {
   const [copiedLink, setCopiedLink] = useState(false);
 
   const {
@@ -31,7 +37,7 @@ function RecipeInProgress({ pageType }) {
     loadRecipeToCook,
   } = useCook();
 
-  const { id } = useParams();
+  const { id } = useParams<iRouteParamsProps>();
 
   const { push } = useHistory();
 
@@ -53,9 +59,7 @@ function RecipeInProgress({ pageType }) {
     ));
 
     if (!recipeToCook) {
-      return {
-        loading: true,
-      };
+      return {} as iGlobalRecipe;
     }
 
     return recipeToCook.recipe;
@@ -121,7 +125,7 @@ function RecipeInProgress({ pageType }) {
     push('/done-recipes');
   }, [id, finalizeRecipe, pageType, push]);
 
-  if (currentlyCooking.loading) {
+  if (!currentlyCooking.strMeal || !currentlyCooking.strDrink) {
     return (
       <LoadingBook />
     );
@@ -254,10 +258,6 @@ function RecipeInProgress({ pageType }) {
 
     </div>
   );
-}
-
-RecipeInProgress.propTypes = {
-  pageType: PropTypes.string.isRequired,
 };
 
 export default RecipeInProgress;
