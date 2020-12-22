@@ -2,7 +2,6 @@ import React, {
   useState, useCallback, useEffect, useMemo,
 } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { VscDebugStart, VscDebugRestart } from 'react-icons/vsc';
 import { FiArrowLeft } from 'react-icons/fi';
 
@@ -20,16 +19,22 @@ import shareIcon from '../../images/shareIcon.svg';
 import blackHeart from '../../images/blackHeartIcon.svg';
 import whiteHeart from '../../images/whiteHeartIcon.svg';
 
+import { iBasicPageProps } from '../../@types/appTypes';
+
 import './styles.css';
 
-function RecipeDetails({ pageType }) {
+interface iRouteParamsProps {
+  id: string;
+}
+
+const RecipeDetails: React.FC<iBasicPageProps> = ({ pageType }) => {
   const [copiedLink, setCopiedLink] = useState(false);
 
   const {
     currentFocusedRecipes, loadSingleRecipe, loadingSingleRecipe, unloadRandom,
   } = useSingleRecipe();
 
-  const { id } = useParams();
+  const { id } = useParams<iRouteParamsProps>();
 
   const {
     startCooking, doneRecipes, recipesProgress,
@@ -255,10 +260,6 @@ function RecipeDetails({ pageType }) {
 
     </div>
   );
-}
-
-RecipeDetails.propTypes = {
-  pageType: PropTypes.string.isRequired,
 };
 
 export default RecipeDetails;
