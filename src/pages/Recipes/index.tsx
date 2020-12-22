@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { useSearch } from '../../hooks/search';
 import { useRecipes } from '../../hooks/recipes';
@@ -13,9 +12,15 @@ import RecipeCards from '../../components/RecipeCards';
 import LoadingBook from '../../components/LoadingBook';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
+import { tRecipeTypes } from '../../@types/appTypes';
+
 import './styles.css';
 
-function Recipes({ pageType }) {
+interface iRecipesPageProps {
+  pageType: tRecipeTypes;
+}
+
+const Recipes: React.FC<iRecipesPageProps> = ({ pageType }) => {
   const [filterSelected, setFilterSelected] = useState('All');
 
   const [filterPage, setFilterPage] = useState(1);
@@ -102,10 +107,6 @@ function Recipes({ pageType }) {
 
     </div>
   );
-}
-
-Recipes.propTypes = {
-  pageType: PropTypes.string.isRequired,
 };
 
 export default Recipes;

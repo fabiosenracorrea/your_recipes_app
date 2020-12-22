@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
 import './styles.css';
@@ -10,7 +10,7 @@ interface iPagingProps {
   lastShownPage: number;
   numberOfPages: number;
 
-  handlePageChange(): void;
+  handlePageChange(inputChangeEvent: ChangeEvent<HTMLInputElement>): void;
   handlePageDown(): void;
   handlePageUp(): void;
 }
