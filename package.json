@@ -12,7 +12,6 @@
     "clipboard-copy": "^3.1.0",
     "history": "^5.0.0",
     "lodash": "^4.17.15",
-    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.4.0",
     "react-dom": "^16.13.1",
@@ -23,13 +22,11 @@
     "websocket-extensions": ">=0.1.4"
   },
   "scripts": {
-    "cy": "cypress run",
-    "cy:open": "cypress open",
     "start": "react-scripts start",
     "build": "react-scripts build && echo '/* /index.html 200' | cat > build/_redirects",
     "test": "react-scripts test",
     "test-coverage": "react-scripts test --coverage --watchAll=false",
-    "testC": "npm run test-coverage -- --coverageReporters='lcov' --testFailureExitCode=0",
+    "testC": "test-coverage -- --coverageReporters='lcov' --testFailureExitCode=0",
     "eject": "react-scripts eject",
     "lint": "eslint --no-inline-config --no-error-on-unmatched-pattern -c .eslintrc.json . --ext .js,.jsx"
   },

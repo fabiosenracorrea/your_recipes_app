@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function getSvgPath() {
+function getSvgPath() {
   return (
     <path
       // eslint-disable-next-line
@@ -8,3 +8,5 @@ export default function getSvgPath() {
     />
   );
 }
+
+export default getSvgPath;
