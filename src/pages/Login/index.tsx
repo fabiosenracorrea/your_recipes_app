@@ -1,26 +1,26 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, FormEvent, ChangeEvent } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { FiAlertCircle, FiUser, FiLock } from 'react-icons/fi';
 
 import { useAuth } from '../../hooks/auth';
 
 import Input from '../../components/Input';
-import AppModal from '../../components/AppModal';
+import AppModal, { ModalRef } from '../../components/AppModal';
 
 import loginLogo from '../../images/login-logo.png';
 import appLogo from '../../images/app-icon.png';
 
 import './styles.css';
 
-function Login() {
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const modalRef = useRef();
+  const modalRef = useRef<ModalRef>(null);
 
   const { signIn } = useAuth();
   const { push } = useHistory();
 
-  const handleSubmit = useCallback((formEvent) => {
+  const handleSubmit = useCallback((formEvent: FormEvent) => {
     formEvent.preventDefault();
 
     const validUserData = { email, password };
@@ -30,20 +30,22 @@ function Login() {
     push('/meals');
   }, [email, password, push, signIn]);
 
-  const handleEmailChange = useCallback(({ target }) => {
+  const handleEmailChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const emailTyped = target.value;
 
     setEmail(emailTyped);
   }, []);
 
-  const handlePasswordChange = useCallback(({ target }) => {
+  const handlePasswordChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const passwordTyped = target.value;
 
     setPassword(passwordTyped);
   }, []);
 
   const handleHelpModalOpen = useCallback(() => {
-    modalRef.current.openModal();
+    if (modalRef.current) {
+      modalRef.current.openModal();
+    }
   }, [modalRef]);
 
   const userDataIsValid = useMemo(() => {
@@ -127,6 +129,6 @@ function Login() {
       />
     </div>
   );
-}
+};
 
 export default Login;
