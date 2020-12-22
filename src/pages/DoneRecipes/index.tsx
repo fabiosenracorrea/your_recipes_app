@@ -12,14 +12,20 @@ import { shareWhenMultipleRecipesPresent } from '../../utils/shareRecipe';
 
 import shareIcon from '../../images/shareIcon.svg';
 
+import { iDoneRecipe } from '../../@types/appTypes';
+
 import './styles.css';
+
+interface iCopiedLinkTrack {
+  [id: string]: boolean;
+}
 
 const tagLimit = 2;
 
-function DoneRecipes() {
+const DoneRecipes: React.FC = () => {
   const { doneRecipes } = useCook();
 
-  const [copyLink, setCopyLink] = useState({});
+  const [copyLink, setCopyLink] = useState<iCopiedLinkTrack>({});
 
   const {
     filter,
@@ -42,8 +48,8 @@ function DoneRecipes() {
           <NoRecipeToShow isCocktail={ selectedFilterIsCocktails } />
         ) : (
           <div className="done-recipes-container">
-            {filteredItems.map((recipe, index) => (
-              <div className="done-recipe-card" key={ recipe.doneDate.toLocaleString() }>
+            {(filteredItems as iDoneRecipe[]).map((recipe, index) => (
+              <div className="done-recipe-card" key={ recipe.doneDate }>
                 <Link to={ `/${recipe.type}/${recipe.id}` }>
                   <img
                     src={ recipe.image }
@@ -96,7 +102,7 @@ function DoneRecipes() {
 
                 {recipe.type === 'meals' && (
                   <div className="recipe-tag-container">
-                    {recipe.tags.filter((tag, i) => i < tagLimit).map((tag) => (
+                    {recipe.tags.filter((_, i) => i < tagLimit).map((tag) => (
                       <span
                         key={ tag }
                         data-testid={ `${index}-${tag}-horizontal-tag` }
@@ -114,6 +120,6 @@ function DoneRecipes() {
 
     </div>
   );
-}
+};
 
 export default DoneRecipes;
