@@ -1,7 +1,9 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent, waitForElement, act, wait } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { render, fireEvent, waitForElement, act, wait, RenderResult } from '@testing-library/react';
+
+import { iFavoriteRecipe, iDoneRecipe } from '../../@types/appTypes';
 
 import RecipeInProgress from '../../pages/RecipeInProgress';
 import AppProvider from '../../hooks';
@@ -13,14 +15,15 @@ import mockedFetch from '../../fakes/mocks_copy/fetch';
 import oneMeal, { mealIngredientsAndMeasure } from '../../fakes/mocks_copy/oneMeal';
 import inProgressRecipes from '../../fakes/recipes/inProgress';
 
-jest.mock('../../utils/shareRecipe.js', () => ({
+jest.mock('../../utils/shareRecipe.ts', () => ({
   shareWhenSingleRecipePresent: jest.fn((_, __, callback) => callback(true)),
 }));
 
-let screen;
-let localStorageFake;
-let history;
-let fakeFetch;
+let screen: RenderResult;
+let localStorageFake: LocalStorageFake;
+let history: History;
+let fakeFetch: jest.SpyInstance;
+
 const mealRendered = oneMeal.meals[0];
 
 describe('food details page structure testing', () => {
@@ -129,7 +132,7 @@ describe('food details page structure testing', () => {
       (_, index) => index + 1,
     );
 
-    const currentRecipeIsFavorited = localStorageFake.store.favoriteRecipes.find(
+    const currentRecipeIsFavorited = (localStorageFake.store.favoriteRecipes as iFavoriteRecipe[]).find(
       (recipe) => recipe.id === mealRendered.idMeal,
     );
 
@@ -142,13 +145,13 @@ describe('food details page structure testing', () => {
 
       const oddTry = (tryNumber % EVEN_DIVISOR !== ZERO);
 
-      const recipeIsFavorite = localStorageFake.store.favoriteRecipes.find(
+      const recipeIsFavorite = (localStorageFake.store.favoriteRecipes as iFavoriteRecipe[]).find(
         (recipe) => recipe.id === mealRendered.idMeal,
       );
 
       if (oddTry) {
         expect(recipeIsFavorite).toBeTruthy();
-        expect(recipeIsFavorite.name).toBe(mealRendered.strMeal);
+        expect(recipeIsFavorite?.name).toBe(mealRendered.strMeal);
       } else {
         expect(recipeIsFavorite).toBeFalsy();
       }
@@ -195,7 +198,7 @@ describe('food details page structure testing', () => {
   });
 
   it('should correctly remove progress of one ingredient', () => {
-    const indexToRemove = '2';
+    const indexToRemove = 2;
 
     const checkInput = screen.getByLabelText(mealIngredientsAndMeasure[indexToRemove]);
     expect(checkInput).toBeChecked();
@@ -243,9 +246,9 @@ describe('food details page structure testing', () => {
       }
     });
 
-    const priorFavorites = localStorageFake.store.doneRecipes || [];
+    const priorDoneRecipes = localStorageFake.store.doneRecipes || [];
 
-    const recipeWasInDoneBefore = priorFavorites.find(
+    const recipeWasInDoneBefore = (priorDoneRecipes as iDoneRecipe[]).find(
       (recipe) => recipe.id === mealRendered.idMeal,
     );
 
@@ -258,9 +261,9 @@ describe('food details page structure testing', () => {
 
     fireEvent.click(finalizeBtn);
 
-    const updatedFavorites = localStorageFake.store.doneRecipes;
+    const updatedDoneRecipes = localStorageFake.store.doneRecipes;
 
-    const recipeSuccessfullySaved = updatedFavorites.find(
+    const recipeSuccessfullySaved = (updatedDoneRecipes as iDoneRecipe[]).find(
       (recipe) => recipe.id === mealRendered.idMeal,
     );
 

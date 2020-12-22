@@ -1,9 +1,10 @@
 import React from 'react';
 import { Router, MemoryRouter, Route } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, History } from 'history';
 import { render,
   fireEvent,
   waitForElement,
+  RenderResult,
 } from '@testing-library/react';
 
 import ExploreIngredients from '../../pages/ExploreIngredients';
@@ -14,9 +15,9 @@ import mockedFetch from '../../fakes/mocks_copy/fetch';
 import mealIngredients from '../../fakes/mocks_copy/mealIngredients';
 import drinkIngredients from '../../fakes/mocks_copy/drinkIngredients';
 
-let screen;
-let history;
-let fakeFetch;
+let screen: RenderResult;
+let history: History;
+let fakeFetch: jest.SpyInstance;
 
 describe('explore ingredients page structure testing', () => {
   beforeEach(async () => {
@@ -106,7 +107,7 @@ describe('explore by food ingredients specifications', () => {
   });
 
   it('navigates to main searching for foods with the ingredient on click', () => {
-    const ingredientCard = screen.queryByTestId('0-ingredient-card');
+    const ingredientCard = screen.getByTestId('0-ingredient-card');
     fireEvent.click(ingredientCard);
 
     const { pathname } = history.location;
@@ -171,7 +172,7 @@ describe('explore by drink ingredients specifications', () => {
   });
 
   it('navigates to main searching for drinks with the ingredient on click', () => {
-    const ingredientCard = screen.queryByTestId('0-ingredient-card');
+    const ingredientCard = screen.getByTestId('0-ingredient-card');
     fireEvent.click(ingredientCard);
 
     const { pathname } = history.location;

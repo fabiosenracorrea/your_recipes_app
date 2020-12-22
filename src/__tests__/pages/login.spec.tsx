@@ -1,14 +1,14 @@
 import React from 'react';
 import { MemoryRouter, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, RenderResult } from '@testing-library/react';
 
 import Login from '../../pages/Login';
 import AppProvider from '../../hooks';
 
 import LocalStorageFake from '../../fakes/localStorage';
 
-let screen;
+let screen: RenderResult;
 
 const validEmail = 'fabio@email.com';
 const validPw = 'fabio123456';

@@ -11,6 +11,6 @@ export default function parseCategory(type: string, { area, category, alcoholicO
     case 'cocktails':
       return `${alcoholicOrNot}`;
     default:
-      return null;
+      return '';
   }
 }

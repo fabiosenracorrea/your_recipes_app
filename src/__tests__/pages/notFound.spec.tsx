@@ -1,12 +1,12 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { fireEvent, render } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { fireEvent, render, RenderResult } from '@testing-library/react';
 
 import NotFound from '../../pages/NotFound';
 
-let screen;
-let history;
+let screen: RenderResult;
+let history: History;
 
 describe('not found testings', () => {
   beforeEach(() => {

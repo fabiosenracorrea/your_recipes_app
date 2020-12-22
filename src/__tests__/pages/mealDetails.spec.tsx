@@ -1,7 +1,9 @@
 import React from 'react';
 import { Router, Route } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent, waitForElement, act, wait } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { render, fireEvent, waitForElement, act, wait, RenderResult } from '@testing-library/react';
+
+import { iFavoriteRecipe } from '../../@types/appTypes';
 
 import RecipeDetails from '../../pages/RecipeDetails';
 import AppProvider from '../../hooks';
@@ -12,10 +14,11 @@ import mockedFetch from '../../fakes/mocks_copy/fetch';
 import oneMeal, { mealIngredientsAndMeasure } from '../../fakes/mocks_copy/oneMeal';
 import drinks from '../../fakes/mocks_copy/drinks';
 
-let screen;
-let localStorageFake;
-let history;
-let fakeFetch;
+let screen: RenderResult;
+let localStorageFake: LocalStorageFake;
+let history: History;
+let fakeFetch: jest.SpyInstance;
+
 const mealRendered = oneMeal.meals[0];
 const recommendationDrinks = drinks.drinks;
 
@@ -170,7 +173,7 @@ describe('food details logic testing', () => {
       (_, index) => index + 1,
     );
 
-    const currentRecipeIsFavorited = localStorageFake.store.favoriteRecipes.find(
+    const currentRecipeIsFavorited = (localStorageFake.store.favoriteRecipes as iFavoriteRecipe[]).find(
       (recipe) => recipe.id === mealRendered.idMeal,
     );
 
@@ -183,13 +186,13 @@ describe('food details logic testing', () => {
 
       const oddTry = (tryNumber % EVEN_DIVISOR !== ZERO);
 
-      const recipeIsFavorite = localStorageFake.store.favoriteRecipes.find(
+      const recipeIsFavorite = (localStorageFake.store.favoriteRecipes as iFavoriteRecipe[]).find(
         (recipe) => recipe.id === mealRendered.idMeal,
       );
 
       if (oddTry) {
         expect(recipeIsFavorite).toBeTruthy();
-        expect(recipeIsFavorite.name).toBe(mealRendered.strMeal);
+        expect(recipeIsFavorite?.name).toBe(mealRendered.strMeal);
       } else {
         expect(recipeIsFavorite).toBeFalsy();
       }
@@ -343,7 +346,7 @@ describe('food details navigation', () => {
 
     await waitForElement(() => screen.getByTestId('recipe-title'));
 
-    const startRecipeBtn = screen.queryByTestId('start-recipe-btn');
+    const startRecipeBtn = screen.getByTestId('start-recipe-btn');
 
     fireEvent.click(startRecipeBtn);
 
@@ -391,7 +394,7 @@ describe('food details navigation', () => {
 
     await waitForElement(() => screen.getByTestId('recipe-title'));
 
-    const continueRecipeBtn = screen.queryByTestId('start-recipe-btn');
+    const continueRecipeBtn = screen.getByTestId('start-recipe-btn');
 
     fireEvent.click(continueRecipeBtn);
 

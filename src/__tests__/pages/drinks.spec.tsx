@@ -1,10 +1,11 @@
 import React from 'react';
 import { Router, MemoryRouter } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, History } from 'history';
 import { render,
   fireEvent,
   waitForElement,
   wait,
+  RenderResult,
 } from '@testing-library/react';
 
 import RecipeDetails from '../../pages/Recipes';
@@ -29,9 +30,9 @@ const drinksByCategories = {
   4: cocoaDrinks,
 };
 
-let screen;
-let history;
-let fakeFetch;
+let screen: RenderResult;
+let history: History;
+let fakeFetch: jest.SpyInstance;
 
 describe('foods page structure and logic testing', () => {
   beforeEach(async () => {
@@ -127,7 +128,7 @@ describe('foods page structure and logic testing', () => {
 
   it('should update current recipes when clicked on the Ordinary filter', async () => {
     const category = categoriesToRender[0];
-    const categoryElement = screen.queryByTestId(`${category}-category-filter`);
+    const categoryElement = screen.getByTestId(`${category}-category-filter`);
 
     fireEvent.click(categoryElement);
 
@@ -156,7 +157,7 @@ describe('foods page structure and logic testing', () => {
 
   it('should update current recipes when clicked on the CockTails filter', async () => {
     const category = categoriesToRender[1];
-    const categoryElement = screen.queryByTestId(`${category}-category-filter`);
+    const categoryElement = screen.getByTestId(`${category}-category-filter`);
 
     fireEvent.click(categoryElement);
 
@@ -185,7 +186,7 @@ describe('foods page structure and logic testing', () => {
 
   it('should update current recipes when clicked on the Milk filter', async () => {
     const category = categoriesToRender[2];
-    const categoryElement = screen.queryByTestId(`${category}-category-filter`);
+    const categoryElement = screen.getByTestId(`${category}-category-filter`);
 
     fireEvent.click(categoryElement);
 
@@ -215,7 +216,7 @@ describe('foods page structure and logic testing', () => {
   it('should update current recipes when clicked on the Other filter', async () => {
     const category = categoriesToRender[3];
     const curatedCategory = category.replace('/Unknown', '');
-    const categoryElement = screen.queryByTestId(`${curatedCategory}-category-filter`);
+    const categoryElement = screen.getByTestId(`${curatedCategory}-category-filter`);
 
     fireEvent.click(categoryElement);
 
@@ -244,7 +245,7 @@ describe('foods page structure and logic testing', () => {
 
   it('should update current recipes when clicked on the Cocoa filter', async () => {
     const category = categoriesToRender[4];
-    const categoryElement = screen.queryByTestId(`${category}-category-filter`);
+    const categoryElement = screen.getByTestId(`${category}-category-filter`);
 
     fireEvent.click(categoryElement);
 
@@ -272,7 +273,7 @@ describe('foods page structure and logic testing', () => {
   });
 
   it('should remove filter when clicked on filter again', async () => {
-    const categoryElement = screen.queryByTestId('Cocoa-category-filter');
+    const categoryElement = screen.getByTestId('Cocoa-category-filter');
 
     fireEvent.click(categoryElement); // it works, as we have a test for this above
 
@@ -337,13 +338,17 @@ describe('food details navigation', () => {
       const MAX_RECIPES_ALLOWED = 12;
 
       if (index < MAX_RECIPES_ALLOWED) {
-        fireEvent.click(recipeCard);
+        expect(recipeCard).toBeInTheDocument();
 
-        const { pathname } = history.location;
-        const expectedPath = `/cocktails/${recipe.idDrink}`;
-        expect(pathname).toBe(expectedPath);
+        if (recipeCard) {
+          fireEvent.click(recipeCard);
 
-        history.push('/cocktails');
+          const { pathname } = history.location;
+          const expectedPath = `/cocktails/${recipe.idDrink}`;
+          expect(pathname).toBe(expectedPath);
+
+          history.push('/cocktails');
+        }
       }
     });
   });

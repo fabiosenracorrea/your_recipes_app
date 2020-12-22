@@ -1,7 +1,9 @@
 import React from 'react';
 import { MemoryRouter, Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { render, fireEvent, RenderResult } from '@testing-library/react';
+
+import { iFavoriteRecipe } from '../../@types/appTypes'
 
 import Favorites from '../../pages/Favorites';
 import AppProvider from '../../hooks';
@@ -10,9 +12,9 @@ import LocalStorageFake from '../../fakes/localStorage';
 import favoriteRecipes from '../../fakes/recipes/favorites';
 import parseCategory from '../../fakes/utils/parseDesiredCategory';
 
-let screen;
-let localStorageFake;
-let history;
+let screen: RenderResult;
+let localStorageFake: LocalStorageFake;
+let history: History;
 
 describe('favorites page structure testing', () => {
   beforeEach(() => {
@@ -66,7 +68,7 @@ describe('favorites page logic testing', () => {
   });
 
   it('should list all favorites recipes on screen', () => {
-    favoriteRecipes.forEach((recipe, index) => {
+    (favoriteRecipes as iFavoriteRecipe[]).forEach((recipe, index) => {
       const recipeImg = screen.queryByTestId(`${index}-horizontal-image`);
       expect(recipeImg).toBeInTheDocument();
       expect(recipeImg).toHaveAttribute('src', recipe.image);
@@ -100,7 +102,7 @@ describe('favorites page logic testing', () => {
     const itemName = favoriteRecipes[1].name;
     expect(screen.getByText(itemName)).toBeInTheDocument();
 
-    const unfavoriteBtn = screen.queryByTestId(
+    const unfavoriteBtn = screen.getByTestId(
       `${indexToRemove}-horizontal-favorite-btn`,
     );
 
@@ -112,7 +114,7 @@ describe('favorites page logic testing', () => {
 
     const updatedFavorites = localStorageFake.store.favoriteRecipes;
 
-    const recipeStillInFavorites = updatedFavorites.find(
+    const recipeStillInFavorites = (updatedFavorites as iFavoriteRecipe[]).find(
       (recipe) => recipe.name === itemName,
     );
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent, wait } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { render, fireEvent, wait, RenderResult } from '@testing-library/react';
 
 import ExploreRecipes from '../../pages/ExploreRecipes';
 import AppProvider from '../../hooks';
@@ -10,9 +10,9 @@ import mockedFetch from '../../fakes/mocks_copy/fetch';
 import fakeRandomMeal from '../../fakes/mocks_copy/oneMeal';
 import fakeRandomDrink from '../../fakes/mocks_copy/oneDrink';
 
-let screen;
-let history;
-let fakeFetch;
+let screen: RenderResult;
+let history: History;
+let fakeFetch: jest.SpyInstance;
 
 describe('explore recipes page structure testing', () => {
   beforeEach(async () => {

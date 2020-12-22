@@ -1,12 +1,12 @@
 import React from 'react';
 import { MemoryRouter, Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, RenderResult } from '@testing-library/react';
 
 import Explore from '../../pages/Explore';
 import AppProvider from '../../hooks';
 
-let screen;
+let screen: RenderResult;
 
 describe('explore page structure testing', () => {
   it('should have the correct header', () => {

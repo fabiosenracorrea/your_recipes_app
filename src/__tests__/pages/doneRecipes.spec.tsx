@@ -1,7 +1,7 @@
 import React from 'react';
 import { MemoryRouter, Router } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
-import { render, fireEvent } from '@testing-library/react';
+import { createMemoryHistory, History } from 'history';
+import { render, fireEvent, RenderResult } from '@testing-library/react';
 
 import DoneRecipes from '../../pages/DoneRecipes';
 import AppProvider from '../../hooks';
@@ -10,9 +10,9 @@ import LocalStorageFake from '../../fakes/localStorage';
 import doneRecipes from '../../fakes/recipes/done';
 import parseCategory from '../../fakes/utils/parseDesiredCategory';
 
-let screen;
-let localStorageFake;
-let history;
+let screen: RenderResult;
+let localStorageFake: LocalStorageFake;
+let history: History;
 
 describe('done recipes page structure testing', () => {
   beforeEach(() => {

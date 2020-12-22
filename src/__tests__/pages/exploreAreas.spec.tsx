@@ -1,9 +1,10 @@
 import React from 'react';
 import { Router, MemoryRouter, Route } from 'react-router-dom';
-import { createMemoryHistory } from 'history';
+import { createMemoryHistory, History } from 'history';
 import { render,
   fireEvent,
   waitForElement,
+  RenderResult,
 } from '@testing-library/react';
 
 import ExploreArea from '../../pages/ExploreArea';
@@ -15,9 +16,9 @@ import italianMeals from '../../fakes/mocks_copy/italianMeals';
 import areas from '../../fakes/mocks_copy/areas';
 import allAreasMeals from '../../fakes/mocks_copy/meals';
 
-let screen;
-let history;
-let fakeFetch;
+let screen: RenderResult;
+let history: History;
+let fakeFetch: jest.SpyInstance;
 
 describe('food by area page structure testing', () => {
   beforeEach(async () => {
@@ -223,13 +224,17 @@ describe('food details navigation', () => {
       const MAX_RECIPES_ALLOWED = 12;
 
       if (index < MAX_RECIPES_ALLOWED) {
-        fireEvent.click(recipeCard);
+        expect(recipeCard).toBeInTheDocument();
 
-        const { pathname } = history.location;
-        const expectedPath = `/meals/${recipe.idMeal}`;
-        expect(pathname).toBe(expectedPath);
+        if (recipeCard) {
+          fireEvent.click(recipeCard);
 
-        history.push('/explore/meals/area');
+          const { pathname } = history.location;
+          const expectedPath = `/meals/${recipe.idMeal}`;
+          expect(pathname).toBe(expectedPath);
+
+          history.push('/explore/meals/area');
+        }
       }
     });
   });
