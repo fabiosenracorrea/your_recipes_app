@@ -125,7 +125,7 @@ const RecipeInProgress: React.FC<iBasicPageProps> = ({ pageType }) => {
     push('/done-recipes');
   }, [id, finalizeRecipe, pageType, push]);
 
-  if (!currentlyCooking.strMeal || !currentlyCooking.strDrink) {
+  if (!currentlyCooking.strInstructions) {
     return (
       <LoadingBook />
     );
