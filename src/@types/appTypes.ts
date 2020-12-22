@@ -2,7 +2,7 @@ export type tRecipeTypes = 'meals' | 'cocktails';
 
 export interface iFavoriteRecipe {
   id: string;
-  type: string;
+  type: tRecipeTypes;
   area: string;
   category: string;
   alcoholicOrNot: string;
