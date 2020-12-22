@@ -53,8 +53,8 @@ interface iSingleRecipesByType {
 interface iSingleRecipeContextProps {
   currentFocusedRecipes: iSingleRecipesByType;
   loadingSingleRecipe: boolean;
-  loadSingleRecipe(type: tRecipeTypes, recipeID: string): void;
-  loadRandomRecipe(type: tRecipeTypes): void;
+  loadSingleRecipe(type: tRecipeTypes, recipeID: string): Promise<void>;
+  loadRandomRecipe(type: tRecipeTypes): Promise<string | undefined>;
   unloadRandom(): void;
 }
 
