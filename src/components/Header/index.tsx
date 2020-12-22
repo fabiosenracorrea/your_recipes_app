@@ -34,7 +34,7 @@ const searchOptions = [
 const validOptions = ['ingredients', 'name', 'first_letter'];
 
 interface iHeaderProps {
-  pageType: tRecipeTypes;
+  pageType?: tRecipeTypes;
   pageTitle: string;
   showSearch?: boolean;
 }
