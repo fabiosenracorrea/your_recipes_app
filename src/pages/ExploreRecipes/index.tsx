@@ -1,6 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
 import { Link, useHistory } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import { FaGlobeAmericas } from 'react-icons/fa';
 import { GiPerspectiveDiceSixFacesRandom, GiJigsawPiece } from 'react-icons/gi';
 
@@ -9,9 +8,11 @@ import Navbar from '../../components/Navbar';
 
 import { useSingleRecipe } from '../../hooks/singleRecipe';
 
+import { iBasicPageProps } from '../../@types/appTypes';
+
 import './styles.css';
 
-function ExploreRecipes({ pageType }) {
+const ExploreRecipes: React.FC<iBasicPageProps> = ({ pageType }) => {
   const isFoodPage = useMemo(() => (pageType === 'meals'), [pageType]);
 
   const { loadRandomRecipe } = useSingleRecipe();
@@ -21,7 +22,6 @@ function ExploreRecipes({ pageType }) {
     const randomRecipeID = await loadRandomRecipe(pageType);
 
     if (!randomRecipeID) {
-      // eslint-disable-next-line
       alert('An error has ocurried on your random search. Please try again.');
 
       return;
@@ -80,10 +80,6 @@ function ExploreRecipes({ pageType }) {
 
     </div>
   );
-}
-
-ExploreRecipes.propTypes = {
-  pageType: PropTypes.string.isRequired,
 };
 
 export default ExploreRecipes;
