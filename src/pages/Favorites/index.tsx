@@ -37,7 +37,7 @@ const Favorites: React.FC = () => {
     if (dataToUnfavorite) {
       updateFavoriteRecipes(dataToUnfavorite, true);
     }
-  }, [updateFavoriteRecipes]);
+  }, [updateFavoriteRecipes, favoriteRecipes]);
 
   return (
     <div className="favorite-recipes-page">
