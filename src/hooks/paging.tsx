@@ -7,7 +7,7 @@ interface iPaging {
   currentPage: number;
   numberOfPages: number;
   lastShownPage: number;
-  shownRecipesByPage: iGlobalRecipe[];
+  shownRecipesByPage: iGlobalRecipe[] | string[];
   pageGenerator: number[];
   handlePageDown(): void;
   handlePageUp(): void;
@@ -15,7 +15,7 @@ interface iPaging {
   resetPaging(): void;
 }
 
-export default function usePaging(recipes: iGlobalRecipe[]): iPaging {
+export default function usePaging(recipes: iGlobalRecipe[] | string[]): iPaging {
   const [currentPage, setCurrentPage] = useState(1);
   const [paging, setPaging] = useState(1);
 
@@ -69,7 +69,7 @@ export default function usePaging(recipes: iGlobalRecipe[]): iPaging {
   }, [pageGenerator]);
 
   const shownRecipesByPage = useMemo(() => {
-    const recipesToShow = recipes.filter((_, index) => {
+    const recipesToShow = (recipes as string[]).filter((_, index) => {
       const recipesPerPage = 12;
 
       const MIN_INDEX = currentPage * recipesPerPage - recipesPerPage;

@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import { useExplore } from '../../hooks/explore';
 import { useSearch } from '../../hooks/search';
@@ -13,9 +12,11 @@ import LoadingBook from '../../components/LoadingBook';
 
 import getIngredientUrl from './utils/ingredientImageUrl';
 
+import { iBasicPageProps, iSearchOptions } from '../../@types/appTypes';
+
 import './styles.css';
 
-function ExploreIngredients({ pageType }) {
+const ExploreIngredients: React.FC<iBasicPageProps> = ({ pageType }) => {
   const { loadIngredients, ingredientsSearched, loadingIngredients } = useExplore();
   const { updateSearch } = useSearch();
 
@@ -38,7 +39,7 @@ function ExploreIngredients({ pageType }) {
   const handleIngredientClick = useCallback((value) => {
     const option = 'ingredients';
 
-    const search = { option, value };
+    const search = { option, value } as Omit<iSearchOptions, 'token'>;
 
     updateSearch(pageType, search);
   }, [pageType, updateSearch]);
@@ -57,7 +58,7 @@ function ExploreIngredients({ pageType }) {
       <h1>Find delicious recipes with these ingredients!</h1>
 
       <div className="recipes-container">
-        {shownIngredientsByPage.map((ingredient, index) => (
+        {(shownIngredientsByPage as string[]).map((ingredient, index) => (
           <Link
             to={ `/${pageType}` }
             onClick={ () => handleIngredientClick(ingredient) }
@@ -88,10 +89,6 @@ function ExploreIngredients({ pageType }) {
 
     </div>
   );
-}
-
-ExploreIngredients.propTypes = {
-  pageType: PropTypes.string.isRequired,
 };
 
 export default ExploreIngredients;
