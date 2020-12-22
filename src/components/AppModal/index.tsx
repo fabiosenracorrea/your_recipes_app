@@ -8,7 +8,7 @@ interface iModalProps {
   description: string;
 }
 
-interface ModalRef {
+export interface ModalRef {
   openModal(): void;
 }
 

@@ -1,27 +1,27 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState, ChangeEvent } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { FiArrowLeft, FiUser, FiLock, FiInfo } from 'react-icons/fi';
 
 import Input from '../../components/Input';
-import AppModal from '../../components/AppModal';
+import AppModal, { ModalRef } from '../../components/AppModal';
 
 import loginLogo from '../../images/login-logo.png';
 import appLogo from '../../images/app-icon.png';
 
 import './styles.css';
 
-function Register() {
+const Register: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const modalRef = useRef();
+  const modalRef = useRef<ModalRef>(null);
 
   const { push } = useHistory();
 
   const handleSubmit = useCallback((formEvent) => {
     formEvent.preventDefault();
 
-    const previousRegister = JSON.parse(localStorage.getItem('userNames')) || {};
+    const previousRegister = JSON.parse(localStorage.getItem('userNames') || '{}');
 
     previousRegister[email] = name;
 
@@ -30,26 +30,28 @@ function Register() {
     push('/');
   }, [email, push, name]);
 
-  const handleNameChange = useCallback(({ target }) => {
+  const handleNameChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const nameTyped = target.value;
 
     setName(nameTyped);
   }, []);
 
-  const handleEmailChange = useCallback(({ target }) => {
+  const handleEmailChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const emailTyped = target.value;
 
     setEmail(emailTyped);
   }, []);
 
-  const handlePasswordChange = useCallback(({ target }) => {
+  const handlePasswordChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const passwordTyped = target.value;
 
     setPassword(passwordTyped);
   }, []);
 
   const handleHelpModalOpen = useCallback(() => {
-    modalRef.current.openModal();
+    if (modalRef.current) {
+      modalRef.current.openModal();
+    }
   }, [modalRef]);
 
   const userDataIsValid = useMemo(() => {
@@ -143,6 +145,6 @@ function Register() {
 
     </div>
   );
-}
+};
 
 export default Register;
