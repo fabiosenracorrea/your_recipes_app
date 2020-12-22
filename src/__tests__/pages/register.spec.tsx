@@ -93,6 +93,15 @@ describe('Register page structure testing', () => {
 
 describe('Login page logic testing', () => {
   it('should correctly save user name into local storage', () => {
+    const localStorageFake = new LocalStorageFake();
+
+    Object.defineProperty(global, 'localStorage', {
+      value: localStorageFake,
+      writable: true,
+    });
+
+    jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
+
     screen = render(
       <MemoryRouter>
         <AppProvider>
@@ -101,15 +110,6 @@ describe('Login page logic testing', () => {
       </MemoryRouter>,
     );
 
-    const localStorageFake = new LocalStorageFake();
-
-    Object.defineProperty(global, 'localStorage', {
-      value: localStorageFake,
-      writable: true,
-    });
-
-    jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
-    jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
     const localGetItem = jest.spyOn(localStorageFake, 'getItem');
     const localSetItem = jest.spyOn(localStorageFake, 'setItem');
 
@@ -141,6 +141,9 @@ describe('Login page logic testing', () => {
 
   it('should redirect user to the login page after registered', () => {
     const history = createMemoryHistory();
+
+    jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
+    jest.spyOn(JSON, 'parse').mockImplementation(() => ({}));
 
     screen = render(
       <Router history={ history }>
