@@ -27,3 +27,7 @@ export interface iSearchOptions {
   value: string;
   token: string;
 }
+
+export interface iBasicPageProps {
+  pageType: tRecipeTypes;
+}
