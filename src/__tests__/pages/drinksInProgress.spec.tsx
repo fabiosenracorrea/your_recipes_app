@@ -26,6 +26,8 @@ describe('food details page structure testing', () => {
     localStorageFake = new LocalStorageFake();
 
     localStorageFake.setItem('inProgressRecipes', inProgressRecipes);
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
@@ -285,6 +287,9 @@ describe('app navigation to test session recipe info saving', () => {
     };
 
     localStorageFake.setItem('inProgressRecipes', fakeProgress);
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
+
     jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
     jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
 
