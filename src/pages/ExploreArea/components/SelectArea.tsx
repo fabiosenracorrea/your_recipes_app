@@ -1,9 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { ChangeEvent } from 'react';
 
 import { useExplore } from '../../../hooks/explore';
 
-function SelectArea({ areaSelected, handleAreaChange }) {
+interface iSelectProps {
+  areaSelected: string;
+  handleAreaChange(inputChangeEvent: ChangeEvent<HTMLSelectElement>): void;
+}
+
+const SelectArea: React.FC<iSelectProps> = ({ areaSelected, handleAreaChange }) => {
   const { foodAreas } = useExplore();
 
   return (
@@ -32,11 +36,6 @@ function SelectArea({ areaSelected, handleAreaChange }) {
       </select>
     </div>
   );
-}
-
-SelectArea.propTypes = {
-  areaSelected: PropTypes.string.isRequired,
-  handleAreaChange: PropTypes.func.isRequired,
 };
 
 export default SelectArea;

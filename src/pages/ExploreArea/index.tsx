@@ -1,7 +1,6 @@
 import React, {
-  useCallback, useEffect, useState, useMemo,
+  useCallback, useEffect, useState, useMemo, ChangeEvent,
 } from 'react';
-import PropTypes from 'prop-types';
 
 import { useExplore } from '../../hooks/explore';
 import { useRecipes } from '../../hooks/recipes';
@@ -16,15 +15,18 @@ import RecipeCards from '../../components/RecipeCards';
 import LoadingBook from '../../components/LoadingBook';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
+import { iBasicPageProps, iSearchOptions } from '../../@types/appTypes';
+
 import './styles.css';
+import { iGlobalRecipe } from '../../@types/apiTypes';
 
 const noFilterOption = {
   option: 'name',
   value: '',
   token: '1',
-};
+} as iSearchOptions;
 
-function ExploreArea({ pageType }) {
+const ExploreArea: React.FC<iBasicPageProps> = ({ pageType }) => {
   const [areaSelected, setAreaSelected] = useState('All');
 
   const {
@@ -42,12 +44,10 @@ function ExploreArea({ pageType }) {
   // this effect makes sure we load recipes by area accordingly
   // as the user changes the selected area.
   useEffect(() => {
-    if (!loadingAreas) {
-      if (areaSelected === 'All') {
-        appSearch(pageType, noFilterOption);
-      } else {
-        loadFoodsByArea(areaSelected);
-      }
+    if (areaSelected === 'All') {
+      appSearch(pageType, noFilterOption);
+    } else {
+      loadFoodsByArea(areaSelected);
     }
   }, [areaSelected, loadingAreas, pageType, loadFoodsByArea, appSearch]);
 
@@ -70,7 +70,7 @@ function ExploreArea({ pageType }) {
     resetPaging,
   } = usePaging(currentRecipesByArea);
 
-  const handleAreaChange = useCallback(({ target }) => {
+  const handleAreaChange = useCallback(({ target }: ChangeEvent<HTMLSelectElement>) => {
     const { value: area } = target;
 
     setAreaSelected(area);
@@ -95,7 +95,7 @@ function ExploreArea({ pageType }) {
           <LoadingSpinner />
         ) : (
           <div className="recipe-page-card-container">
-            <RecipeCards recipes={ shownRecipesByPage } type={ pageType } />
+            <RecipeCards recipes={ shownRecipesByPage as iGlobalRecipe[] } type={ pageType } />
 
             <Paging
               handlePageChange={ handlePageChange }
@@ -112,10 +112,6 @@ function ExploreArea({ pageType }) {
 
     </div>
   );
-}
-
-ExploreArea.propTypes = {
-  pageType: PropTypes.string.isRequired,
 };
 
 export default ExploreArea;
