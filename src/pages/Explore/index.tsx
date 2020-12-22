@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar';
 
 import './styles.css';
 
-function Explore() {
+const Explore: React.FC = () => {
   return (
     <div className="explore-page">
       <Header pageTitle="Explore" />
@@ -40,6 +40,6 @@ function Explore() {
 
     </div>
   );
-}
+};
 
 export default Explore;
