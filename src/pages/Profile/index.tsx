@@ -11,7 +11,7 @@ import loginLogo from '../../images/login-logo.png';
 
 import './styles.css';
 
-function Profile() {
+const Profile: React.FC = () => {
   const { user, signOut } = useAuth();
 
   const { push } = useHistory();
@@ -68,6 +68,6 @@ function Profile() {
       <Navbar />
     </div>
   );
-}
+};
 
 export default Profile;
