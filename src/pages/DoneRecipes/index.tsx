@@ -49,7 +49,7 @@ const DoneRecipes: React.FC = () => {
         ) : (
           <div className="done-recipes-container">
             {(filteredItems as iDoneRecipe[]).map((recipe, index) => (
-              <div className="done-recipe-card" key={ recipe.doneDate }>
+              <div className="done-recipe-card" key={ `${recipe.name}-${recipe.id}` }>
                 <Link to={ `/${recipe.type}/${recipe.id}` }>
                   <img
                     src={ recipe.image }
