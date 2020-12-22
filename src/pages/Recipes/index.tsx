@@ -15,6 +15,7 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 import { iBasicPageProps } from '../../@types/appTypes';
 
 import './styles.css';
+import { iGlobalRecipe } from '../../@types/apiTypes';
 
 const Recipes: React.FC<iBasicPageProps> = ({ pageType }) => {
   const [filterSelected, setFilterSelected] = useState('All');
@@ -86,7 +87,7 @@ const Recipes: React.FC<iBasicPageProps> = ({ pageType }) => {
           <LoadingSpinner />
         ) : (
           <div className="recipe-page-card-container">
-            <RecipeCards recipes={ shownRecipesByPage } type={ pageType } />
+            <RecipeCards recipes={ shownRecipesByPage as iGlobalRecipe[] } type={ pageType } />
 
             <Paging
               handlePageChange={ handlePageChange }
