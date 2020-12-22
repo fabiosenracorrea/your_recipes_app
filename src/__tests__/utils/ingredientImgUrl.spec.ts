@@ -31,7 +31,7 @@ describe('getIngredientUrl function testing', () => {
     });
   });
 
-  it('should return null on any other type, cap-sensitive and typos included', () => {
+  it('should return undefined on any other type, cap-sensitive and typos included', () => {
     const typos = [
       'cocktail', 'Cocktails', 'cocktai', 'meal', 'MEALS', 'Meals', 'wrong',
     ];
@@ -41,7 +41,7 @@ describe('getIngredientUrl function testing', () => {
     typos.forEach((typo) => {
       const url = getIngredientUrl(typo, fakeIngredient);
 
-      expect(url).toBeNull();
+      expect(url).toBeUndefined();
     });
   });
 });

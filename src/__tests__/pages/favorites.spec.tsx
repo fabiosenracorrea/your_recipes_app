@@ -3,7 +3,7 @@ import { MemoryRouter, Router } from 'react-router-dom';
 import { createMemoryHistory, History } from 'history';
 import { render, fireEvent, RenderResult } from '@testing-library/react';
 
-import { iFavoriteRecipe } from '../../@types/appTypes'
+import { iFavoriteRecipe } from '../../@types/appTypes';
 
 import Favorites from '../../pages/Favorites';
 import AppProvider from '../../hooks';

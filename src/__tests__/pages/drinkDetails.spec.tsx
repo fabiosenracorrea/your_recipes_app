@@ -3,7 +3,7 @@ import { Router, Route } from 'react-router-dom';
 import { createMemoryHistory, History } from 'history';
 import { render, fireEvent, waitForElement, RenderResult } from '@testing-library/react';
 
-import { iFavoriteRecipe } from '../../@types/appTypes'
+import { iFavoriteRecipe } from '../../@types/appTypes';
 
 import RecipeDetails from '../../pages/RecipeDetails';
 import AppProvider from '../../hooks';
@@ -70,7 +70,6 @@ describe('food details logic testing', () => {
       writable: true,
     });
 
-    jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
     jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
 
     fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockedFetch);
@@ -199,11 +198,14 @@ describe('continue recipe test', () => {
     };
 
     localStorageFake.setItem('inProgressRecipes', fakeInProgressRecipes);
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
       writable: true,
     });
+
     jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
     jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
 
@@ -245,14 +247,16 @@ describe('start/continue hidden test', () => {
       alcoholicOrNot: drinkRendered.strAlcoholic,
       area: '',
       category: drinkRendered.strCategory,
-      doneDate: '2020-11-23T22:32:31.616Z',
+      doneDate: '12/05/2020 - 12:45',
       image: drinkRendered.strDrinkThumb,
       name: drinkRendered.strDrink,
       tags: [],
-      type: 'bebida',
+      type: 'cocktails',
     }];
 
     localStorageFake.setItem('doneRecipes', fakeDoneRecipes);
+    localStorageFake.setItem('inProgressRecipes', {});
+    localStorageFake.setItem('favoriteRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
@@ -297,8 +301,9 @@ describe('food details navigation', () => {
       writable: true,
     });
 
-    jest.spyOn(JSON, 'parse').mockImplementation((value) => value);
-    jest.spyOn(JSON, 'stringify').mockImplementation((value) => value);
+    localStorageFake.setItem('inProgressRecipes', {});
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
 
     fakeFetch = jest.spyOn(global, 'fetch').mockImplementation(mockedFetch);
 
@@ -340,6 +345,8 @@ describe('food details navigation', () => {
     };
 
     localStorageFake.setItem('inProgressRecipes', fakeInProgressRecipes);
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,

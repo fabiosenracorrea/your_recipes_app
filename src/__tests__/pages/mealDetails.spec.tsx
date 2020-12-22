@@ -22,7 +22,7 @@ let fakeFetch: jest.SpyInstance;
 const mealRendered = oneMeal.meals[0];
 const recommendationDrinks = drinks.drinks;
 
-jest.mock('../../utils/shareRecipe.js', () => ({
+jest.mock('../../utils/shareRecipe.ts', () => ({
   shareWhenSingleRecipePresent: jest.fn((_, __, callback) => callback(true)),
 }));
 
@@ -69,6 +69,10 @@ describe('food details page structure testing', () => {
 describe('food details logic testing', () => {
   beforeEach(async () => {
     localStorageFake = new LocalStorageFake();
+
+    localStorageFake.setItem('favoriteRecipes', []);
+    localStorageFake.setItem('inProgressRecipes', {});
+    localStorageFake.setItem('doneRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
@@ -224,6 +228,8 @@ describe('continue recipe test', () => {
     };
 
     localStorageFake.setItem('inProgressRecipes', fakeInProgressRecipes);
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
@@ -278,6 +284,8 @@ describe('start/continue hidden test', () => {
     }];
 
     localStorageFake.setItem('doneRecipes', fakeDoneRecipes);
+    localStorageFake.setItem('inProgressRecipes', {});
+    localStorageFake.setItem('favoriteRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
@@ -316,6 +324,10 @@ describe('start/continue hidden test', () => {
 describe('food details navigation', () => {
   it('should navigate to in-progress page when clicked on start button', async () => {
     localStorageFake = new LocalStorageFake();
+
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
+    localStorageFake.setItem('inProgressRecipes', {});
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
@@ -365,6 +377,8 @@ describe('food details navigation', () => {
     };
 
     localStorageFake.setItem('inProgressRecipes', fakeInProgressRecipes);
+    localStorageFake.setItem('doneRecipes', []);
+    localStorageFake.setItem('favoriteRecipes', []);
 
     Object.defineProperty(global, 'localStorage', {
       value: localStorageFake,
