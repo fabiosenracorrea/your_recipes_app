@@ -15,10 +15,14 @@ import heartIcon from '../../images/blackHeartIcon.svg';
 
 import './styles.css';
 
-function Favorites() {
+interface iCopiedLinkTrack {
+  [id: string]: boolean;
+}
+
+const Favorites: React.FC = () => {
   const { favoriteRecipes, updateFavoriteRecipes } = useRecipes();
 
-  const [copyLink, setCopyLink] = useState({});
+  const [copyLink, setCopyLink] = useState<iCopiedLinkTrack>({});
 
   const {
     filter,
@@ -27,10 +31,12 @@ function Favorites() {
     handleFilterChange,
   } = useFilterByType(favoriteRecipes);
 
-  const handleRecipeUnfavorite = useCallback((id) => {
-    const dataToUnfavorite = { id };
+  const handleRecipeUnfavorite = useCallback((id: string) => {
+    const dataToUnfavorite = favoriteRecipes.find((recipe) => recipe.id === id);
 
-    updateFavoriteRecipes(dataToUnfavorite, true);
+    if (dataToUnfavorite) {
+      updateFavoriteRecipes(dataToUnfavorite, true);
+    }
   }, [updateFavoriteRecipes]);
 
   return (
@@ -96,7 +102,7 @@ function Favorites() {
 
                   <button
                     type="button"
-                    onClick={ () => handleRecipeUnfavorite(recipe.id, recipe.type) }
+                    onClick={ () => handleRecipeUnfavorite(recipe.id) }
                   >
                     <img
                       data-testid={ `${index}-horizontal-favorite-btn` }
@@ -114,6 +120,6 @@ function Favorites() {
 
     </div>
   );
-}
+};
 
 export default Favorites;
