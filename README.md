@@ -14,6 +14,10 @@ As this application is more of a concept, the app has a fake login and register 
 
 The whole application is glued together strongly with React's [context API](https://reactjs.org/docs/context.html) and custom hooks. The main idea here is to develop more and more features tied to these fundamental concepts while still delivering the website in it's minimalist version. Notice how we don't have complex animations or element disposition on screen. The main goal here is to present a simple and working recipes app for your kitchen adventures.
 
+### Typescript support
+
+This application is currently in the process of migration to [Typescript](https://www.typescriptlang.org/). You can check it's pull request to review the code migration. The merge will happen as soon as compatibility between React Scripts, Jest & etc are sorted out to production state.
+
 ### Feedback
 
 As this is a project that should be constantly evolving, if you do have any questions or suggestions, please, send them in! I'll be more than happy to correct or improve anything!
