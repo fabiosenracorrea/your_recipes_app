@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 
-function getSvgPath() {
+function getSvgPath(): ReactElement {
   return (
     <path
       // eslint-disable-next-line
