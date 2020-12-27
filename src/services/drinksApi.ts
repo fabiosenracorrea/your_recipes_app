@@ -108,7 +108,7 @@ export async function fetchDrinkDetails(drinkID: string, token: string): Promise
   return drinkDetails;
 }
 
-export async function fetchRandomDrink(token: string): Promise<[id: string, meal: iGlobalRecipe]> {
+export async function fetchRandomDrink(token: string): Promise<[string, iGlobalRecipe]> {
   const urlToFetch = `${baseURL}/${token}/${RANDOM}`;
 
   const data = await fetch(urlToFetch);

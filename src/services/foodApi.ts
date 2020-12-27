@@ -43,6 +43,7 @@ export async function fetchMealsSearch({ option, value, token }: iMealSearchOpti
   const urlToFetch = `${baseURL}/${token}/${searchKey}=${value}`;
 
   const data = await fetch(urlToFetch);
+
   const { meals } = await data.json();
 
   return meals || [];
@@ -66,6 +67,7 @@ export async function fetchFoodsCategories(token: string): Promise<string[]> {
   const urlToFetch = `${baseURL}/${token}/${CATEGORIES_KEY_VALUE}`;
 
   const data = await fetch(urlToFetch);
+
   const { meals } = await data.json();
 
   const categories = meals as tCategories;
@@ -95,7 +97,7 @@ export async function fetchMealDetails(mealID: string, token: string): Promise<i
   return mealDetails;
 }
 
-export async function fetchRandomMeal(token: string): Promise<[id: string, meal: iGlobalRecipe]> {
+export async function fetchRandomMeal(token: string): Promise<[string, iGlobalRecipe]> {
   const urlToFetch = `${baseURL}/${token}/${RANDOM}`;
 
   const data = await fetch(urlToFetch);
