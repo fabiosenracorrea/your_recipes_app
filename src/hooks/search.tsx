@@ -8,7 +8,7 @@ import { fetchDrinksSearch } from '../services/drinksApi';
 
 import { tRecipeTypes, iSearchOptions } from '../@types/appTypes';
 
-const getID = {
+const recipesIDAccess = {
   meals: 'idMeal',
   cocktails: 'idDrink',
 };
@@ -71,7 +71,6 @@ const SearchProvider: React.FC = ({ children }) => {
       const recipesSearched = await fetchRecipes(userSearch);
 
       if (!recipesSearched.length) {
-        // eslint-disable-next-line
         alert("Sorry, we couldn't find any recipe with your search.");
 
         return;
@@ -81,17 +80,15 @@ const SearchProvider: React.FC = ({ children }) => {
 
       if (singleRecipeReturned) {
         const firstItem = recipesSearched[0];
-        const correctIDAccess = getID[type] as tRecipeID;
+        const correctIDAccess = recipesIDAccess[type] as tRecipeID;
         firstItemID = firstItem[correctIDAccess];
       }
 
       updateRecipes(type, recipesSearched);
 
-      setLoadingRecipes(false);
     } catch (err) {
       console.log(err);
 
-      // eslint-disable-next-line
       alert('An error happened when searching. Please try again.');
     } finally {
       setLoadingRecipes(false);
