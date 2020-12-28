@@ -59,11 +59,7 @@ const AuthProvider: React.FC = ({ children }) => {
       userDataToPersist = { ...userDataToPersist, name: userName };
     }
 
-    setUserData((prevData: iUser) => ({
-      ...prevData,
-      ...userDataToPersist,
-    }));
-
+    setUserData(userDataToPersist);
     setUserToken(AUTH_TOKEN);
 
     localStorage.setItem('user', JSON.stringify(userDataToPersist));
