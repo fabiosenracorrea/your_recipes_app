@@ -69,7 +69,7 @@ export default function usePaging(recipes: iGlobalRecipe[] | string[]): iPaging 
   }, [pageGenerator]);
 
   const shownRecipesByPage = useMemo(() => {
-    const recipesToShow = (recipes as string[]).filter((_, index) => {
+    const recipesToShow = (recipes as any[]).filter((_, index) => {
       const recipesPerPage = 12;
 
       const MIN_INDEX = currentPage * recipesPerPage - recipesPerPage;
