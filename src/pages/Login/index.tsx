@@ -20,16 +20,6 @@ const Login: React.FC = () => {
   const { signIn } = useAuth();
   const { push } = useHistory();
 
-  const handleSubmit = useCallback((formEvent: FormEvent) => {
-    formEvent.preventDefault();
-
-    const validUserData = { email, password };
-
-    signIn(validUserData);
-
-    push('/meals');
-  }, [email, password, push, signIn]);
-
   const handleEmailChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const emailTyped = target.value;
 
@@ -57,6 +47,18 @@ const Login: React.FC = () => {
 
     return (emailIsValid && passwordIsValid);
   }, [email, password]);
+
+  const handleSubmit = useCallback((formEvent: FormEvent) => {
+    formEvent.preventDefault();
+
+    if (userDataIsValid) {
+      const validUserData = { email, password };
+
+      signIn(validUserData);
+
+      push('/meals');
+    }
+  }, [email, password, push, signIn]);
 
   return (
     <div className="login-page">
