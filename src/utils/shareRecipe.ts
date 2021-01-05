@@ -4,11 +4,11 @@ import { tRecipeTypes } from '../@types/appTypes';
 
 type updateCopiedStateCallback = (check: boolean) => void;
 
-interface multipleIDTrack {
+interface iMultipleIDTrack {
   [id: string]: boolean;
 }
 
-type updateMultipleCopiedStateCallback = (track: multipleIDTrack) => void;
+type updateMultipleCopiedStateCallback = (track: iMultipleIDTrack) => void;
 
 export function shareWhenSingleRecipePresent(
   id: string,
