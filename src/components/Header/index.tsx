@@ -9,7 +9,8 @@ import { AiOutlineUser } from 'react-icons/ai';
 import { useAuth } from '../../hooks/auth';
 import { useSearch } from '../../hooks/search';
 
-import { tRecipeTypes, iSearchOptions } from '../../@types/appTypes';
+import { tRecipeTypes } from '../../@types/appTypes';
+import { iSearchOptions } from '../../@types/apiTypes';
 
 import './styles.css';
 

@@ -15,10 +15,10 @@ import RecipeCards from '../../components/RecipeCards';
 import LoadingBook from '../../components/LoadingBook';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
-import { iBasicPageProps, iSearchOptions } from '../../@types/appTypes';
+import { iBasicPageProps } from '../../@types/appTypes';
+import { iSearchOptions, iGlobalRecipe } from '../../@types/apiTypes';
 
 import './styles.css';
-import { iGlobalRecipe } from '../../@types/apiTypes';
 
 const noFilterOption = {
   option: 'name',

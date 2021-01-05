@@ -12,7 +12,6 @@ export interface ModalRef {
   openModal(): void;
 }
 
-// eslint-disable-next-line
 const AppModal: React.ForwardRefRenderFunction<ModalRef, iModalProps> = ({ title, description }, ref) => {
   const [visible, setVisible] = useState(false);
 

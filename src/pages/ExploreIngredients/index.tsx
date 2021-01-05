@@ -12,7 +12,8 @@ import LoadingBook from '../../components/LoadingBook';
 
 import getIngredientUrl from './utils/ingredientImageUrl';
 
-import { iBasicPageProps, iSearchOptions } from '../../@types/appTypes';
+import { iBasicPageProps } from '../../@types/appTypes';
+import { iSearchOptions } from '../../@types/apiTypes';
 
 import './styles.css';
 
