@@ -22,12 +22,6 @@ export interface iDoneRecipe {
   doneDate: string;
 }
 
-export interface iSearchOptions {
-  option: 'name' | 'first_letter' | 'ingredients';
-  value: string;
-  token: string;
-}
-
 export interface iBasicPageProps {
   pageType: tRecipeTypes;
 }

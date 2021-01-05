@@ -6,7 +6,8 @@ import { useAuth } from './auth';
 import { fetchMealsSearch } from '../services/foodApi';
 import { fetchDrinksSearch } from '../services/drinksApi';
 
-import { tRecipeTypes, iSearchOptions } from '../@types/appTypes';
+import { tRecipeTypes } from '../@types/appTypes';
+import { iSearchOptions } from '../@types/apiTypes';
 
 const recipesIDAccess = {
   meals: 'idMeal',
