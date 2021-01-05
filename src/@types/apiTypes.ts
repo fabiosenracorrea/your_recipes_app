@@ -1,3 +1,31 @@
+const searchOptionsModel = {
+  name: '',
+  first_letter: '',
+  ingredients: '',
+}
+
+export interface iSearchOptions {
+  option: keyof typeof searchOptionsModel;
+  value: string;
+  token: string;
+}
+
+export type tCategories = Array<{ strCategory: string }>;
+
+export type tAreas = Array<{ strArea: string }>;
+
+export interface iDrinkIngredient {
+  strIngredient1: string;
+  idIngredient: string;
+  strDescription: string;
+}
+
+export interface iMealIngredient {
+  strIngredient: string;
+  idIngredient: string;
+  strDescription: string;
+}
+
 export interface iDrink {
   idDrink: string;
   strDrink: string;
