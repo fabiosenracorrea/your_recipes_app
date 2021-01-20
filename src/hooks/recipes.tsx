@@ -69,18 +69,22 @@ const RecipeProvider: React.FC = ({ children }) => {
   useEffect(() => {
     async function getCategories(): Promise<void> {
       setLoadingFilters(true);
-      const foodCategories = await fetchFoodsCategories(userToken);
-      const drinkCategories = await fetchDrinksCategories(userToken);
 
-      const categories = {
-        meals: foodCategories,
-        cocktails: drinkCategories,
-      };
+      try {
+        const foodCategories = await fetchFoodsCategories(userToken);
+        const drinkCategories = await fetchDrinksCategories(userToken);
 
-      setCurrentFilters(categories);
+        const categories = {
+          meals: foodCategories,
+          cocktails: drinkCategories,
+        };
 
-      const API_DELAY = 1000;
-      setTimeout(() => setLoadingFilters(false), API_DELAY);
+        setCurrentFilters(categories);
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setLoadingFilters(false);
+      }
     }
 
     getCategories();
@@ -96,16 +100,20 @@ const RecipeProvider: React.FC = ({ children }) => {
   const updateFilteredRecipes = useCallback(async (type: tRecipeTypes, category: string) => {
     setLoadingByCategory(true);
 
-    const fetchCategories = fetchCategoryOptions[type];
+    try {
+      const fetchCategories = fetchCategoryOptions[type];
 
-    const recipesByCategory = await fetchCategories(category, userToken);
+      const recipesByCategory = await fetchCategories(category, userToken);
 
-    setCurrentFilteredRecipes((oldRecipes) => ({
-      ...oldRecipes,
-      [type]: recipesByCategory,
-    }));
-
-    setLoadingByCategory(false);
+      setCurrentFilteredRecipes((oldRecipes) => ({
+        ...oldRecipes,
+        [type]: recipesByCategory,
+      }));
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoadingByCategory(false);
+    }
   }, [userToken]);
 
   const updateFavoriteRecipes = useCallback(({

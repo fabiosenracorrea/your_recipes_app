@@ -1,47 +1,29 @@
-import { iGlobalRecipe } from '../@types/apiTypes';
+import {
+  NAME_KEY,
+  FILTER_CATEGORIES_KEY,
+  RANDOM,
+  ID_KEY,
+  CATEGORIES_KEY_VALUE,
+  INGREDIENTS_KEY_VALUE,
+  searchOptions
+} from './baseSearchOptions';
+
+import { iGlobalRecipe, iSearchOptions, tCategories, iDrinkIngredient } from '../@types/apiTypes';
 
 const baseURL = 'https://www.thecocktaildb.com/api/json/v1';
 
-const NAME_KEY = 'search.php?s'; // search bar
-const FIRST_LETTER_KEY = 'search.php?f'; // search bar
-const FILTER_INGREDIENTS_KEY = 'filter.php?i'; // search bar
-const FILTER_CATEGORIES_KEY = 'filter.php?c';
-const RANDOM = 'random.php';
+async function getDrinkData(urlToFetch: string): Promise<any> {
+  const data = await fetch(urlToFetch);
+  const { drinks } = await data.json();
 
-const ID_KEY = 'lookup.php?i';
-// const INGREDIENTS_KEY = 'i';
-// const AREA_KEY = 'f';
-
-const CATEGORIES_KEY_VALUE = 'list.php?c=list';
-// const AREA_KEY_VALUE = 'list.php?a=list';
-const INGREDIENTS_KEY_VALUE = 'list.php?i=list';
-
-export const searchOptions = {
-  name: NAME_KEY,
-  first_letter: FIRST_LETTER_KEY,
-  ingredients: FILTER_INGREDIENTS_KEY,
-};
-
-interface iDrinkSearchOptions {
-  option: keyof typeof searchOptions;
-  value: string;
-  token: string;
+  return drinks;
 }
 
-type tCategories = Array<{ strCategory: string }>;
-
-interface iIngredients {
-  strIngredient1: string;
-  idIngredient: string;
-  strDescription: string;
-}
-
-export async function fetchDrinksSearch({ option, value, token }: iDrinkSearchOptions): Promise<iGlobalRecipe[]> {
+export async function fetchDrinksSearch({ option, value, token }: iSearchOptions): Promise<iGlobalRecipe[]> {
   const searchKey = searchOptions[option];
   const urlToFetch = `${baseURL}/${token}/${searchKey}=${value}`;
 
-  const data = await fetch(urlToFetch);
-  const { drinks } = await data.json();
+  const drinks = await getDrinkData(urlToFetch)
 
   return drinks || [];
 }
@@ -49,8 +31,7 @@ export async function fetchDrinksSearch({ option, value, token }: iDrinkSearchOp
 export async function fetchDrinkRecommendations(token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${NAME_KEY}=`;
 
-  const data = await fetch(urlToFetch);
-  const { drinks } = await data.json();
+  const drinks = await getDrinkData(urlToFetch)
 
   const recommendations = drinks as iGlobalRecipe[];
 
@@ -60,14 +41,7 @@ export async function fetchDrinkRecommendations(token: string): Promise<iGlobalR
   return toDisplayRecommendations || [];
 }
 
-export async function fetchDrinksCategories(token: string): Promise<string[]> {
-  const urlToFetch = `${baseURL}/${token}/${CATEGORIES_KEY_VALUE}`;
-
-  const data = await fetch(urlToFetch);
-  const { drinks } = await data.json();
-
-  const categories = drinks as tCategories;
-
+function parseCategoriesNames(categories: tCategories): string[] {
   const categoriesList = categories.map((category) => {
     let categoryName = category.strCategory;
     const unknownRegex = new RegExp('/unknown', 'i');
@@ -82,17 +56,34 @@ export async function fetchDrinksCategories(token: string): Promise<string[]> {
   return categoriesList;
 }
 
-export async function fetchDrinksByCategory(category: string, token: string): Promise<iGlobalRecipe[]> {
+export async function fetchDrinksCategories(token: string): Promise<string[]> {
+  const urlToFetch = `${baseURL}/${token}/${CATEGORIES_KEY_VALUE}`;
+
+  const drinks = await getDrinkData(urlToFetch)
+
+  const categories = drinks as tCategories;
+
+  const categoriesList = parseCategoriesNames(categories)
+
+  return categoriesList;
+}
+
+function curateCategory(category: string): string {
   let curatedCategory = category;
 
   if (curatedCategory.match('Other')) {
     curatedCategory = 'Other/Unknown';
   }
 
+  return curatedCategory;
+}
+
+export async function fetchDrinksByCategory(category: string, token: string): Promise<iGlobalRecipe[]> {
+  const curatedCategory = curateCategory(category);
+
   const urlToFetch = `${baseURL}/${token}/${FILTER_CATEGORIES_KEY}=${curatedCategory}`;
 
-  const data = await fetch(urlToFetch);
-  const { drinks } = await data.json();
+  const drinks = await getDrinkData(urlToFetch)
 
   return drinks || [];
 }
@@ -100,8 +91,7 @@ export async function fetchDrinksByCategory(category: string, token: string): Pr
 export async function fetchDrinkDetails(drinkID: string, token: string): Promise<iGlobalRecipe> {
   const urlToFetch = `${baseURL}/${token}/${ID_KEY}=${drinkID}`;
 
-  const data = await fetch(urlToFetch);
-  const { drinks } = await data.json();
+  const drinks = await getDrinkData(urlToFetch)
 
   const drinkDetails = drinks[0];
 
@@ -111,8 +101,7 @@ export async function fetchDrinkDetails(drinkID: string, token: string): Promise
 export async function fetchRandomDrink(token: string): Promise<[string, iGlobalRecipe]> {
   const urlToFetch = `${baseURL}/${token}/${RANDOM}`;
 
-  const data = await fetch(urlToFetch);
-  const { drinks } = await data.json();
+  const drinks = await getDrinkData(urlToFetch)
 
   const randomDrink = drinks[0];
   const { idDrink } = randomDrink;
@@ -120,14 +109,7 @@ export async function fetchRandomDrink(token: string): Promise<[string, iGlobalR
   return [idDrink, randomDrink];
 }
 
-export async function fetchDrinkIngredients(token: string): Promise<string[]> {
-  const urlToFetch = `${baseURL}/${token}/${INGREDIENTS_KEY_VALUE}`;
-
-  const data = await fetch(urlToFetch);
-  const { drinks } = await data.json();
-
-  const ingredients = drinks as iIngredients[];
-
+function parseIngredientNames(ingredients: iDrinkIngredient[]): string[] {
   const ingredientNames = ingredients.map((ingredient) => {
     const ingredientNameKey = 'strIngredient1';
 
@@ -135,6 +117,18 @@ export async function fetchDrinkIngredients(token: string): Promise<string[]> {
 
     return ingredientName;
   });
+
+  return ingredientNames;
+}
+
+export async function fetchDrinkIngredients(token: string): Promise<string[]> {
+  const urlToFetch = `${baseURL}/${token}/${INGREDIENTS_KEY_VALUE}`;
+
+  const drinks = await getDrinkData(urlToFetch)
+
+  const ingredients = drinks as iDrinkIngredient[];
+
+  const ingredientNames = parseIngredientNames(ingredients);
 
   return ingredientNames;
 }

@@ -18,18 +18,6 @@ const Register: React.FC = () => {
 
   const { push } = useHistory();
 
-  const handleSubmit = useCallback((formEvent) => {
-    formEvent.preventDefault();
-
-    const previousRegister = JSON.parse(localStorage.getItem('userNames') || '{}');
-
-    previousRegister[email] = name;
-
-    localStorage.setItem('userNames', JSON.stringify(previousRegister));
-
-    push('/');
-  }, [email, push, name]);
-
   const handleNameChange = useCallback(({ target }: ChangeEvent<HTMLInputElement>) => {
     const nameTyped = target.value;
 
@@ -63,6 +51,20 @@ const Register: React.FC = () => {
 
     return (emailIsValid && passwordIsValid && name);
   }, [email, password, name]);
+
+  const handleSubmit = useCallback((formEvent) => {
+    formEvent.preventDefault();
+
+    if (userDataIsValid) {
+      const previousRegister = JSON.parse(localStorage.getItem('userNames') || '{}');
+
+      previousRegister[email] = name;
+
+      localStorage.setItem('userNames', JSON.stringify(previousRegister));
+
+      push('/');
+    }
+  }, [email, push, name]);
 
   return (
     <div className="register-page">

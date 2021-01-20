@@ -76,11 +76,7 @@ const CookProvider: React.FC = ({ children }) => {
   const [doneRecipes, setDoneRecipes] = useState<iDoneRecipe[]>(() => {
     const recipesDone = JSON.parse(localStorage.getItem('doneRecipes') || '[]');
 
-    if (recipesDone) {
-      return recipesDone;
-    }
-
-    return [];
+    return recipesDone;
   });
 
   const { userToken } = useAuth();

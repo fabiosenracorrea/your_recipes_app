@@ -1,50 +1,31 @@
-import { iGlobalRecipe } from '../@types/apiTypes';
+import {
+NAME_KEY,
+FILTER_CATEGORIES_KEY,
+FILTER_AREA_KEY,
+RANDOM,
+ID_KEY,
+CATEGORIES_KEY_VALUE,
+AREA_KEY_VALUE,
+INGREDIENTS_KEY_VALUE,
+searchOptions
+} from './baseSearchOptions';
+
+import { iGlobalRecipe, iMealIngredient, tAreas, tCategories, iSearchOptions } from '../@types/apiTypes';
 
 const baseURL = 'https://www.themealdb.com/api/json/v1';
-// const searchBase = 'search.php?';
 
-const NAME_KEY = 'search.php?s'; // search bar
-const FIRST_LETTER_KEY = 'search.php?f'; // search bar
-const FILTER_INGREDIENTS_KEY = 'filter.php?i'; // search bar
-const FILTER_CATEGORIES_KEY = 'filter.php?c';
-const FILTER_AREA_KEY = 'filter.php?a';
-const RANDOM = 'random.php';
+async function getMealData(urlToFetch: string): Promise<any> {
+  const data = await fetch(urlToFetch);
+  const { meals } = await data.json();
 
-const ID_KEY = 'lookup.php?i';
-
-const CATEGORIES_KEY_VALUE = 'list.php?c=list';
-const AREA_KEY_VALUE = 'list.php?a=list';
-const INGREDIENTS_KEY_VALUE = 'list.php?i=list';
-
-export const searchOptions = {
-  name: NAME_KEY,
-  first_letter: FIRST_LETTER_KEY,
-  ingredients: FILTER_INGREDIENTS_KEY,
-};
-
-interface iMealSearchOptions {
-  option: keyof typeof searchOptions;
-  value: string;
-  token: string;
+  return meals;
 }
 
-type tAreas = Array<{ strArea: string }>;
-
-type tCategories = Array<{ strCategory: string }>;
-
-interface iIngredients {
-  strIngredient: string;
-  idIngredient: string;
-  strDescription: string;
-}
-
-export async function fetchMealsSearch({ option, value, token }: iMealSearchOptions): Promise<iGlobalRecipe[]> {
+export async function fetchMealsSearch({ option, value, token }: iSearchOptions): Promise<iGlobalRecipe[]> {
   const searchKey = searchOptions[option];
   const urlToFetch = `${baseURL}/${token}/${searchKey}=${value}`;
 
-  const data = await fetch(urlToFetch);
-
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   return meals || [];
 }
@@ -52,8 +33,7 @@ export async function fetchMealsSearch({ option, value, token }: iMealSearchOpti
 export async function fetchFoodRecommendations(token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${NAME_KEY}=`;
 
-  const data = await fetch(urlToFetch);
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   const recommendations = meals as iGlobalRecipe[];
 
@@ -66,9 +46,7 @@ export async function fetchFoodRecommendations(token: string): Promise<iGlobalRe
 export async function fetchFoodsCategories(token: string): Promise<string[]> {
   const urlToFetch = `${baseURL}/${token}/${CATEGORIES_KEY_VALUE}`;
 
-  const data = await fetch(urlToFetch);
-
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   const categories = meals as tCategories;
 
@@ -80,8 +58,7 @@ export async function fetchFoodsCategories(token: string): Promise<string[]> {
 export async function fetchMealsByCategory(category: string, token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${FILTER_CATEGORIES_KEY}=${category}`;
 
-  const data = await fetch(urlToFetch);
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   return meals || [];
 }
@@ -89,8 +66,7 @@ export async function fetchMealsByCategory(category: string, token: string): Pro
 export async function fetchMealDetails(mealID: string, token: string): Promise<iGlobalRecipe> {
   const urlToFetch = `${baseURL}/${token}/${ID_KEY}=${mealID}`;
 
-  const data = await fetch(urlToFetch);
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   const mealDetails = meals[0];
 
@@ -100,8 +76,7 @@ export async function fetchMealDetails(mealID: string, token: string): Promise<i
 export async function fetchRandomMeal(token: string): Promise<[string, iGlobalRecipe]> {
   const urlToFetch = `${baseURL}/${token}/${RANDOM}`;
 
-  const data = await fetch(urlToFetch);
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   const randomMeal = meals[0];
   const { idMeal } = randomMeal;
@@ -109,14 +84,7 @@ export async function fetchRandomMeal(token: string): Promise<[string, iGlobalRe
   return [idMeal, randomMeal];
 }
 
-export async function fetchMealIngredients(token: string): Promise<string[]> {
-  const urlToFetch = `${baseURL}/${token}/${INGREDIENTS_KEY_VALUE}`;
-
-  const data = await fetch(urlToFetch);
-  const { meals } = await data.json();
-
-  const ingredients = meals as iIngredients[];
-
+function parseIngredientNames(ingredients: iMealIngredient[]): string[] {
   const ingredientNames = ingredients.map((ingredient) => {
     const ingredientNameKey = 'strIngredient';
 
@@ -128,11 +96,22 @@ export async function fetchMealIngredients(token: string): Promise<string[]> {
   return ingredientNames;
 }
 
+export async function fetchMealIngredients(token: string): Promise<string[]> {
+  const urlToFetch = `${baseURL}/${token}/${INGREDIENTS_KEY_VALUE}`;
+
+  const meals = await getMealData(urlToFetch);
+
+  const ingredients = meals as iMealIngredient[];
+
+  const ingredientNames = parseIngredientNames(ingredients)
+
+  return ingredientNames;
+}
+
 export async function fetchFoodAreas(token: string): Promise<string[]> {
   const urlToFetch = `${baseURL}/${token}/${AREA_KEY_VALUE}`;
 
-  const data = await fetch(urlToFetch);
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   const areas = meals as tAreas;
 
@@ -144,8 +123,7 @@ export async function fetchFoodAreas(token: string): Promise<string[]> {
 export async function fetchFoodsByArea(area: string, token: string): Promise<iGlobalRecipe[]> {
   const urlToFetch = `${baseURL}/${token}/${FILTER_AREA_KEY}=${area}`;
 
-  const data = await fetch(urlToFetch);
-  const { meals } = await data.json();
+  const meals = await getMealData(urlToFetch);
 
   return meals || [];
 }

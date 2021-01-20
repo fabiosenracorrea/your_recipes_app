@@ -20,10 +20,10 @@ const AuthProvider: React.FC = ({ children }) => {
   const [user, setUserData] = useState(() => {
     let previousUserData = JSON.parse(localStorage.getItem('user') || '{}');
 
-    const registeredUser = JSON.parse(localStorage.getItem('userNames') || '{}');
+    const registeredUsers = JSON.parse(localStorage.getItem('userNames') || '{}');
 
     if (previousUserData.email) {
-      const userName = registeredUser[previousUserData.email];
+      const userName = registeredUsers[previousUserData.email];
 
       if (userName) {
         previousUserData = { ...previousUserData, name: userName };
@@ -48,14 +48,18 @@ const AuthProvider: React.FC = ({ children }) => {
   });
 
   const signIn = useCallback(({ email }: iUser) => {
-    const userDataToPersist = { email };
+    let userDataToPersist = { email } as iUser;
     const AUTH_TOKEN = '1';
 
-    setUserData((prevData: iUser) => ({
-      ...prevData,
-      ...userDataToPersist,
-    }));
+    const registeredUsers = JSON.parse(localStorage.getItem('userNames') || '{}');
 
+    const userName = registeredUsers[email];
+
+    if (userName) {
+      userDataToPersist = { ...userDataToPersist, name: userName };
+    }
+
+    setUserData(userDataToPersist);
     setUserToken(AUTH_TOKEN);
 
     localStorage.setItem('user', JSON.stringify(userDataToPersist));

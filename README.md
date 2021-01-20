@@ -16,7 +16,7 @@ The whole application is glued together strongly with React's [context API](http
 
 ### Typescript support
 
-This application is currently in the process of migration to [Typescript](https://www.typescriptlang.org/). You can check it's pull request to review the code migration. The merge will happen as soon as compatibility between React Scripts, Jest & etc are sorted out to production state.
+This application has completed the process of migration to [Typescript](https://www.typescriptlang.org/). You can check it's version history to compare the differences between the JS and TS code or PR something you think it should be implemented differently.
 
 ### Feedback
 
